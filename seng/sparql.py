@@ -28,7 +28,6 @@ WHERE {{
 }}
 """.strip()
 
-
 def get_ric_filter(rics):
     if len(rics) == 0:
         return ''
@@ -43,20 +42,16 @@ def get_topic_filter(topics):
     cond = ' || '.join(each)
     return 'FILTER (%s)' % cond
 
-def get_date_filter(daterange):
-    if len(daterange) == 0:
-        return ''
-    if len(daterange) != 2:
-        raise ValueError('daterange length != 2')
+def get_date_filter(start, end):
     mapper = lambda d: '"{}"^^xs:dateTime'.format(d.strftime(DATE_FORMAT))
     cond_format = 'xs:dateTime(?time) > %s && xs:dateTime(?time) <= %s'
-    cond = cond_format % tuple(map(mapper, daterange[:2]))
+    cond = cond_format % tuple(map(mapper, [start, end]))
     return 'FILTER (%s)' % cond
 
 def query(rics=[], topics=[], daterange=[]):
     r = get_ric_filter(rics)
     t = get_topic_filter(topics)
-    d = get_date_filter(daterange)
+    d = get_date_filter(*daterange)
 
     q = QUERY_TEMPLATE.format(filter_ric=r, filter_topic=t, filter_daterange=d)
 
