@@ -1,0 +1,4 @@
+# python binary files
+
+*.pyc
+*.pyo
