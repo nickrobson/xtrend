@@ -8,5 +8,9 @@ results = query(
     daterange = (datetime.strptime('2015-10-01T00:00:00Z', DB_DATE_FORMAT), datetime.strptime('2015-10-10T00:00:00Z', DB_DATE_FORMAT))
 )
 
-for result in results:
-    print(result)
+for i, result in enumerate(results):
+    print('\n\n\nHeadline:', result.headline)
+    print('Time:', result.time)
+    print('Article:', result.news_body)
+    if i != len(results) - 1:
+        input('Press [ENTER] to see the next article.')
