@@ -36,7 +36,7 @@ class QueryResult(object):
         return self._news_body
 
     def __str__(self):
-        return self.headline
+        return '%s (%s)' % (self.headline, self.time.strftime('%c').replace('  ', ' '))
 
     def __hash__(self):
         return hash(self.uri)
