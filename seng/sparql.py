@@ -38,9 +38,9 @@ def query(rics=[], topics=[], daterange=[]):
     return do_query(q)
 
 def do_query(query):
-   encoded = urllib.parse.quote(query.strip())
-   req = urllib.request.Request('http://adage.cse.unsw.edu.au:8005/v1/graphs/sparql?query=' + encoded)
-   req.add_header('Authorization', 'Basic ' + base64.b64encode(b'student:studentML').decode('utf-8'))
-   results = json.load(urllib.request.urlopen(req))
-   results = results['results']['bindings']
-   return set(map(QueryResult, results))
+    encoded = urllib.parse.quote(query.strip())
+    req = urllib.request.Request('http://adage.cse.unsw.edu.au:8005/v1/graphs/sparql?query=' + encoded)
+    req.add_header('Authorization', 'Basic ' + base64.b64encode(b'student:studentML').decode('utf-8'))
+    results = json.load(urllib.request.urlopen(req))
+    results = results['results']['bindings']
+    return set(map(QueryResult, results))

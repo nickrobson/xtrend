@@ -6,6 +6,13 @@ class QueryResult(object):
     
     def __init__(self, data):
         super(QueryResult, self).__init__()
+
+        assert data['s']['type'] == 'uri'
+        assert data['headline']['type'] == 'literal'
+        assert data['newsBody']['type'] == 'literal'
+        assert data['time']['type'] == 'literal'
+        assert data['time']['datatype'] == 'http://www.w3.org/2001/XMLSchema#dateTime'
+
         self._data = data
         self._uri = data['s']['value']
         self._time = datetime.strptime(data['time']['value'][:-1] + '000Z', API_DATE_FORMAT)
