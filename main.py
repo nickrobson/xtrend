@@ -10,6 +10,7 @@ Don't edit the next bit of code as it's the update checker.
 
 import json
 import os.path
+import sys
 import threading
 import time
 
