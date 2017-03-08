@@ -69,3 +69,4 @@ main_thread = threading.Thread(name='Main Thread', target=run, daemon=True)
 main_thread.start()
 
 EXIT_QUEUE.get() # block until we get a QUIT status
+time.sleep(1)
