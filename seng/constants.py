@@ -6,7 +6,7 @@ PREFIX w3: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX fe: <http://adage.cse.unsw.edu.au/ontology/financial-events#>
 PREFIX ins: <http://adage.cse.unsw.edu.au/resource/financial-events#>
 PREFIX xs: <http://www.w3.org/2001/XMLSchema#>
-SELECT ?s ?time ?headline ?newsBody
+SELECT ?s ?ric ?topicCode ?time ?headline ?newsBody
 WHERE {{
 ?s w3:type fe:TRTHNewsEvent.
 ?s fe:relatedRIC ?ric.

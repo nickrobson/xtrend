@@ -8,6 +8,8 @@ class QueryResult(object):
         super(QueryResult, self).__init__()
 
         assert data['s']['type'] == 'uri'
+        assert data['ric']['type'] == 'literal'
+        assert data['topicCode']['type'] == 'literal'
         assert data['headline']['type'] == 'literal'
         assert data['newsBody']['type'] == 'literal'
         assert data['time']['type'] == 'literal'
@@ -15,6 +17,9 @@ class QueryResult(object):
 
         self._data = data
         self._uri = data['s']['value']
+        self._ric = data['ric']['value']
+        self._ric = self._ric[self._ric.find('_')+1:]
+        self._topic_code = data['topicCode']['value']
         self._time = datetime.strptime(data['time']['value'][:-1] + '000Z', API_DATE_FORMAT)
         self._headline = data['headline']['value']
         self._news_body = data['newsBody']['value']
@@ -22,6 +27,14 @@ class QueryResult(object):
     @property
     def uri(self):
         return self._uri
+
+    @property
+    def ric(self):
+        return self._ric
+
+    @property
+    def topic_code(self):
+        return self._topic_code
 
     @property
     def time(self):
@@ -43,6 +56,8 @@ class QueryResult(object):
 
     def __eq__(self, other):
         return self.uri == other.uri and \
+            self.ric == other.ric and \
+            self.topic_code == other.topic_code and \
             self.time == other.time and \
             self.headline == other.headline and \
             self.news_body == other.news_body
