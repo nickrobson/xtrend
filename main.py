@@ -30,13 +30,12 @@ def thread_main():
     current_version = check_update() # get currently-running version
 
     while True:
-        print('Getting current version')
         new_hash = check_update()
         if new_hash != current_version:
             current_version = new_hash
             print('Found new version -- restarting!')
             sys.exit(0)
-        time.sleep(20) # sleep and check 20 seconds later!
+        time.sleep(30) # sleep and check 30 seconds later!
 
 thread = threading.Thread(name='Update Checker', target=thread_main, daemon=True)
 thread.start()
