@@ -3,6 +3,10 @@
 *.pyc
 *.pyo
 
+# virtualenv files
+
+/venv/
+
 # pyenv files
 
 .python-version
