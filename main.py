@@ -20,10 +20,10 @@ EXIT_QUEUE = queue.Queue()
 
 def thread_main():
 
-    try:
+    if not os.path.exists(VERSION_FILE):
+        return
 
-        if not os.path.exists(VERSION_FILE):
-            return
+    try:
 
         def check_update():
             new_hash = ''
