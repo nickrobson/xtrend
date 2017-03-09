@@ -15,10 +15,6 @@ def run():
     jsonOutput = {}
     jsonOutput["NewsDataSet"] = list(map(changeFormat, results))
 
-    # for i, result in enumerate(jsonOutput):
-    #     json.dumps(result)
-    #     if i != len(jsonOutput) - 1:
-    #         input('Press [ENTER] to see the next article.')
     print(json.dumps(jsonOutput))
 
 def changeFormat(result):
