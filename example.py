@@ -11,14 +11,23 @@ def run():
 
     results = sorted(results, key=lambda r: r.headline)
 
-    for i, result in enumerate(results):
-        print('\n\n\nHeadline:', result.headline)
-        print('Time:', result.time)
-        print('RIC:', result.ric)
-        print('Topic Code:', result.topic_code)
-        print('Article:', result.news_body)
-        if i != len(results) - 1:
+    # for i, result in enumerate(results):
+    #     # print('\n\n\nHeadline:', result.headline)
+    #     # print('Time:', result.time)
+    #     # print('RIC:', result.ric)
+    #     # print('Topic Code:', result.topic_code)
+    #     # print('Article:', result.news_body)
+
+    jsonOutput = list(map(changeFormat, results))
+
+    for i, result in enumerate(jsonOutput):
+        json.dumps(result)
+
+        if i != len(jsonOutput) - 1:
             input('Press [ENTER] to see the next article.')
+
+def changeFormat():
+    print hi
 
 if __name__ == '__main__':
     run()
