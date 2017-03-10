@@ -58,15 +58,14 @@ def run():
 
     try:
 
-        # import example
-
-        # example.run() # for now, just execute the example
-
         from django.core.management import execute_from_command_line
 
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "seng.server.settings")
 
-        execute_from_command_line(['main.py', 'runserver', '127.0.0.1:5002'])
+        if len(sys.argv[1:]) and sys.argv[1] == 'migrate':
+            execute_from_command_line(['main.py', 'migrate'])
+        else:
+            execute_from_command_line(['main.py', 'runserver', '127.0.0.1:5002'])
 
     finally:
 
