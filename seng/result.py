@@ -71,7 +71,7 @@ def to_json(results):
 
 def changeFormat(result):
     currResult = {}
-    currResult["InstrumentID"] = ""
+    currResult["InstrumentID"] = result.ric
     currResult['TimeStamp'] = result.time.strftime(API_DATE_FORMAT)
     currResult["Headline"] = result.headline
     currResult["NewsText"] = result.news_body
