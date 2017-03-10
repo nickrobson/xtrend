@@ -10,3 +10,7 @@
 # pyenv files
 
 .python-version
+
+# database files
+
+*.sqlite3
