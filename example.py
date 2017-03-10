@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+
+# example.py
+# SENG3011 - Cool Bananas
+#
+# An example query that should get converted to SPARQL and comes back as an object.
+# This is then output in a readable format (not the required JSON output).
+
 from datetime import datetime
 from seng.constants import DB_DATE_FORMAT
 from seng.sparql import query
