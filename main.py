@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+# main.py
+# SENG3011 - Cool Bananas
+#
+# The main entry point into running the Django server, and starting the program.
+# It updates the server when necessary, and allows the server to be accessed via the web.
+
 '''
 DO NOT REMOVE THIS FILE
 
