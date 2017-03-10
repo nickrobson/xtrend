@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.shortcuts import redirect
+
+from . import query
 
 urlpatterns = [
     url(r'^coolbananas/admin/', admin.site.urls),
-    url(r'^coolbananas/', admin.site.urls),
+    url(r'^coolbananas/', query.QueryView.as_view()),
+    url(r'', lambda r: redirect('/coolbananas/')),
 ]
