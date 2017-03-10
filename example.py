@@ -1,6 +1,7 @@
 from datetime import datetime
 from seng.constants import DB_DATE_FORMAT
 from seng.sparql import query
+from seng.result import to_json
 import json
 
 def run():
@@ -11,20 +12,9 @@ def run():
     )
 
     results = sorted(results, key=lambda r: r.headline)
-
-    jsonOutput = {}
-    jsonOutput["NewsDataSet"] = list(map(changeFormat, results))
+    jsonOutput = to_json(results)
 
     print(json.dumps(jsonOutput))
-
-def changeFormat(result):
-    currResult = {}
-    currResult["InstrumentID"] = ""
-    currResult['TimeStamp'] = result.time.strftime(constants.API_DATE_FORMAT)
-    currResult["Headline"] = result.headline
-    currResult["NewsText"] = result.news_body
-    
-    return currResult
 
 if __name__ == '__main__':
     run()

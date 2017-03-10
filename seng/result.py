@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 from .constants import API_DATE_FORMAT
 
@@ -61,3 +62,17 @@ class QueryResult(object):
             self.time == other.time and \
             self.headline == other.headline and \
             self.news_body == other.news_body
+
+
+def to_json(results):
+    jsonOutput = {}
+    jsonOutput["NewsDataSet"] = list(map(changeFormat, results))
+    return jsonOutput
+
+def changeFormat(result):
+    currResult = {}
+    currResult["InstrumentID"] = ""
+    currResult['TimeStamp'] = result.time.strftime(API_DATE_FORMAT)
+    currResult["Headline"] = result.headline
+    currResult["NewsText"] = result.news_body
+    return currResult
