@@ -66,7 +66,7 @@ def run():
 
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "seng.server.settings")
 
-        execute_from_command_line(['main.py', 'runserver'])
+        execute_from_command_line(['main.py', 'runserver', '127.0.0.1:5002'])
 
     finally:
 
