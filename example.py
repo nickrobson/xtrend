@@ -1,6 +1,8 @@
 from datetime import datetime
 from seng.constants import DB_DATE_FORMAT
 from seng.sparql import query
+from seng.result import to_json
+import json
 
 def run():
     results = query(
@@ -10,15 +12,9 @@ def run():
     )
 
     results = sorted(results, key=lambda r: r.headline)
+    jsonOutput = to_json(results)
 
-    for i, result in enumerate(results):
-        print('\n\n\nHeadline:', result.headline)
-        print('Time:', result.time)
-        print('RIC:', result.ric)
-        print('Topic Code:', result.topic_code)
-        print('Article:', result.news_body)
-        if i != len(results) - 1:
-            input('Press [ENTER] to see the next article.')
+    print(json.dumps(jsonOutput))
 
 if __name__ == '__main__':
     run()
