@@ -62,8 +62,8 @@ def run():
 
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "seng.server.settings")
 
-        if len(sys.argv[1:]) and sys.argv[1] == 'migrate':
-            execute_from_command_line(['main.py', 'migrate'])
+        if len(sys.argv[1:]):
+            execute_from_command_line(['main.py'] + sys.argv[1:])
         else:
             execute_from_command_line(['main.py', 'runserver', '127.0.0.1:5002'])
 
