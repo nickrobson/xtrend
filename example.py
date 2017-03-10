@@ -20,7 +20,7 @@ def run():
 def changeFormat(result):
     currResult = {}
     currResult["InstrumentID"] = ""
-    currResult['TimeStamp'] = str(result.time)
+    currResult['TimeStamp'] = result.time.strftime(constants.API_DATE_FORMAT)
     currResult["Headline"] = result.headline
     currResult["NewsText"] = result.news_body
     
