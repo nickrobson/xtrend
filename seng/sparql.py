@@ -1,3 +1,8 @@
+# sparql.py
+# SENG3011 - Cool Bananas
+#
+# Functions used for converting user input into SPARQL, and querying the master database.
+
 import base64
 import json
 import urllib.parse
