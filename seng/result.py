@@ -1,3 +1,9 @@
+# result.py
+# SENG3011 - Cool Bananas
+#
+# Defines the QueryResult object, which turns the master databases's responses into a Python object.
+# This object has useful functions.
+
 from datetime import datetime
 
 from .constants import API_DATE_FORMAT
