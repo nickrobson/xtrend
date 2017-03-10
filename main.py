@@ -9,6 +9,7 @@ ONLY edit the run() function below.
 '''
 
 import json
+import os
 import os.path
 import queue
 import sys
@@ -57,9 +58,15 @@ def run():
 
     try:
 
-        import example
+        # import example
 
-        example.run() # for now, just execute the example
+        # example.run() # for now, just execute the example
+
+        from django.core.management import execute_from_command_line
+
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "seng.server.settings")
+
+        execute_from_command_line(['main.py', 'runserver'])
 
     finally:
 
