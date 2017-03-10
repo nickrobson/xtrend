@@ -1,3 +1,8 @@
+# constants.py
+# SENG3011 - Cool Bananas
+#
+# Constants used in other parts of the project.
+
 DB_DATE_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 API_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
 
