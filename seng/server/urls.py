@@ -19,6 +19,8 @@ from django.shortcuts import redirect
 
 from . import query
 
+admin.site.site_url = '/coolbananas/'
+
 urlpatterns = [
     url(r'^coolbananas/admin/', admin.site.urls),
     url(r'^coolbananas/', query.QueryView.as_view()),
