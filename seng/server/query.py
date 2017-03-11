@@ -57,6 +57,6 @@ class QueryView(View):
     # If the time is not a string, then this should return None.
     def dateQueryToPyFormat(self, date_string):
         if isinstance(date_string, str):
-            return date_string[0:len(date_string) - 2] + "000Z"
+            return date_string[0:-1] + "000Z"
         else:
             return None
