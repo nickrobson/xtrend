@@ -55,9 +55,9 @@ def do_query(query):
     return set(map(QueryResult, results))
 
 # Takes lists of the input RICs, topics, and dates, and converts it all into a SPARQL request.
-def query(rics=[], topics=[], daterange=[]):
+def query(rics=[], topics=[], date_range=[]):
     r = get_ric_filter(rics)
     t = get_topic_filter(topics)
-    d = get_date_filter(*daterange)
+    d = get_date_filter(*date_range)
     q = QUERY_TEMPLATE.format(filter_ric=r, filter_topic=t, filter_daterange=d)
     return do_query(q)
