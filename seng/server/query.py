@@ -29,7 +29,7 @@ class QueryView(View):
         start_date = self.dateQueryToPyFormat(get_query.get('startdate'))
         end_date = self.dateQueryToPyFormat(get_query.get('enddate'))
 
-        if start_date and end_date and len(rics) > 0 and len(topics) > 0:
+        if start_date and end_date:
             # Then extract the data.
             rics = rics.split(',') if len(rics) else []
             topics = topics.split(',') if len(topics) else []
