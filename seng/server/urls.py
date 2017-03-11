@@ -17,12 +17,15 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.shortcuts import redirect
 
+import urllib.parse
+
 from . import query
 
 admin.site.site_url = '/coolbananas/'
 
 urlpatterns = [
     url(r'^coolbananas/admin/', admin.site.urls),
-    url(r'^coolbananas/', query.QueryView.as_view()),
+    url(r'^coolbananas/api/', query.QueryView.as_view()),
+    url(r'^coolbananas/', lambda r: redirect('/coolbananas/api/?' + urllib.parse.urlencode(r.GET))),
     url(r'', lambda r: redirect('/coolbananas/')),
 ]
