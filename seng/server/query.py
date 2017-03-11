@@ -23,16 +23,16 @@ class QueryView(View):
         # Declare this variable for use later.
         final_json = None
         # We need to confirm that the data exists.
-        rics = get_query.get('rics')
-        topics = get_query.get('topics')
+        rics = get_query.get('rics', '')
+        topics = get_query.get('topics', '')
         # TODO: Is the date given as one date object, or a start and an end date?
         start_date = self.dateQueryToPyFormat(get_query.get('startdate'))
         end_date = self.dateQueryToPyFormat(get_query.get('enddate'))
 
-        if rics and topics and start_date and end_date and len(rics) > 0 and len(topics) > 0:
+        if start_date and end_date:
             # Then extract the data.
-            rics = rics.split(',')
-            topics = topics.split(',')
+            rics = rics.split(',') if len(rics) else []
+            topics = topics.split(',') if len(topics) else []
             try:
                 # This will still be accepted if not the exact number of decimals is used.
                 start_date = datetime.strptime(start_date, API_DATE_FORMAT)
