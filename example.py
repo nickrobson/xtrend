@@ -20,9 +20,9 @@ def run():
     )
 
     results = sorted(results, key=lambda r: r.headline)
-    jsonOutput = to_json(results)
+    json_output = to_json(results)
 
-    print(json.dumps(jsonOutput))
+    print(json.dumps(json_output))
 
 if __name__ == '__main__':
     run()

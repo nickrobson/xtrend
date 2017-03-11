@@ -55,6 +55,14 @@ class QueryResult(object):
     def news_body(self):
         return self._news_body
 
+    def to_json(self):
+        curr_result = {}
+        curr_result["InstrumentID"] = self.ric
+        curr_result['TimeStamp'] = self.time.strftime(API_DATE_FORMAT)[:-4] + 'Z'
+        curr_result["Headline"] = self.headline
+        curr_result["NewsText"] = self.news_body
+        return curr_result
+
     def __str__(self):
         return '%s (%s)' % (self.headline, self.time.strftime('%c').replace('  ', ' '))
 
@@ -69,16 +77,7 @@ class QueryResult(object):
             self.headline == other.headline and \
             self.news_body == other.news_body
 
-
 def to_json(results):
-    jsonOutput = {}
-    jsonOutput["NewsDataSet"] = list(map(changeFormat, results))
-    return jsonOutput
-
-def changeFormat(result):
-    currResult = {}
-    currResult["InstrumentID"] = result.ric
-    currResult['TimeStamp'] = result.time.strftime(API_DATE_FORMAT)
-    currResult["Headline"] = result.headline
-    currResult["NewsText"] = result.news_body
-    return currResult
+    json_result = {}
+    json_result["NewsDataSet"] = list(map(QueryResult.to_json, results))
+    return json_result
