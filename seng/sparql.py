@@ -10,6 +10,7 @@ import urllib.request
 
 from datetime import datetime
 
+from . import logger
 from .result import QueryResult
 from .constants import QUERY_TEMPLATE, DB_DATE_FORMAT
 
@@ -36,23 +37,27 @@ def get_date_filter(start, end):
     cond = cond_format % tuple(map(mapper, [start, end]))
     return 'FILTER (%s)' % cond
 
+# Asks the external database using a given SPARQL query, and returns the result.
+def do_query(query):
+    logger.debug('Querying database')
+    
+    encoded = urllib.parse.quote(query.strip())
+    req = urllib.request.Request('http://adage.cse.unsw.edu.au:8005/v1/graphs/sparql?query=' + encoded)
+    req.add_header('Authorization', 'Basic ' + base64.b64encode(b'student:studentML').decode('utf-8'))
+    data = urllib.request.urlopen(req).read().decode('utf-8')
+
+    logger.debug('Retrieved from database')
+
+    results = json.loads(data)
+    results = results['results']['bindings']
+    # This is a set that turns all the results through the function QueryResult.
+    # It is not a hash map, it's just a set.
+    return set(map(QueryResult, results))
+
 # Takes lists of the input RICs, topics, and dates, and converts it all into a SPARQL request.
 def query(rics=[], topics=[], daterange=[]):
     r = get_ric_filter(rics)
     t = get_topic_filter(topics)
     d = get_date_filter(*daterange)
-
     q = QUERY_TEMPLATE.format(filter_ric=r, filter_topic=t, filter_daterange=d)
-
     return do_query(q)
-
-# Asks the external database using a given SPARQL query, and returns the result.
-def do_query(query):
-    encoded = urllib.parse.quote(query.strip())
-    req = urllib.request.Request('http://adage.cse.unsw.edu.au:8005/v1/graphs/sparql?query=' + encoded)
-    req.add_header('Authorization', 'Basic ' + base64.b64encode(b'student:studentML').decode('utf-8'))
-    results = json.loads(urllib.request.urlopen(req).read().decode('utf-8'))
-    results = results['results']['bindings']
-    # This is a set that turns all the results through the function QueryResult.
-    # It is not a hash map, it's just a set.
-    return set(map(QueryResult, results))

@@ -10,6 +10,7 @@ from seng.constants import API_DATE_FORMAT
 from seng.sparql import query
 from seng.result import to_json
 import json
+from . import logger
 
 class QueryView(View):
     
@@ -39,6 +40,8 @@ class QueryView(View):
                 end_date = datetime.strptime(end_date, API_DATE_FORMAT)
             except:
                 return HttpResponseBadRequest(BAD_REQUEST_MESSAGE, content_type="application/json")
+
+            logger.debug('Received query for:\nRICs = %s\nTopics = %s\nDates = %s' % (rics, topics, (start_date, end_date)))
 
             results = query(
                 rics = rics,
