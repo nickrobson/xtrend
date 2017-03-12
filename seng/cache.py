@@ -5,8 +5,7 @@
 
 import cachetools
 
-import seng.result
-import seng.sparql
+from seng import logger, result, sparql
 
 CACHE = cachetools.TTLCache(maxsize = 250, ttl = 600)
 
@@ -18,18 +17,23 @@ def query(rics=[], topics=[], date_range=[]):
     )
 
     if key in CACHE:
+
+        logger.debug('Found query in cache')
+
         return CACHE[key]
 
-    results = seng.sparql.query(
+    results = sparql.query(
         rics = rics,
         topics = topics,
         date_range = date_range
     )
-    result = seng.result.to_json(results)
+    json_result = result.to_json(results)
 
-    CACHE[key] = result
+    CACHE[key] = json_result
 
-    return result
+    logger.debug('Saved query to cache')
+
+    return json_result
 
 class CacheKey(object):
 
