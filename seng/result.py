@@ -3,8 +3,10 @@
 #
 # Defines the QueryResult object, which turns the master database's responses into a Python object.
 
-from datetime import datetime
 import json
+
+from collections import OrderedDict
+from datetime import datetime
 
 from .constants import API_DATE_FORMAT
 
@@ -80,7 +82,7 @@ class QueryResult(object):
         '''
         Turns this article into a dictionary serializable into JSON.
         '''
-        curr_result = {}
+        curr_result = OrderedDict()
         #curr_result["URI"] = self.uri
         curr_result["InstrumentID"] = self.ric
         #curr_result["TopicCode"] = self.topic_code
@@ -100,13 +102,6 @@ class QueryResult(object):
             self.headline == other.headline and \
             self.news_body == other.news_body
 
-JSON_GROUP_INSTRUMENT_IDS = False   # set to true to make identical articles
-                                    # with different InstrumentIDs be joined
-                                    # into a single article with an
-                                    # InstrumentIDs array
-
-JSON_INCLUDE_TOPIC_CODES = False # set to true to include topic codes in the response
-
 class hashabledict(dict):
   def __key(self):
     return tuple((k, self[k]) for k in sorted(self))
@@ -114,6 +109,23 @@ class hashabledict(dict):
     return hash(self.__key())
   def __eq__(self, other):
     return self.__key() == other.__key()
+
+class hashablelist(list):
+    def __hash__(self):
+        return hash(tuple(self))
+    def __eq__(self, other):
+        return self == other
+
+def uniq_list(the_list):
+    the_set = set(map(lambda d: hashabledict(d), the_list))
+    return list(map(lambda d: OrderedDict(d), the_set))
+
+JSON_GROUP_INSTRUMENT_IDS = False   # set to true to make identical articles
+                                    # with different InstrumentIDs be joined
+                                    # into a single article with an
+                                    # InstrumentIDs array
+
+JSON_INCLUDE_TOPIC_CODES = False # set to true to include topic codes in the response
 
 def to_json(results, uniq=False):
     '''
@@ -124,7 +136,7 @@ def to_json(results, uniq=False):
         json_result = {}
         data_set = list(map(QueryResult.to_json, results))
         if uniq:
-            data_set = list(map(dict, set(map(lambda d: hashabledict(d), data_set))))
+            data_set = uniq_list(data_set)
         json_result["NewsDataSet"] = data_set
         return json_result
 
@@ -161,21 +173,21 @@ def to_json(results, uniq=False):
 
     if JSON_GROUP_INSTRUMENT_IDS:
         for k, v in results_dict.items():
-            v = dict(v)
+            v = OrderedDict(v)
             if JSON_INCLUDE_TOPIC_CODES:
-                v['TopicCodes'] = sorted(v['TopicCodes'])
-            v['InstrumentIDs'] = sorted(v['InstrumentIDs'])
+                v['TopicCodes'] = hashablelist(sorted(v['TopicCodes']))
+            v['InstrumentIDs'] = hashablelist(sorted(v['InstrumentIDs']))
             all_results.append(v)
     else:
         for uri, d in results_dict.items():
             for k, v in d.items():
-                v = dict(v)
+                v = OrderedDict(v)
                 if JSON_INCLUDE_TOPIC_CODES:
-                    v['TopicCodes'] = sorted(v['TopicCodes'])
+                    v['TopicCodes'] = hashablelist(sorted(v['TopicCodes']))
                 all_results.append(v)
 
     if uniq:
-        all_results = list(map(dict, set(map(lambda d: hashabledict(d), all_results))))
+        all_results = uniq_list(all_results)
 
     json_result = {}
     json_result["NewsDataSet"] = all_results
