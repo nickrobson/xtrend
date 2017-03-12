@@ -51,9 +51,6 @@ class QueryView(View):
                 date_range = (start_date, end_date),
             )
 
-            # This is the final JSON. We need to then return it.
-            final_json = to_json(results)
-
             end_time = time.clock()
 
             logger.debug('Query handled in %.8f seconds' % (end_time - start_time))
