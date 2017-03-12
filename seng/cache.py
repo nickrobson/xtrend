@@ -27,7 +27,7 @@ def query(rics=[], topics=[], date_range=[]):
         topics = topics,
         date_range = date_range
     )
-    json_result = result.to_json(results)
+    json_result = result.to_json(results, uniq=True)
 
     CACHE[key] = json_result
 
