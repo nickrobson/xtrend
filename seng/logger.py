@@ -35,3 +35,6 @@ def error(message):
 
 def critical(message):
     logger.critical(message)
+
+def exception(message):
+    logger.exception(message)
