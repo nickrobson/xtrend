@@ -37,10 +37,7 @@ class CacheKey(object):
         self._rics = rics
         self._topics = topics
         self._date_range = date_range
-
-    @property
-    def _key(self):
-        return (*self._rics, *self._topics, *self._date_range)
+        self._key = (*self._rics, *self._topics, *self._date_range)
 
     def __hash__(self):
         return hash(self._key)
