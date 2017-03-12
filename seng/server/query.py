@@ -4,19 +4,20 @@
 # Handles the API's GET request, and should return the JSON object for it.
 
 import json
+import time
 
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views import View
 from datetime import datetime
-
-import seng.cache
-
+from seng import logger, cache
 from seng.constants import API_DATE_FORMAT
 
 class QueryView(View):
     
     def get(self, request):
         BAD_REQUEST_MESSAGE = '{"errors": [{"status": "400","detail": "Bad request"}]}'
+
+        start_time = time.clock()
 
         # First this gets the user's GET request.
         # This is the stuff after the question mark:
@@ -40,11 +41,17 @@ class QueryView(View):
             except:
                 return HttpResponseBadRequest(BAD_REQUEST_MESSAGE, content_type="application/json")
 
-            final_json = seng.cache.query(
+            logger.debug('Received query for: RICs = %s, Topics = %s, Dates = %s' % (rics, topics, (start_date, end_date)))
+
+            final_json = cache.query(
                 rics = rics,
                 topics = topics,
                 date_range = (start_date, end_date),
             )
+
+            end_time = time.clock()
+
+            logger.debug('Query handled in %.8f seconds' % (end_time - start_time))
             return HttpResponse(json.dumps(final_json), content_type="application/json")
         return HttpResponseBadRequest(BAD_REQUEST_MESSAGE, content_type="application/json")
 

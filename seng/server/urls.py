@@ -27,5 +27,5 @@ urlpatterns = [
     url(r'^coolbananas/admin/', admin.site.urls),
     url(r'^coolbananas/api/', query.QueryView.as_view()),
     url(r'^coolbananas/', lambda r: redirect('/coolbananas/api/?' + urllib.parse.urlencode(r.GET))),
-    url(r'', lambda r: redirect('/coolbananas/')),
+    url(r'^$', lambda r: redirect('/coolbananas/')),
 ]

@@ -14,3 +14,7 @@
 # database files
 
 *.sqlite3
+
+# SENG3011 project files
+
+*.log
