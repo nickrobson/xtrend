@@ -9,42 +9,24 @@ from seng import logger, result, sparql
 
 CACHE = cachetools.TTLCache(maxsize = 250, ttl = 600)
 
-def query(rics=[], topics=[], date_range=[]):
-    key = CacheKey(
-        rics = rics,
-        topics = topics,
-        date_range = date_range
-    )
+def query(rics=[], topics=[], date_range=[], uniq=False):
 
-    if key in CACHE:
+    cache_key = (*rics, *topics, *date_range, uniq)
+    cache_val = CACHE.get(cache_key)
 
+    if cache_val is not None:
         logger.debug('Found query in cache')
-
-        return CACHE[key]
+        return cache_val
 
     results = sparql.query(
         rics = rics,
         topics = topics,
         date_range = date_range
     )
-    json_result = result.to_json(results, uniq=True)
+    json_result = result.to_json(results, uniq=uniq)
 
-    CACHE[key] = json_result
+    CACHE[cache_key] = json_result
 
     logger.debug('Saved query to cache')
 
     return json_result
-
-class CacheKey(object):
-
-    def __init__(self, rics=[], topics=[], date_range=[]):
-        self._rics = rics
-        self._topics = topics
-        self._date_range = date_range
-        self._key = (*self._rics, *self._topics, *self._date_range)
-
-    def __hash__(self):
-        return hash(self._key)
-
-    def __eq__(self, other):
-        return self._key == other._key
