@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.http import Http404
 from django.shortcuts import redirect
+
 
 import urllib.parse
 
@@ -23,9 +25,12 @@ from . import query
 
 admin.site.site_url = '/coolbananas/'
 
+def http404(*args):
+    raise Http404()
+
 urlpatterns = [
     url(r'^coolbananas/admin/', admin.site.urls),
     url(r'^coolbananas/api/', query.QueryView.as_view()),
     url(r'^coolbananas/', lambda r: redirect('/coolbananas/api/?' + urllib.parse.urlencode(r.GET))),
-    url(r'', lambda r: redirect('/coolbananas/')),
+    url(r'^$', lambda r: redirect('/coolbananas/')),
 ]
