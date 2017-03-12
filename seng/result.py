@@ -1,8 +1,7 @@
 # result.py
 # SENG3011 - Cool Bananas
 #
-# Defines the QueryResult object, which turns the master databases's responses into a Python object.
-# This object has useful functions.
+# Defines the QueryResult object, which turns the master database's responses into a Python object.
 
 from datetime import datetime
 import json
@@ -10,6 +9,10 @@ import json
 from .constants import API_DATE_FORMAT
 
 class QueryResult(object):
+
+    '''
+    Represents a single article from the database.
+    '''
     
     def __init__(self, data):
         super(QueryResult, self).__init__()
@@ -26,45 +29,65 @@ class QueryResult(object):
         self._uri = data['s']['value']
         self._ric = data['ric']['value']
         self._ric = self._ric[self._ric.find('_')+1:]
-        self._topic_code = data['topicCode']['value']
+        self._topic_code = data['topicCode']['value'][3:]
         self._time = datetime.strptime(data['time']['value'][:-1] + '000Z', API_DATE_FORMAT)
         self._headline = data['headline']['value']
         self._news_body = data['newsBody']['value']
 
     @property
     def uri(self):
+        '''
+        This article's URI.
+        '''
         return self._uri
 
     @property
     def ric(self):
+        '''
+        This article's RIC, or instrument ID.
+        '''
         return self._ric
 
     @property
     def topic_code(self):
+        '''
+        This article's topic code.
+        '''
         return self._topic_code
 
     @property
     def time(self):
+        '''
+        This article's time stamp.
+        '''
         return self._time
 
     @property
     def headline(self):
+        '''
+        This article's headline.
+        '''
         return self._headline
 
     @property
     def news_body(self):
+        '''
+        This article's body text.
+        '''
         return self._news_body
 
     def to_json(self):
+        '''
+        Turns this article into a dictionary serializable into JSON.
+        '''
         curr_result = {}
+        #curr_result["URI"] = self.uri
         curr_result["InstrumentID"] = self.ric
+        #curr_result["TopicCode"] = self.topic_code
         curr_result['TimeStamp'] = self.time.strftime(API_DATE_FORMAT)[:-4] + 'Z'
         curr_result["Headline"] = self.headline
         curr_result["NewsText"] = self.news_body
         return curr_result
-
-    def __str__(self):
-        return '%s (%s)' % (self.headline, self.time.strftime('%c').replace('  ', ' '))
 
     def __hash__(self):
         return hash(self.uri)
@@ -77,7 +100,69 @@ class QueryResult(object):
             self.headline == other.headline and \
             self.news_body == other.news_body
 
+JSON_GROUP_INSTRUMENT_IDS = False   # set to true to make identical articles
+                                    # with different InstrumentIDs be joined
+                                    # into a single article with an
+                                    # InstrumentIDs array
+
+JSON_INCLUDE_TOPIC_CODES = False # set to true to include topic codes in the response
+
 def to_json(results):
+    '''
+    Turns multiple QueryResult objects into an array of them, as a JSON serializable array.
+    '''
+
+    if not JSON_INCLUDE_TOPIC_CODES and not JSON_GROUP_INSTRUMENT_IDS:
+        json_result = {}
+        json_result["NewsDataSet"] = list(map(QueryResult.to_json, results))
+        return json_result
+
+    results_dict = {}
+    for result in results:
+        if JSON_GROUP_INSTRUMENT_IDS:
+            existing = results_dict.get(result.uri)
+        else:
+            existing = results_dict.get(result.uri, {}).get(result.ric)
+        if existing is not None:
+            if JSON_INCLUDE_TOPIC_CODES:
+                existing['TopicCodes'].add(result.topic_code)
+            if JSON_GROUP_INSTRUMENT_IDS:
+                existing['InstrumentIDs'].add(result.ric)
+        else:
+            jr = result.to_json()
+            existing = {}
+            existing['URI'] = result.uri
+            if JSON_GROUP_INSTRUMENT_IDS:
+                ric = jr.pop('InstrumentID')
+            existing.update(jr)
+            if JSON_GROUP_INSTRUMENT_IDS:
+                existing['InstrumentIDs'] = set([ ric ])
+            if JSON_INCLUDE_TOPIC_CODES:
+                existing['TopicCodes'] = set([ result.topic_code ])
+        if JSON_GROUP_INSTRUMENT_IDS:
+            results_dict[result.uri] = existing
+        else:
+            uri_dict = results_dict.get(result.uri, {})
+            uri_dict[result.ric] = existing
+            results_dict[result.uri] = uri_dict
+
+    all_results = []
+
+    if JSON_GROUP_INSTRUMENT_IDS:
+        for k, v in results_dict.items():
+            v = dict(v)
+            if JSON_INCLUDE_TOPIC_CODES:
+                v['TopicCodes'] = sorted(v['TopicCodes'])
+            v['InstrumentIDs'] = sorted(v['InstrumentIDs'])
+            all_results.append(v)
+    else:
+        for uri, d in results_dict.items():
+            for k, v in d.items():
+                v = dict(v)
+                if JSON_INCLUDE_TOPIC_CODES:
+                    v['TopicCodes'] = sorted(v['TopicCodes'])
+                all_results.append(v)
+
     json_result = {}
-    json_result["NewsDataSet"] = list(map(QueryResult.to_json, results))
+    json_result["NewsDataSet"] = all_results
     return json_result

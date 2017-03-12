@@ -3,15 +3,14 @@
 #
 # Handles the API's GET request, and should return the JSON object for it.
 
+import json
+import time
+
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views import View
 from datetime import datetime
-from seng import logger
+from seng import logger, cache
 from seng.constants import API_DATE_FORMAT
-from seng.sparql import query
-from seng.result import to_json
-import json
-import time
 
 class QueryView(View):
     
@@ -24,8 +23,6 @@ class QueryView(View):
         # This is the stuff after the question mark:
         # http://127.0.0.1:5002/coolbananas/api/?rics=BHP.AX,BLT.L&topics=AMERS,COM&startdate=2015-10-01T00:00:00.000Z&enddate=2015-10-10T00:00:00.000Z
         get_query = request.GET
-        # Declare this variable for use later.
-        final_json = None
         # We need to confirm that the data exists.
         rics = get_query.get('rics', '')
         topics = get_query.get('topics', '')
@@ -46,22 +43,20 @@ class QueryView(View):
 
             logger.debug('Received query for: RICs = %s, Topics = %s, Dates = %s' % (rics, topics, (start_date, end_date)))
 
-            results = query(
+            final_json = cache.query(
                 rics = rics,
                 topics = topics,
-                daterange = (start_date, end_date)
+                date_range = (start_date, end_date),
             )
 
             # This is the final JSON. We need to then return it.
-            final_json = to_json(results)
+            #final_json = to_json(results)
 
             end_time = time.clock()
 
             logger.debug('Query handled in %.8f seconds' % (end_time - start_time))
-        else:
-            return HttpResponseBadRequest(BAD_REQUEST_MESSAGE, content_type="application/json")
-
-        return HttpResponse(json.dumps(final_json), content_type="application/json")
+            return HttpResponse(json.dumps(final_json), content_type="application/json")
+        return HttpResponseBadRequest(BAD_REQUEST_MESSAGE, content_type="application/json")
 
     # This converts a date from the format 2015-10-10T00:00:00.000Z to 2015-10-10T00:00:00:00.000000Z.
     # If the time is not a string, then this should return None.

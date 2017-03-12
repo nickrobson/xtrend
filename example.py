@@ -16,7 +16,7 @@ def run():
     results = query(
         rics = ('BHP.AX', 'BLT.L'),
         topics = ('AMERS', 'COM'),
-        daterange = (datetime.strptime('2015-10-01T00:00:00Z', DB_DATE_FORMAT), datetime.strptime('2015-10-10T00:00:00Z', DB_DATE_FORMAT))
+        date_range = (datetime.strptime('2015-10-01T00:00:00Z', DB_DATE_FORMAT), datetime.strptime('2015-10-10T00:00:00Z', DB_DATE_FORMAT))
     )
 
     results = sorted(results, key=lambda r: r.headline)
