@@ -32,6 +32,7 @@ class QueryView(View):
             # We need to confirm that the data exists.
             rics = get_query.get('rics', '')
             topics = get_query.get('topics', '')
+            uniq = get_query.get('uniq', '') == 'True'
             # TODO: Is the date given as one date object, or a start and an end date?
             start_date = self.dateQueryToPyFormat(get_query.get('startdate'))
             end_date = self.dateQueryToPyFormat(get_query.get('enddate'))
@@ -53,6 +54,7 @@ class QueryView(View):
                     rics = rics,
                     topics = topics,
                     date_range = (start_date, end_date),
+                    uniq = uniq,
                 )
                 final_json['success'] = True
 
