@@ -6,16 +6,19 @@
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views import View
 from datetime import datetime
+from seng import logger
 from seng.constants import API_DATE_FORMAT
 from seng.sparql import query
 from seng.result import to_json
 import json
-from . import logger
+import time
 
 class QueryView(View):
     
     def get(self, request):
         BAD_REQUEST_MESSAGE = '{"errors": [{"status": "400","detail": "Bad request"}]}'
+
+        start_time = time.clock()
 
         # First this gets the user's GET request.
         # This is the stuff after the question mark:
@@ -41,7 +44,7 @@ class QueryView(View):
             except:
                 return HttpResponseBadRequest(BAD_REQUEST_MESSAGE, content_type="application/json")
 
-            logger.debug('Received query for:\nRICs = %s\nTopics = %s\nDates = %s' % (rics, topics, (start_date, end_date)))
+            logger.debug('Received query for: RICs = %s, Topics = %s, Dates = %s' % (rics, topics, (start_date, end_date)))
 
             results = query(
                 rics = rics,
@@ -51,6 +54,10 @@ class QueryView(View):
 
             # This is the final JSON. We need to then return it.
             final_json = to_json(results)
+
+            end_time = time.clock()
+
+            logger.debug('Query handled in %.8f seconds' % (end_time - start_time))
         else:
             return HttpResponseBadRequest(BAD_REQUEST_MESSAGE, content_type="application/json")
 
