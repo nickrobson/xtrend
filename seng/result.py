@@ -120,71 +120,34 @@ def uniq_list(the_list):
     the_set = set(map(lambda d: hashabledict(d), the_list))
     return list(map(lambda d: OrderedDict(d), the_set))
 
-JSON_GROUP_INSTRUMENT_IDS = False   # set to true to make identical articles
-                                    # with different InstrumentIDs be joined
-                                    # into a single article with an
-                                    # InstrumentIDs array
-
-JSON_INCLUDE_TOPIC_CODES = False # set to true to include topic codes in the response
-
 def to_json(results, uniq=False):
     '''
     Turns multiple QueryResult objects into an array of them, as a JSON serializable array.
     '''
 
-    if not JSON_INCLUDE_TOPIC_CODES and not JSON_GROUP_INSTRUMENT_IDS:
-        json_result = {}
-        data_set = list(map(QueryResult.to_json, results))
-        if uniq:
-            data_set = uniq_list(data_set)
-        json_result["NewsDataSet"] = data_set
-        return json_result
-
     results_dict = {}
     for result in results:
-        if JSON_GROUP_INSTRUMENT_IDS:
-            existing = results_dict.get(result.uri)
-        else:
-            existing = results_dict.get(result.uri, {}).get(result.ric)
+        existing = results_dict.get(result.uri)
         if existing is not None:
-            if JSON_INCLUDE_TOPIC_CODES:
-                existing['TopicCodes'].add(result.topic_code)
-            if JSON_GROUP_INSTRUMENT_IDS:
-                existing['InstrumentIDs'].add(result.ric)
+            existing['TopicCodes'].add(result.topic_code)
+            existing['InstrumentIDs'].add(result.ric)
         else:
             jr = result.to_json()
             existing = {}
             existing['URI'] = result.uri
-            if JSON_GROUP_INSTRUMENT_IDS:
-                ric = jr.pop('InstrumentID')
+            ric = jr.pop('InstrumentID')
             existing.update(jr)
-            if JSON_GROUP_INSTRUMENT_IDS:
-                existing['InstrumentIDs'] = set([ ric ])
-            if JSON_INCLUDE_TOPIC_CODES:
-                existing['TopicCodes'] = set([ result.topic_code ])
-        if JSON_GROUP_INSTRUMENT_IDS:
-            results_dict[result.uri] = existing
-        else:
-            uri_dict = results_dict.get(result.uri, {})
-            uri_dict[result.ric] = existing
-            results_dict[result.uri] = uri_dict
+            existing['InstrumentIDs'] = set([ ric ])
+            existing['TopicCodes'] = set([ result.topic_code ])
+        results_dict[result.uri] = existing
 
     all_results = []
 
-    if JSON_GROUP_INSTRUMENT_IDS:
-        for k, v in results_dict.items():
-            v = OrderedDict(v)
-            if JSON_INCLUDE_TOPIC_CODES:
-                v['TopicCodes'] = hashablelist(sorted(v['TopicCodes']))
-            v['InstrumentIDs'] = hashablelist(sorted(v['InstrumentIDs']))
-            all_results.append(v)
-    else:
-        for uri, d in results_dict.items():
-            for k, v in d.items():
-                v = OrderedDict(v)
-                if JSON_INCLUDE_TOPIC_CODES:
-                    v['TopicCodes'] = hashablelist(sorted(v['TopicCodes']))
-                all_results.append(v)
+    for k, v in results_dict.items():
+        v = OrderedDict(v)
+        v['TopicCodes'] = hashablelist(sorted(v['TopicCodes']))
+        v['InstrumentIDs'] = hashablelist(sorted(v['InstrumentIDs']))
+        all_results.append(v)
 
     if uniq:
         all_results = uniq_list(all_results)
