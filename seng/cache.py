@@ -7,7 +7,7 @@ import cachetools
 
 from seng import logger, result, sparql
 
-CACHE = cachetools.TTLCache(maxsize = 250, ttl = 600)
+CACHE = cachetools.LRUCache(maxsize = 1000)
 
 def query(rics=[], topics=[], date_range=[], uniq=False):
 
