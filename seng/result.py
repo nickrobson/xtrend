@@ -102,7 +102,7 @@ class QueryResult(object):
             self.headline == other.headline and \
             self.news_body == other.news_body
 
-class hashabledict(dict):
+class hashabledict(OrderedDict):
   def __key(self):
     return tuple((k, self[k]) for k in sorted(self))
   def __hash__(self):
@@ -133,7 +133,7 @@ def to_json(results, uniq=False):
             existing['InstrumentIDs'].add(result.ric)
         else:
             jr = result.to_json()
-            existing = {}
+            existing = OrderedDict()
             existing['URI'] = result.uri
             ric = jr.pop('InstrumentID')
             existing.update(jr)
