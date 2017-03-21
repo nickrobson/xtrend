@@ -127,6 +127,20 @@ def to_json(results, uniq=False):
     if uniq:
         all_results = uniq_list(all_results)
 
-    json_result = {}
-    json_result["NewsDataSet"] = all_results
-    return json_result
+    return {'NewsDataSet': all_results}
+
+def from_db(results):
+
+    all_results = []
+
+    for result in results:
+        r = OrderedDict()
+        r['URI'] = result.uri
+        r['TimeStamp'] = result.time_stamp.strftime(API_DATE_FORMAT)[:-4] + 'Z'
+        r['Headline'] = result.headline
+        r['NewsText'] = result.news_text
+        r['InstrumentIDs'] = sorted(set(result.instrument_ids.split(',')))
+        r['TopicCodes'] = sorted(set(result.topic_codes.split(',')))
+        all_results.append(r)
+
+    return {'NewsDataSet': all_results}
