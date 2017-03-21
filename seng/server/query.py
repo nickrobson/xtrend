@@ -4,6 +4,7 @@
 # Handles the API's GET request, and should return the JSON object for it.
 
 import json
+import pytz
 import time
 
 from collections import OrderedDict
@@ -46,8 +47,8 @@ class QueryView(View):
                 topics = topics.split(',') if len(topics) else []
                 try:
                     # This will still be accepted if not the exact number of decimals is used.
-                    start_date = datetime.strptime(start_date, API_DATE_FORMAT)
-                    end_date = datetime.strptime(end_date, API_DATE_FORMAT)
+                    start_date = datetime.strptime(start_date, API_DATE_FORMAT).replace(tzinfo=pytz.UTC)
+                    end_date = datetime.strptime(end_date, API_DATE_FORMAT).replace(tzinfo=pytz.UTC)
                 except:
                     return HttpResponseBadRequest(get_error_json('Invalid date format, must match: %s' % API_DATE_FORMAT), content_type="application/json")
 
