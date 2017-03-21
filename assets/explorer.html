@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="columns">
                     <label>Instrument IDs
-                        <input type="text" id="explore-rics" name="rics" placeholder="Enter instrument IDs..." value="BHP.AX,BLT.L">
+                        <input type="text" id="explore-rics" name="rics" placeholder="Enter instrument IDs...">
                     </label>
                 </div>
             </div>
@@ -36,14 +36,14 @@
             <div class="row">
                 <div class="columns">
                     <label>Start Date
-                        <input type="datetime-local" id="explore-start-date" name="startdate" placeholder="Enter start date..." value="2015-10-01T00:00:00">
+                        <input type="datetime-local" id="explore-start-date" name="startdate">
                     </label>
                 </div>
             </div>
             <div class="row">
                 <div class="columns">
                     <label>End Date
-                        <input type="datetime-local" id="explore-end-date" name="enddate" placeholder="Enter end date..." value="2015-10-10T00:00:00">
+                        <input type="datetime-local" id="explore-end-date" name="enddate">
                     </label>
                 </div>
             </div>
@@ -74,13 +74,24 @@
             function submitExplore() {
                 var rics = getValueOf('explore-rics');
                 var topics = getValueOf('explore-topics');
-                var startDate = getValueOf('explore-start-date') + 'Z';
-                var endDate = getValueOf('explore-end-date') + 'Z';
+                var startDate = getValueOf('explore-start-date');
+                var endDate = getValueOf('explore-end-date');
+
+                if (startDate.length < 17) {
+                    startDate += ':00';
+                }
+
+                if (endDate.length < 17) {
+                    endDate += ':00';
+                }
+
+                console.log(startDate);
+                console.log(endDate);
 
                 var query =   "?rics="      + encodeURIComponent(rics)
                             + "&topics="    + encodeURIComponent(topics)
-                            + "&startdate=" + encodeURIComponent(startDate)
-                            + "&enddate="   + encodeURIComponent(endDate);
+                            + "&startdate=" + encodeURIComponent(startDate + 'Z')
+                            + "&enddate="   + encodeURIComponent(endDate + 'Z');
 
                 console.log(query);
 
