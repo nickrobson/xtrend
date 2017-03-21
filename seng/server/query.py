@@ -7,6 +7,7 @@ import json
 import pytz
 import time
 
+from collections import OrderedDict
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views import View
 from datetime import datetime
@@ -16,10 +17,10 @@ from seng.sparql import query
 from seng.result import to_json
 
 def get_error_json(message):
-    return json.dumps({
-            'error': message,
-            'success': False
-        })
+    return json.dumps(OrderedDict([
+            ('error', message),
+            ('success', False)
+        ]))
 
 class QueryView(View):
     
@@ -59,9 +60,10 @@ class QueryView(View):
                     date_range = (start_date, end_date),
                     uniq = uniq,
                 )
-                final_json['success'] = True
-
                 end_time = time.clock()
+
+                final_json['success'] = True
+                final_json['query_time'] = end_time - start_time
 
                 logger.debug('Query handled in %.8f seconds' % (end_time - start_time))
                 return HttpResponse(json.dumps(final_json), content_type="application/json")
