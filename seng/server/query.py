@@ -38,8 +38,8 @@ class QueryView(View):
             topics = get_query.get('topics', '')
             uniq = get_query.get('uniq', '').lower() == 'true'
             # TODO: Is the date given as one date object, or a start and an end date?
-            start_date = get_query.get('startdate', '')[:-1] + '.000Z'
-            end_date = get_query.get('enddate', '')[:-1] + '.000Z'
+            start_date = get_query.get('startdate', '')
+            end_date = get_query.get('enddate')
 
             if start_date and end_date:
                 # Then extract the data.
