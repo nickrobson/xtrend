@@ -80,13 +80,18 @@
                 if (startDate.length < 17) {
                     startDate += ':00';
                 }
+                
+                if (startDate.length < 20) {
+                    startDate += '.000';
+                }
 
                 if (endDate.length < 17) {
                     endDate += ':00';
                 }
-
-                console.log(startDate);
-                console.log(endDate);
+                
+                if (endDate.length < 20) {
+                    endDate += '.000';
+                }
 
                 var query =   "?rics="      + encodeURIComponent(rics)
                             + "&topics="    + encodeURIComponent(topics)
