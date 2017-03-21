@@ -37,19 +37,21 @@ class QueryView(View):
             topics = get_query.get('topics', '')
             uniq = get_query.get('uniq', '').lower() == 'true'
             # TODO: Is the date given as one date object, or a start and an end date?
-            start_date = self.dateQueryToPyFormat(get_query.get('startdate'))
-            end_date = self.dateQueryToPyFormat(get_query.get('enddate'))
+            start_date = get_query.get('startdate', '')[:-1] + '.000Z'
+            end_date = get_query.get('enddate', '')[:-1] + '.000Z'
 
             if start_date and end_date:
                 # Then extract the data.
                 rics = rics.split(',') if len(rics) else []
                 topics = topics.split(',') if len(topics) else []
                 try:
-                    # This will still be accepted if not the exact number of decimals is used.
                     start_date = datetime.strptime(start_date, API_DATE_FORMAT)
+                except:
+                    return HttpResponseBadRequest(get_error_json('Invalid start date format, must match: %s, not %s' % (API_DATE_FORMAT, start_date)), content_type="application/json")
+                try:
                     end_date = datetime.strptime(end_date, API_DATE_FORMAT)
                 except:
-                    return HttpResponseBadRequest(get_error_json('Invalid date format, must match: %s' % API_DATE_FORMAT), content_type="application/json")
+                    return HttpResponseBadRequest(get_error_json('Invalid end date format, must match: %s, not %s' % (API_DATE_FORMAT, end_date)), content_type="application/json")
 
                 logger.debug('Received query for: RICs = %s, Topics = %s, Dates = %s' % (rics, topics, (start_date, end_date)))
 
@@ -75,10 +77,12 @@ class QueryView(View):
             logger.exception(e)
             return HttpResponse(get_error_json(str(e)), content_type="application/json")
 
-    # This converts a date from the format 2015-10-10T00:00:00.000Z to 2015-10-10T00:00:00:00.000000Z.
-    # If the time is not a string, then this should return None.
-    def dateQueryToPyFormat(self, date_string):
-        if isinstance(date_string, str):
-            return date_string[0:-1] + "000Z"
-        else:
-            return None
+class ExplorerView(View):
+
+    def __init__(self):
+        self.content = ''
+        with open('assets/explorer.html') as f:
+            self.content = f.read()
+
+    def get(self, request):
+        return HttpResponse(self.content, content_type='text/html')
