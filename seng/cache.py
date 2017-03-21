@@ -3,39 +3,55 @@
 #
 # Caches queries so we don't use the database too much.
 
-from seng import logger, result, sparql
-from django.db import models
+from seng import logger, sparql
+from django.db.models import Q
+from functools import reduce
+from .models import NewsArticle
 
-class NewsArticle(models.Model):
-    instrument_id = models.CharField(max_length=30)
-    time_stamp = models.CharField(max_length=30)
-    headline = models.CharField(max_length=30)
-    news_text = models.CharField(max_length=30)
-
+import operator
+import seng.result
 
 def query(rics=[], topics=[], date_range=[], uniq=False):
 
-    cache_values = NewsArticle.objects.filter(rics=rics).filter(topics=topics).filter(date_range=date_range).filter(uniq=uniq)
+    db_query = Q(time_stamp__gte = date_range[0]) & Q(time_stamp__lte = date_range[1])
 
+    if len(rics) > 0:
+        db_query &= reduce(
+            operator.or_, (
+                Q(instrument_ids__contains = r) for r in rics
+            )
+        )
 
-    if cache_values is not None:
+    if len(topics) > 0:
+        db_query &= reduce(
+            operator.or_, (
+                Q(topic_codes__contains = t) for t in topics
+            )
+        )
+
+    results = NewsArticle.objects.filter(db_query).all()
+    if len(results) > 0:
         logger.debug('Found query in cache')
-        return cache_val
+        return seng.result.from_db(results)
 
     results = sparql.query(
         rics = rics,
         topics = topics,
         date_range = date_range
     )
-    json_result = result.to_json(results, uniq=uniq)
 
-    n = NewsArticle(
-        instrument_id=json_result["InstrumentID"],
-        time_stamp=json_result["TimeStamp"],
-        headline=json_result["Headline"],
-        news_text=json_result["NewsText"],
-    )
-    n.save() # Inserts into the database.
+    json_result = seng.result.to_json(results, uniq = uniq)
+
+    for result in json_result['NewsDataSet']:
+        n = NewsArticle(
+                uri = result['URI'],
+                time_stamp = result['TimeStamp'],
+                headline = result['Headline'],
+                news_text = result['NewsText'],
+                instrument_ids = ','.join(result['InstrumentIDs']),
+                topic_codes = ','.join(result['TopicCodes'])
+            )
+        n.save() # Inserts into the database.
 
     logger.debug('Saved query to cache')
 

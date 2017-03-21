@@ -78,19 +78,6 @@ class QueryResult(object):
         '''
         return self._news_body
 
-    def to_json(self):
-        '''
-        Turns this article into a dictionary serializable into JSON.
-        '''
-        curr_result = OrderedDict()
-        #curr_result["URI"] = self.uri
-        curr_result["InstrumentID"] = self.ric
-        #curr_result["TopicCode"] = self.topic_code
-        curr_result['TimeStamp'] = self.time.strftime(API_DATE_FORMAT)[:-4] + 'Z'
-        curr_result["Headline"] = self.headline
-        curr_result["NewsText"] = self.news_body
-        return curr_result
-
     def __hash__(self):
         return hash(self.uri)
 
@@ -132,12 +119,12 @@ def to_json(results, uniq=False):
             existing['TopicCodes'].add(result.topic_code)
             existing['InstrumentIDs'].add(result.ric)
         else:
-            jr = result.to_json()
             existing = OrderedDict()
             existing['URI'] = result.uri
-            ric = jr.pop('InstrumentID')
-            existing.update(jr)
-            existing['InstrumentIDs'] = set([ ric ])
+            existing['TimeStamp'] = result.time.strftime(API_DATE_FORMAT)[:-4] + 'Z'
+            existing['Headline'] = result.headline
+            existing['NewsText'] = result.news_body
+            existing['InstrumentIDs'] = set([ result.ric ])
             existing['TopicCodes'] = set([ result.topic_code ])
         results_dict[result.uri] = existing
 
@@ -145,13 +132,27 @@ def to_json(results, uniq=False):
 
     for k, v in results_dict.items():
         v = OrderedDict(v)
-        v['TopicCodes'] = hashablelist(sorted(v['TopicCodes']))
         v['InstrumentIDs'] = hashablelist(sorted(v['InstrumentIDs']))
+        v['TopicCodes'] = hashablelist(sorted(v['TopicCodes']))
         all_results.append(v)
 
     if uniq:
         all_results = uniq_list(all_results)
 
-    json_result = {}
-    json_result["NewsDataSet"] = all_results
-    return json_result
+    return {'NewsDataSet': all_results}
+
+def from_db(results):
+
+    all_results = []
+
+    for result in results:
+        r = OrderedDict()
+        r['URI'] = result.uri
+        r['TimeStamp'] = result.time_stamp.strftime(API_DATE_FORMAT)[:-4] + 'Z'
+        r['Headline'] = result.headline
+        r['NewsText'] = result.news_text
+        r['InstrumentIDs'] = hashablelist(sorted(set(result.instrument_ids.split(','))))
+        r['TopicCodes'] = hashablelist(sorted(set(result.topic_codes.split(','))))
+        all_results.append(r)
+
+    return {'NewsDataSet': all_results}
