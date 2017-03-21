@@ -46,11 +46,11 @@ class QueryView(View):
                 rics = rics.split(',') if len(rics) else []
                 topics = topics.split(',') if len(topics) else []
                 try:
-                    start_date = datetime.strptime(start_date, API_DATE_FORMAT)
+                    start_date = datetime.strptime(start_date, API_DATE_FORMAT).replace(tzinfo=pytz.UTC)
                 except:
                     return HttpResponseBadRequest(get_error_json('Invalid start date format, must match: %s, not %s' % (API_DATE_FORMAT, start_date)), content_type="application/json")
                 try:
-                    end_date = datetime.strptime(end_date, API_DATE_FORMAT)
+                    end_date = datetime.strptime(end_date, API_DATE_FORMAT).replace(tzinfo=pytz.UTC)
                 except:
                     return HttpResponseBadRequest(get_error_json('Invalid end date format, must match: %s, not %s' % (API_DATE_FORMAT, end_date)), content_type="application/json")
 
