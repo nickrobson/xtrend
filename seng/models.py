@@ -7,3 +7,5 @@ class NewsArticle(models.Model):
     news_text = models.TextField()
     instrument_ids = models.TextField()
     topic_codes = models.TextField()
+    query_instrument_ids = models.TextField()
+    query_topic_codes = models.TextField()
