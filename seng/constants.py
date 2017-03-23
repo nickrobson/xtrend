@@ -3,6 +3,8 @@
 #
 # Constants used in other parts of the project.
 
+import re
+
 DB_DATE_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 API_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
 
@@ -26,3 +28,7 @@ WHERE {{
  {filter_daterange}
 }}
 """.strip()
+
+_RIC_PATTERN = r'(?:\.[A-Z]+|[A-Z]+\.[A-Z]+)'
+RIC_PATTERN = re.compile(_RIC_PATTERN)
+RIC_LIST_PATTERN = re.compile(r'(?:'+_RIC_PATTERN+',)*'+_RIC_PATTERN)
