@@ -29,6 +29,6 @@ WHERE {{
 }}
 """.strip()
 
-_RIC_PATTERN = r'(?:\.[A-Z]+|[A-Z]+\.[A-Z]+)'
+_RIC_PATTERN = r'(?:\.[A-Z]+|[A-Z]+(?:\.[A-Z]+)?)'
 RIC_PATTERN = re.compile(_RIC_PATTERN)
 RIC_LIST_PATTERN = re.compile(r'(?:'+_RIC_PATTERN+',)*'+_RIC_PATTERN)
