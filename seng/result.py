@@ -91,14 +91,7 @@ class QueryResult(object):
             self.headline == other.headline and \
             self.news_body == other.news_body
 
-def uniq_list(the_list):
-    out_list = []
-    for x in the_list:
-        if x not in out_list:
-            out_list.append(x)
-    return out_list
-
-def to_json(results, uniq=False):
+def to_json(results):
     '''
     Turns multiple QueryResult objects into an array of them, as a JSON serializable array.
     '''
@@ -123,9 +116,6 @@ def to_json(results, uniq=False):
         out['TopicCodes'] = sorted(set(reduce(lambda a, b: a + [ b.topic_code ], items, [])))
 
         all_results.append(out)
-
-    if uniq:
-        all_results = uniq_list(all_results)
 
     return {'NewsDataSet': all_results}
 

@@ -34,15 +34,16 @@ class QueryView(View):
 
             # First this gets the user's GET request.
             # This is the stuff after the question mark:
-            # http://127.0.0.1:5002/coolbananas/api/?rics=BHP.AX,BLT.L&topics=AMERS,COM&startdate=2015-10-01T00:00:00.000Z&enddate=2015-10-10T00:00:00.000Z
-            get_query = request.GET
+            # http://127.0.0.1:5002/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z
+            get_query = request.GET.dict()
             # We need to confirm that the data exists.
-            rics = get_query.get('rics', '')
-            topics = get_query.get('topics', '')
-            uniq = get_query.get('uniq', '').lower() == 'true'
-            # TODO: Is the date given as one date object, or a start and an end date?
-            start_date = get_query.get('startdate', '')
-            end_date = get_query.get('enddate')
+            rics = get_query.pop('InstrumentIDs', '')
+            topics = get_query.pop('TopicCodes', '')
+            start_date = get_query.pop('StartDate', '')
+            end_date = get_query.pop('EndDate', '')
+
+            if len(get_query):
+                return err('Invalid query parameters: %s' % (', '.join(list(get_query)),))
 
             if len(rics) and not RIC_LIST_PATTERN.fullmatch(rics):
                 return err('Invalid RICs list (must match regex of %s)' % RIC_LIST_PATTERN.pattern)
@@ -72,7 +73,6 @@ class QueryView(View):
                     rics = rics,
                     topics = topics,
                     date_range = (start_date, end_date),
-                    uniq = uniq,
                 )
                 end_time = time.clock()
 

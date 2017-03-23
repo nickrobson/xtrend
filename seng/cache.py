@@ -11,7 +11,7 @@ from .models import NewsArticle
 import operator
 import seng.result
 
-def query(rics=[], topics=[], date_range=[], uniq=False):
+def query(rics=[], topics=[], date_range=[]):
 
     db_query = Q(time_stamp__gte = date_range[0]) & Q(time_stamp__lte = date_range[1])
 
@@ -40,7 +40,7 @@ def query(rics=[], topics=[], date_range=[], uniq=False):
         date_range = date_range
     )
 
-    json_result = seng.result.to_json(results, uniq = uniq)
+    json_result = seng.result.to_json(results)
 
     for result in json_result['NewsDataSet']:
         n = NewsArticle(
