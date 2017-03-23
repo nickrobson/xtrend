@@ -22,28 +22,28 @@
             <div class="row">
                 <div class="columns">
                     <label>Instrument IDs
-                        <input type="text" id="explore-rics" name="rics" placeholder="Enter instrument IDs...">
+                        <input type="text" id="explore-rics" placeholder="RIC1,RIC2,RIC3">
                     </label>
                 </div>
             </div>
             <div class="row">
                 <div class="columns">
                     <label>Topic Codes
-                        <input type="text" id="explore-topics" name="topics" placeholder="Enter topic codes...">
+                        <input type="text" id="explore-topics" placeholder="TopicCode1,TopicCode2,TopicCode3">
                     </label>
                 </div>
             </div>
             <div class="row">
                 <div class="columns">
                     <label>Start Date
-                        <input type="datetime-local" id="explore-start-date" name="startdate">
+                        <input type="datetime-local" id="explore-start-date" placeholder="yyyy-mm-dd'T'HH:MM">
                     </label>
                 </div>
             </div>
             <div class="row">
                 <div class="columns">
                     <label>End Date
-                        <input type="datetime-local" id="explore-end-date" name="enddate">
+                        <input type="datetime-local" id="explore-end-date" placeholder="yyyy-mm-dd'T'HH:MM">
                     </label>
                 </div>
             </div>
@@ -59,7 +59,19 @@
                 </div>
             </div>
         </form>
-        <div class="row">
+        <div class="row explore" style="display: none;">
+            <div class="columns">
+                <h5>Query:</h5>
+            </div>
+            <div class="columns">
+                <pre id="explore-query"></pre>
+            </div>
+        </div>
+        <br>
+        <div class="row explore" style="display: none;">
+            <div class="columns">
+                <h5>Result:</h5>
+            </div>
             <div class="columns">
                 <pre id="explore-result"></pre>
             </div>
@@ -80,32 +92,52 @@
                 if (startDate.length < 17) {
                     startDate += ':00';
                 }
-                
                 if (startDate.length < 20) {
                     startDate += '.000';
+                }
+                if (!startDate.endsWith('Z')) {
+                    startDate += 'Z';
                 }
 
                 if (endDate.length < 17) {
                     endDate += ':00';
                 }
-                
                 if (endDate.length < 20) {
                     endDate += '.000';
                 }
+                if (!endDate.endsWith('Z')) {
+                    endDate += 'Z';
+                }
 
-                var query =   "?rics="      + encodeURIComponent(rics)
-                            + "&topics="    + encodeURIComponent(topics)
-                            + "&startdate=" + encodeURIComponent(startDate + 'Z')
-                            + "&enddate="   + encodeURIComponent(endDate + 'Z');
+                var query_params = [
+                    ['InstrumentIDs', rics],
+                    ['TopicCodes', topics],
+                    ['StartDate', startDate],
+                    ['EndDate', endDate]
+                ];
 
-                console.log(query);
+                var query = "";
+
+                for (var i = 0, j = query_params.length; i < j; i++) {
+                    var query_param = query_params[i];
+                    if (query_param[1].length == 0) {
+                        continue;
+                    }
+                    query += query.length ? '&' : '?';
+                    query += query_param[0];
+                    query += '=';
+                    query += encodeURIComponent(query_param[1]);
+                }
+
+                $('#explore-query').text('/coolbananas/api/' + query);
 
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", "/coolbananas/api/" + query);
+                xhr.open('GET', '/coolbananas/api/' + query);
                 xhr.onload = function() {
                     if (xhr.readyState === xhr.DONE) {
                         var data = JSON.parse(xhr.responseText);
                         $('#explore-result').jsonViewer(data, {collapsed: false, withQuotes: true});
+                        $('.explore').show();
                     }
                 };
                 xhr.send();
