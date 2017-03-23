@@ -133,4 +133,4 @@ def from_db(results):
         r['TopicCodes'] = sorted(set(result.topic_codes.split(',')))
         all_results.append(r)
 
-    return {'NewsDataSet': all_results}
+    return OrderedDict([('NewsDataSet', all_results)])
