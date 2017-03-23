@@ -22,12 +22,12 @@ class QueryResult(object):
         super(QueryResult, self).__init__()
 
         assert data['s']['type'] == 'uri'
-        assert data['ric']['type'] == 'literal'
+        assert data['ric']['type'] in ('literal', 'uri')
         assert data['topicCode']['type'] == 'literal'
         assert data['headline']['type'] == 'literal'
         assert data['newsBody']['type'] == 'literal'
         assert data['time']['type'] == 'literal'
-        assert data['time']['datatype'] == 'http://www.w3.org/2001/XMLSchema#dateTime'
+        assert data['time']['datatype'] in ('http://www.w3.org/2001/XMLSchema#dateTime', 'http://www.w3.org/2001/XMLSchema#dateTimeStamp')
 
         self._data = data
         self._uri = data['s']['value']
