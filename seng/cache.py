@@ -13,13 +13,16 @@ import seng.result
 
 def query(rics=[], topics=[], date_range=[]):
 
+    db_rics = ','.join(sorted(rics))
+    db_topics = ','.join(sorted(topics))
+
     db_query = Q(time_stamp__gte = date_range[0]) & Q(time_stamp__lte = date_range[1])
 
     if len(rics) > 0:
-        db_query &= Q(instrument_ids = ','.join(rics))
+        db_query &= Q(query_instrument_ids = db_rics)
 
     if len(topics) > 0:
-        db_query &= Q(topic_codes = ','.join(topics))
+        db_query &= Q(query_topic_codes = db_topics)
 
     results = NewsArticle.objects.filter(db_query).all()
     if len(results) > 0:
@@ -41,7 +44,9 @@ def query(rics=[], topics=[], date_range=[]):
                 headline = result['Headline'],
                 news_text = result['NewsText'],
                 instrument_ids = ','.join(result['InstrumentIDs']),
-                topic_codes = ','.join(result['TopicCodes'])
+                topic_codes = ','.join(result['TopicCodes']),
+                query_instrument_ids = db_rics,
+                query_topic_codes = db_topics
             )
         n.save() # Inserts into the database.
 
