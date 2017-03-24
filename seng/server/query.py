@@ -10,6 +10,7 @@ import time
 from collections import OrderedDict
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views import View
+from django.utils import timezone
 from datetime import datetime
 from seng import logger, cache
 from seng.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, _RIC_PATTERN
@@ -28,8 +29,13 @@ def err(message):
 class QueryView(View):
     
     def get(self, request):
+        exec_start_date = timezone.now()
+        logger.info('Execution started at', exec_start_date)
+        def end():
+            exec_end_date = timezone.now()
+            logger.info('Execution ended at', exec_end_date)
+            logger.info('Execution completed in', exec_end_date - exec_start_date)
         try:
-
             start_time = time.clock()
 
             # First this gets the user's GET request.
@@ -43,6 +49,7 @@ class QueryView(View):
             end_date = get_query.pop('EndDate', '')
 
             if len(get_query):
+                end()
                 return err('Invalid query parameters: %s' % (', '.join(list(get_query)),))
 
             if len(rics) and not RIC_LIST_PATTERN.fullmatch(rics):
