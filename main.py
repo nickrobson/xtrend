@@ -25,7 +25,7 @@ import time
 VERSION_FILE = '.version'
 EXIT_QUEUE = queue.Queue()
 
-def thread_main():
+def run_update_thread():
 
     if not os.path.exists(VERSION_FILE):
         return
@@ -53,21 +53,14 @@ def thread_main():
 
         EXIT_QUEUE.put('exit')
 
-update_thread = threading.Thread(name='Update Checker', target=thread_main, daemon=True)
+update_thread = threading.Thread(name='Update Checker', target=run_update_thread, daemon=True)
 update_thread.start()
 
-def run():
+def run_server_thread():
 
     '''
     Edit this function only! (everything else is part of the update checker)
     '''
-
-    from seng import logger
-    from seng.constants import RELEASE_VERSION
-
-    logger.info('SENG3011 - Team Cool Bananas')
-    logger.info('API 2: News')
-    logger.info('Module version ' + str(RELEASE_VERSION))
 
     try:
 
@@ -84,7 +77,7 @@ def run():
 
         EXIT_QUEUE.put('exit')
 
-main_thread = threading.Thread(name='Main Thread', target=run, daemon=True)
+main_thread = threading.Thread(name='Main Thread', target=run_server_thread, daemon=True)
 main_thread.start()
 
 EXIT_QUEUE.get() # block until we get a QUIT status
