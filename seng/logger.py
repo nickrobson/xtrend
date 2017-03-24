@@ -21,20 +21,23 @@ file_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 logger.addHandler(file_handler)
 
-def debug(message):
-    logger.debug(message)
+def _tostring(*message):
+    return ' '.join(map(str, message))
 
-def info(message):
-    logger.info(message)
+def debug(*message):
+    logger.debug(_tostring(*message))
 
-def warn(message):
-    logger.warn(message)
+def info(*message):
+    logger.info(_tostring(*message))
 
-def error(message):
-    logger.error(message)
+def warn(*message):
+    logger.warn(_tostring(*message))
 
-def critical(message):
-    logger.critical(message)
+def error(*message):
+    logger.error(_tostring(*message))
 
-def exception(message):
-    logger.exception(message)
+def critical(*message):
+    logger.critical(_tostring(*message))
+
+def exception(*message):
+    logger.exception(*message)

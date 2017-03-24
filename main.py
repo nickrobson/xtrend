@@ -62,6 +62,13 @@ def run():
     Edit this function only! (everything else is part of the update checker)
     '''
 
+    from seng import logger
+    from seng.constants import RELEASE_VERSION
+
+    logger.info('SENG3011 - Team Cool Bananas')
+    logger.info('API 2: News')
+    logger.info('Module version ' + str(RELEASE_VERSION))
+
     try:
 
         from django.core.management import execute_from_command_line

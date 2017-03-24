@@ -5,6 +5,8 @@
 
 import re
 
+RELEASE_VERSION = '1.0.0'
+
 DB_DATE_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 API_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
 
