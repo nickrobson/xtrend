@@ -20,9 +20,8 @@ from django.shortcuts import redirect
 import urllib.parse
 
 from . import query
-
-from seng import logger
-from seng.constants import RELEASE_VERSION
+from ..core import logger
+from ..core.constants import RELEASE_VERSION
 
 logger.info('SENG3011 - Team Cool Bananas 2')
 logger.info('API 2: News')

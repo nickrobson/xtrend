@@ -17,7 +17,7 @@ class QueryResult(object):
     '''
     Represents a single article from the database.
     '''
-    
+
     def __init__(self, data):
         super(QueryResult, self).__init__()
 
@@ -118,19 +118,3 @@ def to_json(results):
         all_results.append(out)
 
     return {'NewsDataSet': all_results}
-
-def from_db(results):
-
-    all_results = []
-
-    for result in results:
-        r = OrderedDict()
-        r['URI'] = result.uri
-        r['TimeStamp'] = result.time_stamp.strftime(API_DATE_FORMAT)[:-4] + 'Z'
-        r['Headline'] = result.headline
-        r['NewsText'] = result.news_text
-        r['InstrumentIDs'] = sorted(set(result.instrument_ids.split(',')))
-        r['TopicCodes'] = sorted(set(result.topic_codes.split(',')))
-        all_results.append(r)
-
-    return OrderedDict([('NewsDataSet', all_results)])

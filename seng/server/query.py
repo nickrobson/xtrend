@@ -12,10 +12,13 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.views import View
 from django.utils import timezone
 from datetime import datetime
-from seng import logger, cache
-from seng.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, _RIC_PATTERN
-from seng.sparql import query
-from seng.result import to_json
+
+from . import cache
+from ..core import logger
+from ..core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, _RIC_PATTERN
+from ..core.sparql import query
+from ..core.result import to_json
+
 
 def get_error_json(message):
     return json.dumps(OrderedDict([
@@ -23,11 +26,13 @@ def get_error_json(message):
             ('success', False)
         ]))
 
+
 def err(message):
     return HttpResponseBadRequest(get_error_json(message), content_type='application/json')
 
+
 class QueryView(View):
-    
+
     def get(self, request):
         exec_start_date = timezone.now()
         logger.info('Execution started at', exec_start_date)
@@ -96,6 +101,7 @@ class QueryView(View):
         except Exception as e:
             logger.exception(e)
             return err(str(e))
+
 
 class ExplorerView(View):
 

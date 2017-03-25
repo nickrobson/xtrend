@@ -53,8 +53,10 @@ def run_update_thread():
 
         EXIT_QUEUE.put('exit')
 
+
 update_thread = threading.Thread(name='Update Checker', target=run_update_thread, daemon=True)
 update_thread.start()
+
 
 def run_server_thread():
 
@@ -76,6 +78,7 @@ def run_server_thread():
     finally:
 
         EXIT_QUEUE.put('exit')
+
 
 main_thread = threading.Thread(name='Main Thread', target=run_server_thread, daemon=True)
 main_thread.start()
