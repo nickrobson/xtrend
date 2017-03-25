@@ -117,7 +117,7 @@ def to_json(results):
 
         all_results.append(out)
 
-    return {'NewsDataSet': all_results}
+    return OrderedDict([('NewsDataSet', all_results)])
 
 def from_db(results):
 

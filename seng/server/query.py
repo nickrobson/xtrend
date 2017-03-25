@@ -31,7 +31,7 @@ class QueryView(View):
     def get(self, request):
         exec_start_date = timezone.now()
         logger.info('Execution started at', exec_start_date)
-        def end():
+        def end_exec():
             exec_end_date = timezone.now()
             logger.info('Execution ended at', exec_end_date)
             logger.info('Execution completed in', exec_end_date - exec_start_date)
@@ -49,13 +49,15 @@ class QueryView(View):
             end_date = get_query.pop('EndDate', '')
 
             if len(get_query):
-                end()
+                end_exec()
                 return err('Invalid query parameters: %s' % (', '.join(list(get_query)),))
 
             if len(rics) and not RIC_LIST_PATTERN.fullmatch(rics):
+                end_exec()
                 return err('Invalid RICs list (must match regex of %s)' % RIC_LIST_PATTERN.pattern)
 
             if len(topics) and not RIC_LIST_PATTERN.fullmatch(topics):
+                end_exec()
                 return err('Invalid topic codes list (must match regex of %s)' % RIC_LIST_PATTERN.pattern)
 
             if start_date and end_date:
@@ -65,10 +67,12 @@ class QueryView(View):
                 try:
                     start_date = datetime.strptime(start_date, API_DATE_FORMAT).replace(tzinfo=pytz.UTC)
                 except:
+                    end_exec()
                     return err('Invalid start date format, must match: %s, not %s' % (API_DATE_FORMAT, start_date))
                 try:
                     end_date = datetime.strptime(end_date, API_DATE_FORMAT).replace(tzinfo=pytz.UTC)
                 except:
+                    end_exec()
                     return err('Invalid end date format, must match: %s, not %s' % (API_DATE_FORMAT, end_date))
 
                 if start_date > end_date:
@@ -86,15 +90,19 @@ class QueryView(View):
                 final_json['success'] = True
                 final_json['query_time'] = end_time - start_time
 
-                logger.debug('Query handled in %.8f seconds' % (end_time - start_time))
+                end_exec()
                 return HttpResponse(json.dumps(final_json), content_type="application/json")
             elif not start_date:
+                end_exec()
                 return err('Missing start date')
             elif not end_date:
+                end_exec()
                 return err('Missing end date')
+            end_exec()
             return err('Missing fields')
         except Exception as e:
             logger.exception(e)
+            end_exec()
             return err(str(e))
 
 class ExplorerView(View):

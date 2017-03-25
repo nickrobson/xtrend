@@ -16,9 +16,12 @@ def query(rics=[], topics=[], date_range=[]):
     db_rics = ','.join(sorted(rics))
     db_topics = ','.join(sorted(topics))
 
-    db_query = Q(time_stamp__gte = date_range[0]) & Q(time_stamp__lte = date_range[1])
-    db_query &= Q(query_instrument_ids = db_rics)
-    db_query &= Q(query_topic_codes = db_topics)
+    db_query = reduce(operator.and_, (
+        Q(time_stamp__gte = date_range[0]),
+        Q(time_stamp__lte = date_range[1]),
+        Q(query_instrument_ids = db_rics),
+        Q(query_topic_codes = db_topics)
+    ))
 
     results = NewsArticle.objects.filter(db_query).all()
     if len(results) > 0:
