@@ -99,3 +99,16 @@ class ExplorerView(View):
 
     def get(self, request):
         return HttpResponse(self.content, content_type='text/html')
+
+class HomepageView(View):
+
+    def __init__(self):
+        self.content = ''
+        with open('assets/demo-webpage.html') as f:
+            self.content = f.read()
+
+    def get_versions(self):
+        pass
+        # do the git command
+        # turn into dict {version: version_link}
+

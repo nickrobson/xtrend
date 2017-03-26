@@ -26,6 +26,7 @@ admin.site.site_url = '/coolbananas/'
 urlpatterns = [
     url(r'^coolbananas/admin/', admin.site.urls),
     url(r'^coolbananas/api/', query.QueryView.as_view()),
-    url(r'^coolbananas/', query.ExplorerView.as_view()),
+    url(r'^coolbananas/explorer', query.ExplorerView.as_view()),
+    url(r'^coolbananas/', query.HomepageView.as_view()),
     url(r'^$', lambda r: redirect('/coolbananas/')),
 ]
