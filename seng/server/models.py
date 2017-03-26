@@ -1,5 +1,5 @@
-from collections import OrderedDict
 from django.db import models
+from collections import OrderedDict
 
 from ..core.constants import API_DATE_FORMAT
 

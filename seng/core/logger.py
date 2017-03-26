@@ -10,7 +10,7 @@ _LOGGING_LEVEL = logging.DEBUG
 logger = logging.getLogger('SENG3011')
 logger.setLevel(_LOGGING_LEVEL)
 
-formatter = logging.Formatter('%(name)s - %(asctime)s - %(levelname)s\n   %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(levelname)s\n   %(message)s', '%Y-%m-%d %H:%M:%S')
 
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
