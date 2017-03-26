@@ -12,6 +12,7 @@ from seng.sparql import query
 from seng.result import to_json
 import json
 
+
 def run():
     results = query(
         rics = ('BHP.AX', 'BLT.L'),
@@ -23,6 +24,7 @@ def run():
     json_output = to_json(results)
 
     print(json.dumps(json_output))
+
 
 if __name__ == '__main__':
     run()

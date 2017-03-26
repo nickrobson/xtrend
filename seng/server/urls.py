@@ -21,13 +21,6 @@ import urllib.parse
 
 from . import query
 
-from seng import logger
-from seng.constants import RELEASE_VERSION
-
-logger.info('SENG3011 - Team Cool Bananas 2')
-logger.info('API 2: News')
-logger.info('Module version ', RELEASE_VERSION)
-
 admin.site.site_url = '/coolbananas/'
 
 urlpatterns = [
