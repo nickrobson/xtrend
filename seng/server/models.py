@@ -6,6 +6,7 @@ from ..core.constants import API_DATE_FORMAT
 class NewsArticle(models.Model):
 
     uri = models.CharField(max_length = 120)
+    language = models.CharField(max_length = 5)
     time_stamp = models.DateTimeField()
     headline = models.CharField(max_length = 30)
     news_text = models.TextField()
@@ -17,6 +18,7 @@ class NewsArticle(models.Model):
     def to_json(self):
         json = OrderedDict()
         json['URI'] = self.uri
+        json['Language'] = self.language
         json['TimeStamp'] = self.time_stamp.strftime(API_DATE_FORMAT)[:-4] + 'Z'
         json['Headline'] = self.headline
         json['NewsText'] = self.news_text

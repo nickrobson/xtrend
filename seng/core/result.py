@@ -22,18 +22,21 @@ class QueryResult(object):
         super(QueryResult, self).__init__()
 
         assert data['s']['type'] == 'uri'
+        assert data['id']['type'] == 'literal'
         assert data['ric']['type'] in ('literal', 'uri')
         assert data['topicCode']['type'] == 'literal'
+        assert data['lang']['type'] == 'literal'
         assert data['headline']['type'] == 'literal'
         assert data['newsBody']['type'] == 'literal'
         assert data['time']['type'] == 'literal'
         assert data['time']['datatype'] in ('http://www.w3.org/2001/XMLSchema#dateTime', 'http://www.w3.org/2001/XMLSchema#dateTimeStamp')
 
         self._data = data
-        self._uri = data['s']['value']
+        self._uri = data['id']['value']
         self._ric = data['ric']['value']
         self._ric = self._ric[self._ric.find('_')+1:]
         self._topic_code = data['topicCode']['value'][3:]
+        self._language = data['lang']['value']
         self._time = datetime.strptime(data['time']['value'][:-1] + '000Z', API_DATE_FORMAT)
         self._headline = data['headline']['value']
         self._news_body = data['newsBody']['value']
@@ -58,6 +61,13 @@ class QueryResult(object):
         This article's topic code.
         '''
         return self._topic_code
+
+    @property
+    def language(self):
+        '''
+        This article's language
+        '''
+        return self._language
 
     @property
     def time(self):
@@ -87,6 +97,7 @@ class QueryResult(object):
         return self.uri == other.uri and \
             self.ric == other.ric and \
             self.topic_code == other.topic_code and \
+            self.language == other.language and \
             self.time == other.time and \
             self.headline == other.headline and \
             self.news_body == other.news_body
@@ -109,6 +120,7 @@ def to_json(results):
 
         out = OrderedDict()
         out['URI'] = uri
+        out['Language'] = first.language
         out['TimeStamp'] = first.time.strftime(API_DATE_FORMAT)[:-4] + 'Z'
         out['Headline'] = first.headline
         out['NewsText'] = first.news_body
