@@ -52,7 +52,7 @@
     		Cool Bananews
     		</h1>
     	</div>
-    	<div class="offset" style="padding-top: 200px">
+    	<div class="offset">
     	<br/>
         <div class="row middle">
         	<div class="columns small-3">
@@ -77,22 +77,24 @@
         	</div>
         </div>
         <br/>
-        <div class="middle card" style="padding:10px;">
-        	<h3>Versions</h3>
-        	{% for version in versions %}
-        		<div class="row">
-        			<div class="large-4 columns"> 
-        				Version {{version}} 
-        			</div>
-        			<div class="large-4 columns">
-        				<a href="https://github.com/nickrobson/SENG3011/tree/{{version}}">View on Github</a>
-        			</div>
-        			<div class="large-4 columns">
-        				<span> download link here</span>
-        			</div>
-        		</div>
-        		<br/><br/><br/><br/><br/><br/>
-        	{% endfor %}
-        <div>
+        <div class="middle">
+	        <h3>Versions</h3>
+	        <div class="card" style="padding:10px;">
+	        	
+	        	{% for version in versions %}
+	        		<div class="row">
+	        			<div class="large-4 columns"> 
+	        				Version {{version}} 
+	        			</div>
+	        			<div class="large-4 columns">
+	        				<a href="https://github.com/nickrobson/SENG3011/tree/{{version}}">View on Github</a>
+	        			</div>
+	        			<div class="large-4 columns">
+	        				<span> download link here</span>
+	        			</div>
+	        		</div>
+	        	{% endfor %}
+	        <div>
+	    </div>
     </body>
 </html>
