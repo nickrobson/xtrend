@@ -9,6 +9,7 @@ import time
 
 from collections import OrderedDict
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.template.loader import get_template
 from django.views import View
 from django.utils import timezone
 from datetime import datetime
@@ -18,6 +19,8 @@ from ..core import logger
 from ..core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, _RIC_PATTERN
 from ..core.sparql import query
 from ..core.result import to_json
+
+import subprocess
 
 
 def get_error_json(message):
@@ -122,14 +125,15 @@ class ExplorerView(View):
         return HttpResponse(self.content, content_type='text/html')
 
 class HomepageView(View):
-
     def __init__(self):
         self.content = ''
-        with open('assets/demo-webpage.html') as f:
-            self.content = f.read()
+        template = get_template('assets/demo-webpage.html')
+        with subprocess.Popen(["git", "tag", "-l"], stdout=subprocess.PIPE) as proc:
+            versions = proc.stdout.read().decode("utf-8").splitlines()
+        self.content = template.render({'versions': versions})
 
-    def get_versions(self):
-        pass
-        # do the git command
-        # turn into dict {version: version_link}
+    def get(self, request):
+        return HttpResponse(self.content, content_type='text/html')
+
+
 

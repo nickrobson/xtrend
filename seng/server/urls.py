@@ -28,5 +28,5 @@ urlpatterns = [
     url(r'^coolbananas/api/', query.QueryView.as_view()),
     url(r'^coolbananas/explorer', query.ExplorerView.as_view()),
     url(r'^coolbananas/', query.HomepageView.as_view()),
-    url(r'^$', lambda r: redirect('/coolbananas/')),
+    url(r'^$', lambda r: redirect('/coolbananas/explorer')),
 ]
