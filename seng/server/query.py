@@ -81,6 +81,7 @@ class QueryView(View):
                     return err('Invalid end date format, must match: %s, not %s' % (API_DATE_FORMAT, end_date))
 
                 if start_date > end_date:
+                    end_exec()
                     return err('Start date is after end date')
 
                 logger.debug('Received query for: RICs = %s, Topics = %s, Dates = %s' % (rics, topics, (start_date, end_date)))
