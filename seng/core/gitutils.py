@@ -5,7 +5,7 @@ def _tag_to_key(tag):
     return list(map(int, tag.split('_')))
 
 def _key_to_tag(key):
-    return '_'.join(map(str, tag))
+    return '_'.join(map(str, key))
 
 def get_git_tags():
     tags = []
