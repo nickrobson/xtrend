@@ -22,15 +22,17 @@ import urllib.parse
 from . import query
 from . import changelog
 from . import download_tag
+from . import homepage
 
 admin.site.site_url = '/coolbananas/'
 
 urlpatterns = [
-    url(r'^coolbananas/admin/', admin.site.urls),
-    url(r'^coolbananas/tag/([0-9]+_[0-9]+_[0-9]+)/$', download_tag.DownloadTagView.as_view()),
-    url(r'^coolbananas/tag/$', download_tag.NoTagSpecifiedView.as_view()),
-    url(r'^coolbananas/changelog/$', changelog.ChangeLog.as_view()),
-    url(r'^coolbananas/api/$', query.QueryView.as_view()),
-    url(r'^coolbananas/$', query.ExplorerView.as_view()),
-    url(r'^$', lambda r: redirect('/coolbananas/')),
+	url(r'^coolbananas/admin/', admin.site.urls),
+	url(r'^coolbananas/tag/([0-9]+_[0-9]+_[0-9]+)/$', download_tag.DownloadTagView.as_view()),
+	url(r'^coolbananas/tag/$', download_tag.NoTagSpecifiedView.as_view()),
+	url(r'^coolbananas/changelog/$', changelog.ChangeLog.as_view()),
+	url(r'^coolbananas/explorer/$', query.ExplorerView.as_view()),
+	url(r'^coolbananas/api/$', query.QueryView.as_view()),
+	url(r'^coolbananas/$', homepage.HomepageView.as_view()),
+	url(r'^$', lambda r: redirect('/coolbananas/explorer')),
 ]
