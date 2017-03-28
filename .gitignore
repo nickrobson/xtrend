@@ -18,3 +18,5 @@
 # SENG3011 project files
 
 *.log
+/.tags/
+/.version
