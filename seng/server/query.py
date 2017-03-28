@@ -120,3 +120,4 @@ class ExplorerView(View):
 
     def get(self, request):
         return HttpResponse(self.content, content_type='text/html')
+
