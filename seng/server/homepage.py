@@ -15,11 +15,6 @@ import subprocess
 
 class HomepageView(View):
     def __init__(self):
-        self.content = ''
-        template = get_template('assets/demo-webpage.html')
-        with subprocess.Popen(["git", "tag", "-l"], stdout=subprocess.PIPE) as proc:
-            verList = proc.stdout.read().decode("utf-8").splitlines()
-
         versionList = gitutils.get_git_tags()
 
         versions = []
@@ -31,6 +26,8 @@ class HomepageView(View):
                 #'downloadLink': ??
             }
             versions.append(version)
+
+        template = get_template('assets/demo-webpage.html')
         self.content = template.render({'versions': versions})
 
     def get(self, request):
