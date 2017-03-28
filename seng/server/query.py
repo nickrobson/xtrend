@@ -9,11 +9,9 @@ import time
 
 from collections import OrderedDict
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.template.loader import get_template
 from django.views import View
 from django.utils import timezone
 from datetime import datetime
-import re
 
 from . import cache
 from ..core import logger
@@ -124,34 +122,4 @@ class ExplorerView(View):
 
     def get(self, request):
         return HttpResponse(self.content, content_type='text/html')
-
-class HomepageView(View):
-    def __init__(self):
-        self.content = ''
-        template = get_template('assets/demo-webpage.html')
-        with subprocess.Popen(["git", "tag", "-l"], stdout=subprocess.PIPE) as proc:
-            verList = proc.stdout.read().decode("utf-8").splitlines()
-        versions = []
-        for ver in verList:
-            with subprocess.Popen(["git", "show", ver], stdout=subprocess.PIPE) as proc:
-                tagShow = proc.stdout.read().decode("utf-8")
-            #some funky manipluation to get just commit msg:
-            tagShow = re.sub("tag " + ver
-                + "\s*Tagger:.*\s*Date:[^\n]*", "", tagShow)
-            tagstring = tagShow.split('commit')
-            tagShow = tagstring[0]
-
-            version = {
-                'number': ver,
-                'link': "https://github.com/nickrobson/SENG3011/tree/" + ver,
-                'tagDescription': tagShow,
-                #'downloadLink': ??
-            }
-            versions.append(version)
-        self.content = template.render({'versions': versions})
-
-    def get(self, request):
-        return HttpResponse(self.content, content_type='text/html')
-
-
 
