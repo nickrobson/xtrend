@@ -19,11 +19,12 @@ class HomepageView(View):
 
         versions = []
         for versionNumber in versionList:
+            dotSeparatedVersion = versionNumber.replace("_", ".")
             version = {
-                'number': versionNumber,
+                'number': dotSeparatedVersion,
                 'link': "https://github.com/nickrobson/SENG3011/tree/" + versionNumber,
                 'tagDescription': gitutils.get_description(versionNumber),
-                #'downloadLink': ??
+                'downloadLink': "tag/" + dotSeparatedVersion
             }
             versions.append(version)
 

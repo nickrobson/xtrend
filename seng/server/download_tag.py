@@ -9,6 +9,7 @@ from ..core import gitutils
 class DownloadTagView(View):
 
     def get(self, request, tag):
+        tag = tag.replace(".", "_")
         file = os.path.join('.tags', tag + '.tar.gz')
         if not os.path.isfile(file):
             return HttpResponseBadRequest('<html><head><title>No such tag</title></head><body><h1>No such tag!</h1></body></html>', content_type='text/html')
