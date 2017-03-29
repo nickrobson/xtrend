@@ -21,6 +21,4 @@ class NoTagSpecifiedView(View):
 
     def get(self, request):
         tags = gitutils.get_git_tags()
-        tags = sorted(map(lambda tag: list(map(int, tag.split('_'))), tags))
-        tags = list(map(lambda tag: '_'.join(map(str, tag)), tags))
         return redirect('/coolbananas/tag/%s' % (tags[-1],))
