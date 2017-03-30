@@ -8,14 +8,14 @@
         <link href="https://fonts.googleapis.com/css?family=Oxygen:400,700" rel="stylesheet">
         <style>
         .team-img {
-        	border-radius: 50%;
-        	height: auto;
-        	width: 100%;
-        	clip: rect(200px,200px,200px,200px);
-        	margin: auto;
+            border-radius: 50%;
+            height: auto;
+            width: 100%;
+            clip: rect(200px,200px,200px,200px);
+            margin: auto;
         }
         .shadow, img {
-        	box-shadow: 0px 0px 15px #aaa;
+            box-shadow: 0px 0px 15px #aaa;
         }
         .title {
         	color: white; 
@@ -26,75 +26,96 @@
         	margin: auto;
         }
         .title, h3 {
-        	font-family: 'Lobster', cursive; 
+            font-family: 'Lobster', cursive; 
         }
         #title-div {
-        	background-color: black;  
-        	height: 200px;
-        	display: flex;
+            background-color: black;  
+            height: 200px;
+            display: flex;
         }
         .team-person-name {
-        	text-align: center;
-        	font-family: 'Oxygen', sans-serif;
-        	font-weight: 700;
-        	font-size: 2vw;
+            text-align: center;
+            font-family: 'Oxygen', sans-serif;
+            font-weight: 700;
+            font-size: 2vw;
         }
         .middle {
-        	width: 75%;
-        	margin: auto;
+            width: 75%;
+            margin: auto;
+        }
+        .home-links {
+            text-align: center;
+            font-family: 'Oxygen', sans-serif;
+            font-weight: 500;
+            font-size: 2vw;
         }
         </style>
     </head>
     <body>
-    	{% load static %}
-    	<div style="width:100%" id="title-div" class="shadow">
-    		<h1 class="title">
-    		Cool Bananews
-    		</h1>
-    	</div>
-    	<div class="offset">
-    	<br/>
+        {% load static %}
+        <div style="width:100%" id="title-div" class="shadow">
+            <h1 class="title">
+            Cool Bana-news
+            </h1>
+        </div>
+        <div class="offset">
+        <br/>
         <div class="row middle">
-        	<div class="columns small-3">
-        		
-        		<img src="{% static 'team-photos/nick.jpg' %}" class="team-img"/>
-        		<div class="team-person-name">Nick Robson</div>
-        	</div>
-        	<div class="columns small-3">
-        		
-        		<img src="{% static 'team-photos/tom.jpg' %}" class="team-img"/>
-        		<div class="team-person-name">Thomas Moffet</div>
-        	</div>
-        	<div class="columns small-3">
-        		
-        		<img src="{% static 'team-photos/phil.jpg' %}" class="team-img"/>
-        		<div class="team-person-name">Philip Kheav</div>
-        	</div>
-        	<div class="columns small-3">
-        		
-        		<img src="{% static 'team-photos/anna.jpg' %}" class="team-img"/>
-        		<div class="team-person-name">Anna Azzam</div>
-        	</div>
+            <div class="columns small-3">
+                
+                <img src="{% static 'team-photos/nick.jpg' %}" class="team-img"/>
+                <div class="team-person-name">Nick Robson</div>
+            </div>
+            <div class="columns small-3">
+                
+                <img src="{% static 'team-photos/tom.jpg' %}" class="team-img"/>
+                <div class="team-person-name">Thomas Moffet</div>
+            </div>
+            <div class="columns small-3">
+                
+                <img src="{% static 'team-photos/phil.jpg' %}" class="team-img"/>
+                <div class="team-person-name">Philip Kheav</div>
+            </div>
+            <div class="columns small-3">
+                
+                <img src="{% static 'team-photos/anna.jpg' %}" class="team-img"/>
+                <div class="team-person-name">Anna Azzam</div>
+            </div>
         </div>
         <br/>
         <div class="middle">
-	        <h3>Versions</h3>
-	        <div class="card" style="padding:10px;">
-	        	{% for version in versions %}
-	        		<div class="row">
-	        			<div class="large-4 columns"> 
-	        				<strong>Version {{version.number}}</strong><br/>
-	        				{{version.tagDescription}}
-	        			</div>
-	        			<div class="large-4 columns">
-	        				<a href="{{version.link}}">View on Github</a>
-	        			</div>
-	        			<div class="large-4 columns">
-	        				<span> download link here</span>
-	        			</div>
-	        		</div>
-	        	{% endfor %}
-	        <div>
-	    </div>
+            <div class="home-links">
+                <div class="row">
+                    <div class="large-4 columns">
+                        <h4><a href="/coolbananas/explorer/">Demo Explorer</a></h4>
+                    </div>
+                    <div class="large-4 columns">
+                        <h4><a href="/coolbananas/changelog/">Changelog</a></h4>
+                    </div>
+                    <div class="large-4 columns">
+                        <h4><a href="/coolbananas/faq/">FAQ</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="middle">
+            <h3>Versions</h3>
+            <div class="card" style="padding:10px;">
+                {% for version in versions %}
+                    <div class="row">
+                        <div class="large-4 columns"> 
+                            <strong>Version {{version.number}}</strong><br/>
+                            {{version.tagDescription}}
+                        </div>
+                        <div class="large-4 columns">
+                            <a href="{{version.link}}">View on Github</a>
+                        </div>
+                        <div class="large-4 columns">
+                            <span> download link here</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            <div>
+        </div>
     </body>
 </html>

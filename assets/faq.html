@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FAQ</title>
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css"></link>
+    </head>
+    <body>
+        <div style="height: 50px"></div>
+        <div class="row">
+            <div class="columns small-12">
+                <h3>SENG3011 - Cool Bananas</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="columns small-12">
+                <p>Return to <a href="/coolbananas/">homepage</a>.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="columns small-12">
+                <h4>FAQ</h4>
+            </div>
+        </div>
+        <div style="height: 30px"></div>
+        <div class="row">
+            <div class="columns small-12">
+                <h5>What platforms can I use this API with?</h5>
+                <p>
+                    This API can be accessed remotely via GET requests from the url:
+                </p>
+                <pre>https://nickr.xyz/coolbananas/api/</pre>
+                <p>
+                    The API can also be run locally using Python 3 and Django, and can be accessed similarly from the localhost:
+                </p>
+                <pre>http://localhost:5002/coolbananas/api/</pre>
+            </div>
+        </div>
+        <div style="height: 30px"></div>
+        <div class="row">
+            <div class="columns small-12">
+                <h5>How do I use the program through the website?</h5>
+                <p>
+                    To use the API through the website, access the following URL, adding your GET request terms to the end:
+                </p>
+                <pre>https://nickr.xyz/coolbananas/api/</pre>
+                <p>
+                    An example usage of this API is:
+                </p>
+                <pre>https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z</pre>
+                <p>
+                    You can easily access this using a <i>curl</i> call from your Bash prompt, or by visiting the page in your web browser.
+                </p>
+            </div>
+        </div>
+        <div style="height: 30px"></div>
+        <div class="row">
+            <div class="columns small-12">
+                <h5>How do I use the program as a standalone?</h5>
+                <p>
+                    First, make sure you have a version of Python equal to newer to Python 3.5. You can get Python from <a href="https://www.python.org/">here</a>. Install this and make sure that it is added to your computer's PATH.
+                </p>
+                <p>
+                    Second, you need to get the source files. You can get them from here. Make sure to unzip this to a folder.
+                </p>
+                <p>
+                    Now, go to the folder that you unzipped the API to, and run this command:
+                </p>
+                <pre>pip3 -r requirements.txt</pre>
+                <p>
+                    You might need to run a different executable depending on your platform (sometimes it's just <i>pip</i>, sometimes you might need <i>python pip</i> or <i>python3 pip</i>).
+                </p>
+                <p>
+                    Then, to run the program, just run:
+                </p>
+                <pre>python3 main.py</pre>
+                <p>
+                    This should start the program properly. The output should list a local URL you should use to access the program. Follow the instructions for the above section, but use a URL starting with:
+                </p>
+                <pre>http://localhost:5002/coolbananas/api/</pre>
+                <p>
+                    This might vary depending on what port the server is running on.
+                </p>
+            </div>
+        </div>
+        <div style="height: 30px"></div>
+        <div class="row">
+            <div class="columns small-12">
+                <h5>What are the parameters I pass in?</h5>
+                <table>
+                    <tr>
+                        <td><pre>InstrumentIDs</pre></td>
+                        <td>An array of all the instrument IDs that you want to know about. This is command separated with no spaces for multiple IDs.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>TopicCodes</pre></td>
+                        <td>An array of all the topic codes that you want to know about. Also comma separated, no spaces.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>StartDate</pre></td>
+                        <td>The date that the search starts at. This is in the format: <i>%Y-%m-%dT%H:%M:%S.%fZ</i>. An example is <i>2015-01-01T00:00:00.000Z</i></td>
+                    </tr>
+                    <tr>
+                        <td><pre>EndDate</pre></td>
+                        <td>Same as the start date, just it's the end date.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="height: 30px"></div>
+        <div class="row">
+            <div class="columns small-12">
+                <h5>What properties should I expect?</h5>
+                <p>
+                    After querying, you should receive a JSON object that you can parse. The properties are as follows:
+                </p>
+                <table>
+                    <tr>
+                        <td><pre>success : bool</pre></td>
+                        <td>Returns whether the search was successful or not.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>error : str</pre></td>
+                        <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>query_time : float</pre></td>
+                        <td>How long the server took to generate your results. This only appears if <i>success</i> is true.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>NewsDataSet : []</pre></td>
+                        <td>An array of all the results of the search. This only appears if <i>success</i> is true.</td>
+                    </tr>
+                </table>
+                <p>
+                    In addition, the objects of <i>NewsDataSet</i> have these properties:
+                </p>
+                <table>
+                    <tr>
+                        <td><pre>URI : str</pre></td>
+                        <td>A link to the source of this object.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>Language : str</pre></td>
+                        <td>The language this article is written in.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>TimeStamp : str</pre></td>
+                        <td>When the article was written. This is in the same format as the parameter: <i>%Y-%m-%dT%H:%M:%S.%fZ</i>.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>Headline : str</pre></td>
+                        <td>The headline of the article.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>NewsText : str</pre></td>
+                        <td>The content of the article.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>InstrumentIDs : [str]</pre></td>
+                        <td>All the instrument IDs that matched this article.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>TopicCodes : [str]</pre></td>
+                        <td>All the topic codes that matched this article.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/foundation.min.js"></script>
+    </body>
+</html>
