@@ -13,11 +13,11 @@ from django.views import View
 from django.utils import timezone
 from datetime import datetime
 
-from . import cache
-from ..core import logger
-from ..core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, _RIC_PATTERN
-from ..core.sparql import query
-from ..core.result import to_json
+from .. import cache
+from ...core import logger
+from ...core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, _RIC_PATTERN
+from ...core.sparql import query
+from ...core.result import to_json
 
 
 def get_error_json(message):
@@ -31,7 +31,7 @@ def err(message):
     return HttpResponseBadRequest(get_error_json(message), content_type='application/json')
 
 
-class QueryView(View):
+class ApiView(View):
 
     def get(self, request):
         exec_start_date = timezone.now()
@@ -110,15 +110,3 @@ class QueryView(View):
             logger.exception(e)
             end_exec()
             return err(str(e))
-
-
-class ExplorerView(View):
-
-    def __init__(self):
-        self.content = ''
-        with open('assets/explorer.html') as f:
-            self.content = f.read()
-
-    def get(self, request):
-        return HttpResponse(self.content, content_type='text/html')
-

@@ -3,14 +3,14 @@
 #
 # Reads the changelog page and presents it.
 
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.template.loader import get_template
+from django.http import HttpResponse
 from django.views import View
 
 class ChangeLogView(View):
     def __init__(self):
-        self.content = ''
-        with open('assets/changelog.html') as f:
-            self.content = f.read()
+        template = get_template('assets/changelog.html')
+        self.content = template.render()
 
     def get(self, request):
         return HttpResponse(self.content, content_type='text/html')
