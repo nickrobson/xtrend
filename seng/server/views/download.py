@@ -4,7 +4,7 @@ from django.http import FileResponse, HttpResponseBadRequest
 from django.views import View
 from django.shortcuts import redirect
 
-from ..core import gitutils
+from ...core import gitutils
 
 class DownloadTagView(View):
 

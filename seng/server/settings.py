@@ -55,7 +55,7 @@ ROOT_URLCONF = 'seng.server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': os.path.join(BASE_DIR, "../.."),
+        'DIRS': os.path.join(BASE_DIR, "..", ".."),
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,6 +117,5 @@ USE_TZ = True
 STATIC_URL = '/coolbananas/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "../..", 'static')
+    os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'static')
 ]
-print(os.path.dirname(BASE_DIR))

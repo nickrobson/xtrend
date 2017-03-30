@@ -13,28 +13,23 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+
 from django.conf.urls import url
 from django.contrib import admin
 from django.shortcuts import redirect
 
-import urllib.parse
-
-from . import query
-from . import changelog
-from . import faq
-from . import download_tag
-from . import homepage
+from .views import api, changelog, download, explorer, faq, homepage
 
 admin.site.site_url = '/coolbananas/'
 
 urlpatterns = [
-	url(r'^coolbananas/admin/', admin.site.urls),
-	url(r'^coolbananas/tag/([0-9]+\.[0-9]+\.[0-9]+)/$', download_tag.DownloadTagView.as_view()),
-	url(r'^coolbananas/tag/$', download_tag.NoTagSpecifiedView.as_view()),
-	url(r'^coolbananas/changelog/$', changelog.ChangeLogView.as_view()),
-	url(r'^coolbananas/faq/$', faq.FaqView.as_view()),
-	url(r'^coolbananas/explorer/$', query.ExplorerView.as_view()),
-	url(r'^coolbananas/api/$', query.QueryView.as_view()),
-	url(r'^coolbananas/$', homepage.HomepageView.as_view()),
-	url(r'^$', lambda r: redirect('/coolbananas/explorer')),
+    url(r'^coolbananas/admin/', admin.site.urls),
+    url(r'^coolbananas/download/([0-9]+\.[0-9]+\.[0-9]+)/$', download.DownloadTagView.as_view()),
+    url(r'^coolbananas/download/$', download.NoTagSpecifiedView.as_view()),
+    url(r'^coolbananas/changelog/$', changelog.ChangeLogView.as_view()),
+    url(r'^coolbananas/explorer/$', explorer.ExplorerView.as_view()),
+    url(r'^coolbananas/faq/$', faq.FaqView.as_view()),
+    url(r'^coolbananas/api/$', api.ApiView.as_view()),
+    url(r'^coolbananas/$', homepage.HomepageView.as_view()),
+    url(r'^$', lambda r: redirect('/coolbananas/')),
 ]

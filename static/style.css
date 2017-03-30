@@ -1,0 +1,53 @@
+.title {
+    color: white; 
+    font-size: 700%; /* Used to be 10vw */
+    text-align: center;
+    width: 100%;
+    align-self: center;
+    margin: auto;
+}
+
+.title, h3 {
+    font-family: 'Lobster', cursive; 
+}
+
+#title-div {
+    background-color: black;  
+    height: 200px;
+    display: flex;
+}
+
+.home-links {
+    text-align: center;
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 500;
+    font-size: 2vw;
+}
+
+.shadow {
+    box-shadow: 0px 0px 15px #aaa;
+}
+
+.middle {
+    width: 75%;
+    margin: auto;
+}
+
+.team-img {
+    border-radius: 50%;
+    height: auto;
+    width: 100%;
+    clip: rect(200px, 200px, 200px, 200px);
+    margin: auto;
+}
+
+.team-person-name {
+    text-align: center;
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 700;
+    font-size: 2vw;
+}
+
+.fa-github, .fa-archive {
+    color: black;
+}

@@ -1,0 +1,76 @@
+{% extends "assets/layout.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block linkhome %}{% endblock %}
+
+{% block body %}
+{% load static %}
+<div class="row middle">
+    <div class="columns small-3">
+        <img src="{% static 'team-photos/nick.jpg' %}" class="team-img shadow" />
+        <div class="team-person-name">Nick Robson</div>
+    </div>
+    <div class="columns small-3">
+        <img src="{% static 'team-photos/tom.jpg' %}"  class="team-img shadow" />
+        <div class="team-person-name">Thomas Moffet</div>
+    </div>
+    <div class="columns small-3">
+        <img src="{% static 'team-photos/phil.jpg' %}" class="team-img shadow" />
+        <div class="team-person-name">Philip Kheav</div>
+    </div>
+    <div class="columns small-3">
+        <img src="{% static 'team-photos/anna.jpg' %}" class="team-img shadow" />
+        <div class="team-person-name">Anna Azzam</div>
+    </div>
+</div>
+<br/>
+<div class="middle">
+    <div class="home-links">
+        <div class="row">
+            <div class="large-4 columns">
+                <h4><a href="/coolbananas/explorer/">API Explorer</a></h4>
+            </div>
+            <div class="large-4 columns">
+                <h4><a href="/coolbananas/changelog/">Changelog</a></h4>
+            </div>
+            <div class="large-4 columns">
+                <h4><a href="/coolbananas/faq/">FAQ</a></h4>
+            </div>
+        </div>
+    </div>
+    <h3>Versions</h3>
+    {% for version in versions %}
+        <div class="card" style="padding: 10px;">
+            <div class="row">
+                <div class="columns small-8"> 
+                    <strong>Version {{version.display}}</strong><br/>
+                </div>
+                <div class="columns small-2">
+                    <span> 
+                        <a href={{version.download}}>.tar.gz <i class="fa fa-archive"></i></a>
+                    </span>
+                </div>
+                <div class="columns small-1">
+                    <a href="{{version.github}}"><i class="fa fa-github"></i></a>
+                </div>
+                <div class="columns small-1">
+                    <a class="vdesc-{{version.version}}" onclick="$('.vdesc-{{version.version}}').toggle();">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                    <a class="vdesc-{{version.version}}" onclick="$('.vdesc-{{version.version}}').toggle();" style="display: none;">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="row vdesc-{{version.version}}" style="display: none;">
+                <div class="columns small-12">
+                    {{version.description|safe}}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
