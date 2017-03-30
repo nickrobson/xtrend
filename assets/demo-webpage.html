@@ -43,16 +43,46 @@
         	width: 75%;
         	margin: auto;
         }
+        .page-links {
+            margin: auto;
+            text-align: center;
+        }
+        .page-links div {
+            display: inline;
+            margin: 10px;
+            background-color: #222;
+        }
+
         </style>
     </head>
     <body>
     	{% load static %}
-    	<div style="width:100%" id="title-div" class="shadow">
-    		<h1 class="title">
+    	<div style="width:100% " id="title-div" class="shadow">
+            <h1 class="title">
     		Cool Bananews
     		</h1>
     	</div>
+        <br/>
+        </div>
+        <div class="page-links">
+            <div class="button">
+                <a href="/explorer">
+                    API Explorer
+                </a>
+            </div>
+            <div class="button">
+                <a href="/changelog">
+                    Change Log
+                </a>
+            </div>
+            <div class="button">
+                <a href="/">
+                    FAQ
+                </a>
+            </div>
+        </div>
     	<div class="offset">
+        </div>
     	<br/>
         <div class="row middle">
         	<div class="columns small-3">
