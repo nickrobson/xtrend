@@ -18,6 +18,7 @@ class HomepageView(View):
         versionList = gitutils.get_git_tags()
         mk = markdown.Markdown([SmartyExtension()])
         versions = []
+        reversedVersions = list(reversed(versions))
         for versionNumber in versionList:
             dotSeparatedVersion = versionNumber.replace("_", ".")
             version = {

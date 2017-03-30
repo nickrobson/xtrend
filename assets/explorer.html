@@ -14,7 +14,7 @@
         </div>
         <div class="row">
             <div class="columns small-12">
-                <p>See the <a href="/coolbananas/changelog/">changelog</a>.</p>
+                <p>Return to <a href="/coolbananas/">homepage</a>.</p>
             </div>
         </div>
         <div class="row">
@@ -134,13 +134,13 @@
                     query += encodeURIComponent(query_param[1]);
                 }
 
-                $('#explore-query').text('/coolbananas/api/' + query);
 
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', '/coolbananas/api/' + query);
                 xhr.onload = function() {
                     if (xhr.readyState === xhr.DONE) {
                         var data = JSON.parse(xhr.responseText);
+                        $('#explore-query').text('/coolbananas/api/' + query);
                         $('#explore-result').jsonViewer(data, {collapsed: false, withQuotes: true});
                         $('.explore').show();
                     }

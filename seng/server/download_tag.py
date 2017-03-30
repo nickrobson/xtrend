@@ -14,11 +14,14 @@ class DownloadTagView(View):
         if not os.path.isfile(file):
             return HttpResponseBadRequest('<html><head><title>No such tag</title></head><body><h1>No such tag!</h1></body></html>', content_type='text/html')
         response = FileResponse(open(file, 'rb'))
-        response['Content-Disposition'] = 'attachment; filename="%s"' % (os.path.basename(file),)
+        response['Content-Disposition'] = 'attachment; filename="Cool_Bananas_%s"' % (os.path.basename(file),)
         return response
 
 class NoTagSpecifiedView(View):
 
-    def get(self, request):
+    def __init__(self):
         tags = gitutils.get_git_tags()
-        return redirect('/coolbananas/tag/%s' % (tags[-1],))
+        self._latest_tag = tags[-1]
+
+    def get(self, request):
+        return redirect('/coolbananas/tag/%s' % (self._latest_tag,))
