@@ -13,7 +13,7 @@ class DownloadTagView(View):
         if not os.path.isfile(file):
             return HttpResponseBadRequest('<html><head><title>No such tag</title></head><body><h1>No such tag!</h1></body></html>', content_type='text/html')
         response = FileResponse(open(file, 'rb'))
-        response['Content-Disposition'] = 'attachment; filename="%s"' % (os.path.basename(file),)
+        response['Content-Disposition'] = 'attachment; filename="Cool_Bananas_%s"' % (os.path.basename(file),)
         return response
 
 class NoTagSpecifiedView(View):
