@@ -5,10 +5,11 @@
 
 from django.template.loader import get_template
 from django.http import HttpResponse
-from django.views import View
+
+from . import SingletonView
 
 # TODO: Should we merge this and ChangelogView into one common class?
-class FaqView(View):
+class FaqView(SingletonView):
 
     def __init__(self):
         template = get_template('assets/faq.html')

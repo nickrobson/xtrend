@@ -5,9 +5,10 @@
 
 from django.template.loader import get_template
 from django.http import HttpResponse
-from django.views import View
 
-class ChangeLogView(View):
+from . import SingletonView
+
+class ChangeLogView(SingletonView):
     def __init__(self):
         template = get_template('assets/changelog.html')
         self.content = template.render()
