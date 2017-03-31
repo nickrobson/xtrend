@@ -51,3 +51,16 @@
 .fa-github, .fa-archive {
     color: black;
 }
+
+.fa-plus, .fa-minus {
+    color: green;
+}
+
+.vcardrow {
+    display: flex;
+}
+
+.vitem {
+    flex-grow: 1;
+    text-align: center;
+}
