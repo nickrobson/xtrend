@@ -9,10 +9,10 @@ import time
 
 from collections import OrderedDict
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.views import View
 from django.utils import timezone
 from datetime import datetime
 
+from . import SingletonView
 from .. import cache
 from ...core import logger
 from ...core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, _RIC_PATTERN
@@ -31,7 +31,7 @@ def err(message):
     return HttpResponseBadRequest(get_error_json(message), content_type='application/json')
 
 
-class ApiView(View):
+class ApiView(SingletonView):
 
     def get(self, request):
         exec_start_date = timezone.now()

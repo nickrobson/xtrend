@@ -1,8 +1,9 @@
 from django.template.loader import get_template
 from django.http import HttpResponse
-from django.views import View
 
-class ExplorerView(View):
+from . import SingletonView
+
+class ExplorerView(SingletonView):
 
     def __init__(self):
         template = get_template('assets/explorer.html')

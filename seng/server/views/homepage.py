@@ -4,16 +4,16 @@
 # Displays homepage with list of revisions of code
 
 from django.template.loader import get_template
-from django.views import View
 from django.http import HttpResponse, HttpResponseBadRequest
 
+from . import SingletonView
 from ...core import gitutils
 
 import subprocess
 import markdown
 from markdown.extensions.smarty import SmartyExtension
 
-class HomepageView(View):
+class HomepageView(SingletonView):
     def __init__(self):
         versionList = gitutils.get_git_tags()
         mk = markdown.Markdown([ SmartyExtension() ])
