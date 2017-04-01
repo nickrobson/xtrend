@@ -13,10 +13,11 @@ class DownloadTagView(SingletonView):
         self.tags = gitutils.get_git_tags()
 
     def get(self, request, tag):
+        format = 'zip' if 'zip' in request.GET else 'tar.gz'
         tag = tag.replace(".", "_")
-        file = os.path.join('.tags', tag + '.tar.gz')
+        file = os.path.join('.tags', tag + '.' + format)
         if not os.path.isfile(file) and tag in self.tags:
-            exit_code = subprocess.call(['git', 'archive', '--format=tar.gz', '-o', file, tag])
+            exit_code = subprocess.call(['git', 'archive', '--format=' + format, '-o', file, tag])
             if exit_code != 0:
                 return HttpResponseServerError('<html><head><title>Failed to create archive</title></head><body>Tag found, but the server failed to create the archive</body></html>', content_type='text/html')
         if not os.path.isfile(file):
