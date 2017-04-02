@@ -1,3 +1,8 @@
+# explorer.py
+# SENG3011 - Cool Bananas
+#
+# Reads the explorer page and presents it.
+
 from django.template.loader import get_template
 from django.http import HttpResponse
 

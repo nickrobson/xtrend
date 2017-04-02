@@ -1,7 +1,7 @@
-# query.py
+# api.py
 # SENG3011 - Cool Bananas
 #
-# Handles the API's GET request, and should return the JSON object for it.
+# Handles the API's GET requests, and returns the JSON response for them.
 
 import json
 import pytz

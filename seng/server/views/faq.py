@@ -8,7 +8,6 @@ from django.http import HttpResponse
 
 from . import SingletonView
 
-# TODO: Should we merge this and ChangelogView into one common class?
 class FaqView(SingletonView):
 
     def __init__(self):

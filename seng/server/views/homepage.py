@@ -1,4 +1,4 @@
-# query.py
+# homepage.py
 # SENG3011 - Cool Bananas
 #
 # Displays homepage with list of revisions of code
@@ -7,29 +7,25 @@ from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseBadRequest
 
 from . import SingletonView
-from ...core import gitutils
+from ...core import gitutils, mk
 
-import subprocess
-import markdown
-from markdown.extensions.smarty import SmartyExtension
+def _get_git_data(tag):
+    display_version = tag.replace("_", ".")
+    tag_metadata = gitutils.get_tag_meta(tag)
+    version_data = {
+        'version': tag,
+        'display': display_version,
+        'github': "https://github.com/nickrobson/SENG3011/tree/" + tag,
+        'download': "/coolbananas/download/" + display_version,
+        'description': mk.convert(tag_metadata['description']),
+        'date': tag_metadata['date'].strftime('%d/%m/%y')
+    }
+    return version_data
 
 class HomepageView(SingletonView):
-    def __init__(self):
-        versionList = gitutils.get_git_tags()
-        mk = markdown.Markdown([ SmartyExtension() ])
-        versions = []
-        reversedVersions = list(versionList[::-1])
-        for version in reversedVersions:
-            display_version = version.replace("_", ".")
-            version_data = {
-                'version': version,
-                'display': display_version,
-                'github': "https://github.com/nickrobson/SENG3011/tree/" + version,
-                'download': "/coolbananas/download/" + display_version,
-                'description': mk.convert(gitutils.get_description(version))
-            }
-            versions.append(version_data)
 
+    def __init__(self):
+        versions = list(map(_get_git_data, reversed(gitutils.get_tags())))
         template = get_template('assets/homepage.html')
         self.content = template.render({'versions': versions})
 
