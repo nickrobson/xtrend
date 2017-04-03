@@ -1,3 +1,8 @@
+# download.py
+# SENG3011 - Cool Bananas
+#
+# Allows downloading of release versions.
+
 import os
 import subprocess
 
@@ -10,7 +15,7 @@ from ...core import gitutils
 class DownloadTagView(SingletonView):
 
     def __init__(self):
-        self.tags = gitutils.get_git_tags()
+        self.tags = gitutils.get_tags()
 
     def get(self, request, tag):
         format = 'zip' if 'zip' in request.GET else 'tar.gz'
@@ -29,7 +34,7 @@ class DownloadTagView(SingletonView):
 class NoTagSpecifiedView(SingletonView):
 
     def __init__(self):
-        tags = gitutils.get_git_tags()
+        tags = gitutils.get_tags()
         self._latest_tag = tags[-1].replace('_', '.')
 
     def get(self, request):
