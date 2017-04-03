@@ -11,7 +11,7 @@ import urllib.request
 from datetime import datetime
 
 from . import logger
-from .result import QueryResult
+from .result import QueryResultSet
 from .constants import QUERY_TEMPLATE, DB_DATE_FORMAT
 
 
@@ -57,9 +57,7 @@ def do_query(query):
 
     results = json.loads(data)
     results = results['results']['bindings']
-    # This is a set that turns all the results through the function QueryResult.
-    # It is not a hash map, it's just a set.
-    return set(map(QueryResult, results))
+    return QueryResultSet(results)
 
 
 # Takes lists of the input RICs, topics, and dates, and converts it all into a SPARQL request.
