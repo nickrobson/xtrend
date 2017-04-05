@@ -102,31 +102,46 @@ class QueryResult(object):
             self.headline == other.headline and \
             self.news_body == other.news_body
 
-def to_json(results):
+
+class QueryResultSet(object):
+
     '''
-    Turns multiple QueryResult objects into an array of them, as a JSON serializable array.
+    Represents a set of articles from the database.
     '''
 
-    results = sorted(results, key=lambda r: r.uri) # sort first
-    groups = groupby(results, lambda r: r.uri) # group by uri
+    def __init__(self, results):
+        super(QueryResultSet, self).__init__()
 
-    all_results = []
+        print(len(results))
 
-    for uri, group in groups:
-        items = list(group)
-        if not len(items):
-            continue
-        first = items[0]
+        # This is a set that turns all the results through the function QueryResult (in this case it's the constructor).
+        # It is not a hash map, it's just a set.
+        self.results = set(map(QueryResult, results))
+        self.results = sorted(self.results, key=lambda r: r.uri) # sort by uri
+        self.json_results = []
 
-        out = OrderedDict()
-        out['URI'] = uri
-        out['Language'] = first.language
-        out['TimeStamp'] = first.time.strftime(API_DATE_FORMAT)[:-4] + 'Z'
-        out['Headline'] = first.headline
-        out['NewsText'] = first.news_body
-        out['InstrumentIDs'] = sorted(set(reduce(lambda a, b: a + [ b.ric ], items, [])))
-        out['TopicCodes'] = sorted(set(reduce(lambda a, b: a + [ b.topic_code ], items, [])))
+        for uri, group in groupby(self.results, lambda r: r.uri): # group by uri
+            items = list(group)
+            if not len(items):
+                continue
+            first = items[0]
 
-        all_results.append(out)
+            out = OrderedDict()
+            out['URI'] = uri
+            out['Language'] = first.language
+            out['TimeStamp'] = first.time.strftime(API_DATE_FORMAT)[:-4] + 'Z'
+            out['Headline'] = first.headline
+            out['NewsText'] = first.news_body
+            out['InstrumentIDs'] = sorted(set(reduce(lambda a, b: a + [ b.ric ], items, [])))
+            out['TopicCodes'] = sorted(set(reduce(lambda a, b: a + [ b.topic_code ], items, [])))
 
-    return OrderedDict([('NewsDataSet', all_results)])
+            self.json_results.append(out)
+
+    def __iter__(self):
+        return iter(self.results)
+
+    def to_json(self):
+        '''
+        Turns this query result set to a JSON-compatible object
+        '''
+        return OrderedDict([('NewsDataSet', self.json_results)])

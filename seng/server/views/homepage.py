@@ -4,7 +4,7 @@
 # Displays homepage with list of revisions of code
 
 from django.template.loader import get_template
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 
 from . import SingletonView
 from ...core import gitutils, mk
