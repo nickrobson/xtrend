@@ -15,9 +15,7 @@ from datetime import datetime
 from . import SingletonView
 from .. import cache
 from ...core import logger
-from ...core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, _RIC_PATTERN
-from ...core.sparql import query
-from ...core.result import to_json
+from ...core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN
 
 
 def get_error_json(message):

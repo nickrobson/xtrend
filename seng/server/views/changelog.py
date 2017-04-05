@@ -3,7 +3,6 @@
 #
 # Reads the changelog page and presents it.
 
-from datetime import datetime
 from django.template.loader import get_template
 from django.http import HttpResponse
 

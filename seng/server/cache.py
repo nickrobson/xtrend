@@ -39,7 +39,7 @@ def query(rics=[], topics=[], date_range=[]):
         date_range = date_range
     )
 
-    json_result = dbresult.to_json(results)
+    json_result = results.to_json()
 
     for result in json_result:
         n, created = NewsArticle.objects.get_or_create(
