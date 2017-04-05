@@ -129,4 +129,4 @@ def to_json(results):
 
         all_results.append(out)
 
-    return OrderedDict([('NewsDataSet', all_results)])
+    return all_results

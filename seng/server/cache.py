@@ -9,28 +9,29 @@ from collections import OrderedDict
 from functools import reduce
 from django.db.models import Q
 
-from .models import NewsArticle
+from .models import NewsArticle, NewsArticleRIC, NewsArticleTopicCode
 from ..core import logger, sparql, result as dbresult
 
 def query(rics=[], topics=[], date_range=[]):
 
-    db_rics = ','.join(sorted(rics))
-    db_topics = ','.join(sorted(topics))
+    logger.debug('Searching in LOCAL database')
 
     db_query = reduce(operator.and_, (
         Q(time_stamp__gte = date_range[0]),
-        Q(time_stamp__lte = date_range[1]),
-        Q(query_instrument_ids = db_rics),
-        Q(query_topic_codes = db_topics)
+        Q(time_stamp__lte = date_range[1])
     ))
+
+    if len(rics):
+        db_query &= Q(newsarticleric__ric__in = rics)
+
+    if len(topics):
+        db_query &= Q(newsarticletopiccode__topic_code__in = topics)
 
     results = NewsArticle.objects.filter(db_query).all()
     if len(results) > 0:
-        logger.debug('Found query in cache')
+        logger.debug('Found query in LOCAL database')
 
-        return OrderedDict([
-            ('NewsDataSet', list(map(NewsArticle.to_json, results)))
-        ])
+        return list(map(NewsArticle.to_json, results))
 
     results = sparql.query(
         rics = rics,
@@ -40,18 +41,27 @@ def query(rics=[], topics=[], date_range=[]):
 
     json_result = dbresult.to_json(results)
 
-    for result in json_result['NewsDataSet']:
-        n = NewsArticle(
-                uri = result['URI'],
-                time_stamp = result['TimeStamp'],
-                headline = result['Headline'],
-                news_text = result['NewsText'],
-                instrument_ids = ','.join(result['InstrumentIDs']),
-                topic_codes = ','.join(result['TopicCodes']),
-                query_instrument_ids = db_rics,
-                query_topic_codes = db_topics
-            )
-        n.save() # Inserts into the database.
+    for result in json_result:
+        n, created = NewsArticle.objects.get_or_create(
+            uri = result['URI'],
+            defaults = {
+                'language': result['Language'],
+                'time_stamp': result['TimeStamp'],
+                'headline': result['Headline'],
+                'news_text': result['NewsText']
+            })
+        if created:
+            n.save()
+
+        for ric in result['InstrumentIDs']:
+            r, created = NewsArticleRIC.objects.get_or_create(article = n, ric = ric)
+            if created:
+                r.save()
+
+        for topic_code in result['TopicCodes']:
+            t, created = NewsArticleTopicCode.objects.get_or_create(article = n, topic_code = topic_code)
+            if created:
+                t.save()
 
     logger.debug('Saved query to cache')
 
