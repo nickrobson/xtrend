@@ -84,13 +84,22 @@ class ApiView(SingletonView):
 
                 logger.debug('Received query for: RICs = %s, Topics = %s, Dates = %s' % (rics, topics, (start_date, end_date)))
 
-                final_json = cache.query(
+                cache_results = cache.query(
                     rics = rics,
                     topics = topics,
                     date_range = (start_date, end_date),
                 )
                 end_time = time.clock()
 
+                if len(rics) or len(topics):
+                    for result in cache_results:
+                        if len(rics):
+                            result['InstrumentIDs'] = list(filter(lambda r: r in rics, result['InstrumentIDs']))
+                        if len(topics):
+                            result['TopicCodes'] = list(filter(lambda t: t in topics, result['TopicCodes']))
+
+                final_json = OrderedDict()
+                final_json['NewsDataSet'] = cache_results
                 final_json['success'] = True
                 final_json['query_time'] = end_time - start_time
 

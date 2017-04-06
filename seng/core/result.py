@@ -112,8 +112,6 @@ class QueryResultSet(object):
     def __init__(self, results):
         super(QueryResultSet, self).__init__()
 
-        print(len(results))
-
         # This is a set that turns all the results through the function QueryResult (in this case it's the constructor).
         # It is not a hash map, it's just a set.
         self.results = set(map(QueryResult, results))
@@ -144,4 +142,4 @@ class QueryResultSet(object):
         '''
         Turns this query result set to a JSON-compatible object
         '''
-        return OrderedDict([('NewsDataSet', self.json_results)])
+        return self.json_results

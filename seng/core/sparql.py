@@ -46,14 +46,14 @@ def get_date_filter(start, end):
 
 # Asks the external database using a given SPARQL query, and returns the result.
 def do_query(query):
-    logger.debug('Querying database')
+    logger.debug('Querying REMOTE database')
 
     encoded = urllib.parse.quote(query.strip())
     req = urllib.request.Request('http://adage.cse.unsw.edu.au:8005/v1/graphs/sparql?query=' + encoded)
     req.add_header('Authorization', 'Basic ' + base64.b64encode(b'student:studentML').decode('utf-8'))
     data = urllib.request.urlopen(req).read().decode('utf-8')
 
-    logger.debug('Retrieved from database')
+    logger.debug('Retrieved from REMOTE database')
 
     results = json.loads(data)
     results = results['results']['bindings']
