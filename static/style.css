@@ -1,20 +1,32 @@
-.title {
+#title-div {
+    background-color: black;
+    display: flex;
+    height: 200px;
+    width: 100%;
+    transition: height .375s ease;
+}
+
+#title-div.shrink {
+    height: 100px;
+}
+
+#title-div h1 {
     color: white; 
-    font-size: 700%; /* Used to be 10vw */
     text-align: center;
     width: 100%;
     align-self: center;
     margin: auto;
+    font-size: 700%; /* Used to be 10vw */
+    font-family: 'Lobster', cursive;
+    transition: font-size .375s ease;
 }
 
-.title, h3 {
-    font-family: 'Lobster', cursive; 
+#title-div.shrink h1 {
+    font-size: 350%; /* Used to be 10vw */
 }
 
-#title-div {
-    background-color: black;  
-    height: 200px;
-    display: flex;
+h3 {
+    font-family: 'Lobster', cursive;
 }
 
 .home-links {
