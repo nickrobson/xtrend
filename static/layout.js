@@ -1,8 +1,13 @@
 $(document).ready(function() {
     $(document).foundation();
-    $('#title-div').on('sticky.zf.stuckto:top', function(){
-        $(this).addClass('shrink');
-    }).on('sticky.zf.unstuckfrom:top', function(){
-        $(this).removeClass('shrink');
+    $(window).scroll(function() {
+        var x = document.documentElement.scrollLeft || document.body.scrollLeft;
+        var y = document.documentElement.scrollTop  || document.body.scrollTop;
+
+        if (y == 0) {
+            $('#title-div').removeClass('shrink');
+        } else {
+            $('#title-div').addClass('shrink');
+        }
     });
 });
