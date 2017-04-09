@@ -10,229 +10,229 @@ FAQ
         <h4>FAQ</h4>
     </div>
 </div>
-<div class="large-3 columns" data-sticky-container>
-    <nav class="columns sticky" data-sticky data-anchor="main-body" data-sticky-on="small" data-margin-top="0">
-        <div style="height: 100px"></div>
-        <ul class="vertical menu" data-magellan data-events="scroll">
-            <li><a href="#platforms">Platforms</a></li>
-            <li><a href="#website">Website Usage</a></li>
-            <li><a href="#standalone">Standalone Usage</a></li>
-            <li><a href="#input">Input Parameters</a></li>
-            <li><a href="#output">Output Properties</a></li>
-        </ul>
-    </nav>
-</div>
-<div style="height: 30px"></div>
 <div class="row">
-    <div class="columns small-12" id="platforms">
-        <h5>What platforms can I use this API with?</h5>
-        <p>
-            This API can be accessed remotely via GET requests from the URL:
-        </p>
-        <p>
-            <code>https://nickr.xyz/coolbananas/api/</code>
-        </p>
-        <p>
-            The API can also be run locally using Python 3 and Django, and can be accessed similarly from the localhost:
-        </p>
-        <p>
-            <code>http://localhost:5002/coolbananas/api/</code>
-        </p>
+    <div class="small-3 columns" data-sticky-container>
+        <nav class="columns sticky" data-sticky data-anchor="main-body" data-sticky-on="small" data-margin-top="0">
+            <ul class="vertical menu" data-magellan data-events="scroll">
+                <li><a href="#platforms">Platforms</a></li>
+                <li><a href="#website">Website Usage</a></li>
+                <li><a href="#standalone">Standalone Usage</a></li>
+                <li><a href="#input">Input Parameters</a></li>
+                <li><a href="#output">Output Properties</a></li>
+            </ul>
+        </nav>
     </div>
-</div>
-<div id="main-body">
-    <div style="height: 30px"></div>
-    <div class="row">
-        <div class="columns small-12" id="website">
-            <h5>How do I use the program through the website?</h5>
-            <p>
-                To use the API through the website, access the following URL, adding your GET request terms to the end:
-            </p>
-            <p>
-                <code>https://nickr.xyz/coolbananas/api/</code>
-            </p>
-            <p>
-                An example usage of this API is:
-            </p>
-            <p>
-                <code>https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z</code>
-            </p>
-            <p>
-                You can easily access this using a <i>curl</i> call from your Bash prompt, or by visiting the page in your web browser.
-                <br />
-                For example, the above API would be done using the following <i>curl</i> command:
-                <br />
-            </p>
-            <p>
-                <code>
-                curl -X GET https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z
-                </code>
-            </p>
+    <div class="small-9 columns" id="main-body">
+        <div class="row">
+            <div class="columns small-12" id="platforms">
+                <h5>What platforms can I use this API with?</h5>
+                <p>
+                    This API can be accessed remotely via GET requests from the URL:
+                </p>
+                <p>
+                    <code>https://nickr.xyz/coolbananas/api/</code>
+                </p>
+                <p>
+                    The API can also be run locally using Python 3 and Django, and can be accessed similarly from the localhost:
+                </p>
+                <p>
+                    <code>http://localhost:5002/coolbananas/api/</code>
+                </p>
+            </div>
         </div>
-    </div>
-    <div style="height: 30px"></div>
-    <div class="row">
-        <div class="columns small-12" id="standalone">
-            <h5>How do I use the program as a standalone?</h5>
-            <p>
-                First, make sure you have a version of Python equal to or newer than Python 3.5. You can get Python from <a href="https://www.python.org/">http://python.org</a>. Install this and make sure that it is added to your computer's PATH.
-            </p>
-            <p>
-                Second, you need to get the source files. You can get them from here. Make sure to unzip this to a folder.
-            </p>
-            <p>
-                Now, go to the folder that you unzipped the API to, and run this command:
-            </p>
-            <p>
-                <code>pip3 -r requirements.txt</code>
-            </p>
-            <p>
-                You might need to run a different executable depending on your platform (sometimes it's just <i>pip</i>, sometimes you might need <i>python3 pip</i>).
-            </p>
-            <p>
-                Then, to run the program, just run:
-            </p>
-            <p>
-                <code>python3 main.py</code>
-            </p>
-            <p>
-                This should start the program properly. The output should list a local URL you should use to access the program. Follow the instructions for the above section, but use a URL starting with:
-            </p>
-            <p>
-                <code>http://localhost:5002/coolbananas/api/</code>
-            </p>
-            <p>
-                This might vary depending on what port the server is running on. The default port is 5002, and can be changed in <code>main.py</code>.
-            </p>
+        <div style="height: 30px"></div>
+        <div class="row">
+            <div class="columns small-12" id="website">
+                <h5>How do I use the program through the website?</h5>
+                <p>
+                    To use the API through the website, access the following URL, adding your GET request terms to the end:
+                </p>
+                <p>
+                    <code>https://nickr.xyz/coolbananas/api/</code>
+                </p>
+                <p>
+                    An example usage of this API is:
+                </p>
+                <p>
+                    <code>https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z</code>
+                </p>
+                <p>
+                    You can easily access this using a <i>curl</i> call from your Bash prompt, or by visiting the page in your web browser.
+                    <br />
+                    For example, the above API would be done using the following <i>curl</i> command:
+                    <br />
+                </p>
+                <p>
+                    <code>
+                    curl -X GET https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z
+                    </code>
+                </p>
+            </div>
         </div>
-    </div>
-    <div style="height: 30px"></div>
-    <div class="row">
-        <div class="columns small-12" id="input">
-            <h5>What are the parameters I pass in?</h5>
-            <table>
-                <thead>
-                    <td>Parameter</td>
-                    <td>Description</td>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><pre>InstrumentIDs</pre></td>
-                        <td>An array of all the instrument IDs that you want to know about.
-                            <br />
-                            This is a comma delimited list of Reuters Instrument Codes.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>TopicCodes</pre></td>
-                        <td>An array of all the topic codes that you want to know about.
-                            <br />
-                            This is a comma delimited list of Reuters Topic Codes</td>
-                    </tr>
-                    <tr>
-                        <td><pre>StartDate</pre></td>
-                        <td>The date that the search starts at.
-                            <br />
-                            This is in the format of <i>%Y-%m-%dT%H:%M:%S.%fZ</i>.
-                            <br />
-                            An example is <i>2015-10-01T00:00:00.000Z</i></td>
-                    </tr>
-                    <tr>
-                        <td><pre>EndDate</pre></td>
-                        <td>The date that the search ends at.
-                            <br />
-                            This is in the format of <i>%Y-%m-%dT%H:%M:%S.%fZ</i>.
-                            <br />
-                            An example is <i>2015-10-10T00:00:00.000Z</i></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div style="height: 30px"></div>
+        <div class="row">
+            <div class="columns small-12" id="standalone">
+                <h5>How do I use the program as a standalone?</h5>
+                <p>
+                    First, make sure you have a version of Python equal to or newer than Python 3.5. You can get Python from <a href="https://www.python.org/">http://python.org</a>. Install this and make sure that it is added to your computer's PATH.
+                </p>
+                <p>
+                    Second, you need to get the source files. You can get them from here. Make sure to unzip this to a folder.
+                </p>
+                <p>
+                    Now, go to the folder that you unzipped the API to, and run this command:
+                </p>
+                <p>
+                    <code>pip3 -r requirements.txt</code>
+                </p>
+                <p>
+                    You might need to run a different executable depending on your platform (sometimes it's just <i>pip</i>, sometimes you might need <i>python3 pip</i>).
+                </p>
+                <p>
+                    Then, to run the program, just run:
+                </p>
+                <p>
+                    <code>python3 main.py</code>
+                </p>
+                <p>
+                    This should start the program properly. The output should list a local URL you should use to access the program. Follow the instructions for the above section, but use a URL starting with:
+                </p>
+                <p>
+                    <code>http://localhost:5002/coolbananas/api/</code>
+                </p>
+                <p>
+                    This might vary depending on what port the server is running on. The default port is 5002, and can be changed in <code>main.py</code>.
+                </p>
+            </div>
         </div>
-    </div>
-    <div style="height: 30px"></div>
-    <div class="row">
-        <div class="columns small-12" id="output">
-            <h5>What properties should I expect?</h5>
-            <p>
-                By querying, you will receive a JSON object, with the following properties:
-            </p>
-            <table>
-                <thead>
-                    <td>Property</td>
-                    <td>Type</td>
-                    <td>Description</td>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><pre>success</pre></td>
-                        <td>boolean</td>
-                        <td>Returns whether the search was successful or not.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>error</pre></td>
-                        <td>string</td>
-                        <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>query_time</pre></td>
-                        <td>float</td>
-                        <td>How long the server took to generate your results, in seconds. This only appears if <i>success</i> is true.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>NewsDataSet</pre></td>
-                        <td>[object]</td>
-                        <td>An array of all the results of the search. This only appears if <i>success</i> is true.</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>
-                The objects of <i>NewsDataSet</i> have the following properties:
-            </p>
-            <table>
-                <thead>
-                    <td>Property</td>
-                    <td>Type</td>
-                    <td>Description</td>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><pre>URI</pre></td>
-                        <td>string</td>
-                        <td>A link to the source of this object.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>Language</pre></td>
-                        <td>string</td>
-                        <td>The language this article is written in.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>TimeStamp</pre></td>
-                        <td>string</td>
-                        <td>When the article was written.
-                            <br />
-                            This is in the same format as the parameter: <i>%Y-%m-%dT%H:%M:%S.%fZ</i>.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>Headline</pre></td>
-                        <td>string</td>
-                        <td>The headline of the article.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>NewsText</pre></td>
-                        <td>string</td>
-                        <td>The content of the article.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>InstrumentIDs</pre></td>
-                        <td>[string]</td>
-                        <td>All the instrument IDs that matched this article.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>TopicCodes</pre></td>
-                        <td>[string]</td>
-                        <td>All the topic codes that matched this article.</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div style="height: 30px"></div>
+        <div class="row">
+            <div class="columns small-12" id="input">
+                <h5>What are the parameters I pass in?</h5>
+                <table>
+                    <thead>
+                        <td>Parameter</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>InstrumentIDs</pre></td>
+                            <td>An array of all the instrument IDs that you want to know about.
+                                <br />
+                                This is a comma delimited list of Reuters Instrument Codes.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>TopicCodes</pre></td>
+                            <td>An array of all the topic codes that you want to know about.
+                                <br />
+                                This is a comma delimited list of Reuters Topic Codes</td>
+                        </tr>
+                        <tr>
+                            <td><pre>StartDate</pre></td>
+                            <td>The date that the search starts at.
+                                <br />
+                                This is in the format of <i>%Y-%m-%dT%H:%M:%S.%fZ</i>.
+                                <br />
+                                An example is <i>2015-10-01T00:00:00.000Z</i></td>
+                        </tr>
+                        <tr>
+                            <td><pre>EndDate</pre></td>
+                            <td>The date that the search ends at.
+                                <br />
+                                This is in the format of <i>%Y-%m-%dT%H:%M:%S.%fZ</i>.
+                                <br />
+                                An example is <i>2015-10-10T00:00:00.000Z</i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="height: 30px"></div>
+        <div class="row">
+            <div class="columns small-12" id="output">
+                <h5>What properties should I expect?</h5>
+                <p>
+                    By querying, you will receive a JSON object, with the following properties:
+                </p>
+                <table>
+                    <thead>
+                        <td>Property</td>
+                        <td>Type</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>success</pre></td>
+                            <td>boolean</td>
+                            <td>Returns whether the search was successful or not.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>error</pre></td>
+                            <td>string</td>
+                            <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>query_time</pre></td>
+                            <td>float</td>
+                            <td>How long the server took to generate your results, in seconds. This only appears if <i>success</i> is true.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>NewsDataSet</pre></td>
+                            <td>[object]</td>
+                            <td>An array of all the results of the search. This only appears if <i>success</i> is true.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    The objects of <i>NewsDataSet</i> have the following properties:
+                </p>
+                <table>
+                    <thead>
+                        <td>Property</td>
+                        <td>Type</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>URI</pre></td>
+                            <td>string</td>
+                            <td>A link to the source of this object.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>Language</pre></td>
+                            <td>string</td>
+                            <td>The language this article is written in.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>TimeStamp</pre></td>
+                            <td>string</td>
+                            <td>When the article was written.
+                                <br />
+                                This is in the same format as the parameter: <i>%Y-%m-%dT%H:%M:%S.%fZ</i>.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>Headline</pre></td>
+                            <td>string</td>
+                            <td>The headline of the article.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>NewsText</pre></td>
+                            <td>string</td>
+                            <td>The content of the article.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>InstrumentIDs</pre></td>
+                            <td>[string]</td>
+                            <td>All the instrument IDs that matched this article.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>TopicCodes</pre></td>
+                            <td>[string]</td>
+                            <td>All the topic codes that matched this article.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
