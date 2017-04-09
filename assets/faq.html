@@ -4,6 +4,11 @@
 FAQ
 {% endblock %}
 
+{% block scripts %}
+{% load static %}
+<script type="text/javascript" src="{% static 'faq.js' %}"></script>
+{% endblock %}
+
 {% block body %}
 <div class="row">
     <div class="columns small-12">
