@@ -13,94 +13,44 @@ FAQ
 <div class="row" id="faq-all">
     <div class="small-3 columns" id="faq-menu">
         <ul class="vertical menu">
-            <li><a href="#platforms">Platforms</a></li>
-            <li><a href="#website">Website Usage</a></li>
-            <li><a href="#standalone">Standalone Usage</a></li>
-            <li><a href="#input">Input Parameters</a></li>
-            <li><a href="#output">Output Properties</a></li>
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="#queries">Queries</a></li>
+            <li><a href="#results">Results</a></li>
+            <hr>
+            <li>
+                <a href="#models">Models</a>
+                <ul class="vertical menu" style="padding-left: 2rem; list-style: none;">
+                    <li><a href="#model-basic">Basic</a></li>
+                </ul>
+            </li>
+            <hr>
+            <li><a href="#logs">Logs</a></li>
         </ul>
     </div>
     <div class="small-9 columns" id="faq-body">
         <h4>FAQ</h4>
-        <div id="platforms">
-            <h5>What platforms can I use this API with?</h5>
+        <p><b>NOTE:</b> All URLs can be clicked on to experiment.</p>
+        <div id="usage">
+            <h5>Usage</h5>
             <p>
-                This API can be accessed remotely via GET requests from the URL:
+                The API can be accessed remotely via GET requests from the following URL:
             </p>
             <p>
-                <code>https://nickr.xyz/coolbananas/api/</code>
+                <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/">https://nickr.xyz/coolbananas/api/</a></code>
             </p>
             <p>
-                The API can also be run locally using Python 3 and Django, and can be accessed similarly from the localhost:
+                In order for this to be a GET request, it needs to be followed by a ? symbol, followed by each of the parameters separated by & symbols. Each parameter has a key and a value assigned to it by an =. An example of this is:
             </p>
             <p>
-                <code>http://localhost:5002/coolbananas/api/</code>
-            </p>
-        </div>
-        <div style="height: 30px"></div>
-        <div id="website">
-            <h5>How do I use the program through the website?</h5>
-            <p>
-                To use the API through the website, access the following URL, adding your GET request terms to the end:
+                <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z">https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z</a></code>
             </p>
             <p>
-                <code>https://nickr.xyz/coolbananas/api/</code>
-            </p>
-            <p>
-                An example usage of this API is:
-            </p>
-            <p>
-                <code>https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z</code>
-            </p>
-            <p>
-                You can easily access this using a <i>curl</i> call from your Bash prompt, or by visiting the page in your web browser.
-                <br />
-                For example, the above API would be done using the following <i>curl</i> command:
-                <br />
-            </p>
-            <p>
-                <code>
-                curl -X GET https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z
-                </code>
+                This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function.
             </p>
         </div>
-        <div style="height: 30px"></div>
-        <div id="standalone">
-            <h5>How do I use the program as a standalone?</h5>
-            <p>
-                First, make sure you have a version of Python equal to or newer than Python 3.5. You can get Python from <a href="https://www.python.org/">http://python.org</a>. Install this and make sure that it is added to your computer's PATH.
-            </p>
-            <p>
-                Second, you need to get the source files. You can get them from here. Make sure to unzip this to a folder.
-            </p>
-            <p>
-                Now, go to the folder that you unzipped the API to, and run this command:
-            </p>
-            <p>
-                <code>pip3 -r requirements.txt</code>
-            </p>
-            <p>
-                You might need to run a different executable depending on your platform (sometimes it's just <i>pip</i>, sometimes you might need <i>python3 pip</i>).
-            </p>
-            <p>
-                Then, to run the program, just run:
-            </p>
-            <p>
-                <code>python3 main.py</code>
-            </p>
-            <p>
-                This should start the program properly. The output should list a local URL you should use to access the program. Follow the instructions for the above section, but use a URL starting with:
-            </p>
-            <p>
-                <code>http://localhost:5002/coolbananas/api/</code>
-            </p>
-            <p>
-                This might vary depending on what port the server is running on. The default port is 5002, and can be changed in <code>main.py</code>.
-            </p>
-        </div>
-        <div style="height: 30px"></div>
-        <div id="input">
-            <h5>What are the parameters I pass in?</h5>
+        <hr>
+        <div id="queries">
+            <h5>Queries</h5>
             <table>
                 <thead>
                     <td>Parameter</td>
@@ -138,9 +88,9 @@ FAQ
                 </tbody>
             </table>
         </div>
-        <div style="height: 30px"></div>
-        <div id="output">
-            <h5>What properties should I expect?</h5>
+        <hr>
+        <div id="results">
+            <h5>Results</h5>
             <p>
                 By querying, you will receive a JSON object, with the following properties:
             </p>
@@ -222,7 +172,30 @@ FAQ
                     </tr>
                 </tbody>
             </table>
+            </p>
         </div>
+        <hr>
+        <div id="models">
+            <h5>Models</h5>
+            <p>
+                <b>TODO:</b> Write about the date format, NewsDataSet, success, articles, comma separated.
+            </p>
+            <div id="model-basic">
+                <h6>Basic</h6>
+                <p>
+                    <b>TODO:</b> This.
+                </p>
+            </div>
+        </div>
+        <hr>
+        <div id="logs">
+            <h5>Logs</h5>
+            <p>
+                <b>TODO:</b> This.
+            </p>
+        </div>
+        <hr>
+        <p>Return to <a href="/coolbananas/">homepage</a>.</p>
     </div>
 </div>
 {% endblock %}
