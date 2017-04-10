@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^coolbananas/download/$', download.NoTagSpecifiedView.as_view()),
     url(r'^coolbananas/changelog/$', changelog.ChangeLogView.as_view()),
     url(r'^coolbananas/explorer/$', explorer.ExplorerView.as_view()),
-    url(r'^coolbananas/faq/$', faq.FaqView.as_view()),
+    url(r'^coolbananas/documentation/$', faq.FaqView.as_view()),
     url(r'^coolbananas/api/$', api.ApiView.as_view()),
     url(r'^coolbananas/$', homepage.HomepageView.as_view()),
     url(r'^$', lambda r: redirect('/coolbananas/')),
