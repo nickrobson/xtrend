@@ -18,7 +18,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.shortcuts import redirect
 
-from .views import api, changelog, download, explorer, faq, homepage
+from .views import api, changelog, download, explorer, doc, homepage
 
 admin.site.site_url = '/coolbananas/'
 
@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^coolbananas/download/$', download.NoTagSpecifiedView.as_view()),
     url(r'^coolbananas/changelog/$', changelog.ChangeLogView.as_view()),
     url(r'^coolbananas/explorer/$', explorer.ExplorerView.as_view()),
-    url(r'^coolbananas/documentation/$', faq.FaqView.as_view()),
+    url(r'^coolbananas/documentation/$', doc.DocView.as_view()),
     url(r'^coolbananas/api/$', api.ApiView.as_view()),
     url(r'^coolbananas/$', homepage.HomepageView.as_view()),
     url(r'^$', lambda r: redirect('/coolbananas/')),
