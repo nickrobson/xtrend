@@ -18,14 +18,14 @@ FAQ
             <li><a href="#results">Results</a></li>
             <hr>
             <li>
-                <a href="#models">Models</a>
+                <a href="#appendix">Appendix</a>
                 <ul class="vertical menu" style="padding-left: 2rem; list-style: none;">
-                    <li><a href="#model-basic">Basic</a></li>
-                    <li><a href="#model-date-format">Date Format</a></li>
+                    <li><a href="#appendix-comma-delimited">Comma Delimited Lists</a></li>
+                    <li><a href="#appendix-date-format">Date Format</a></li>
+                    <li><a href="#appendix-languages">Languages</a></li>
+                    <li><a href="#appendix-logs">Logs</a></li>
                 </ul>
             </li>
-            <hr>
-            <li><a href="#logs">Logs</a></li>
         </ul>
     </div>
     <div class="small-9 columns" id="faq-body">
@@ -46,7 +46,7 @@ FAQ
                 <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z">https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z</a></code>
             </p>
             <p>
-                This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function.
+                This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function in your terminal. You can also use it in programs by calling similar functions in your language of choice.
             </p>
         </div>
         <hr>
@@ -62,26 +62,26 @@ FAQ
                         <td><pre>InstrumentIDs</pre></td>
                         <td>An array of all the instrument IDs that you want to know about.
                             <br />
-                            This is a comma delimited list of Reuters Instrument Codes.</td>
+                            This is a <a href="appendix-comma-delimited">comma delimited list</a> of Reuters Instrument Codes.</td>
                     </tr>
                     <tr>
                         <td><pre>TopicCodes</pre></td>
                         <td>An array of all the topic codes that you want to know about.
                             <br />
-                            This is a comma delimited list of Reuters Topic Codes</td>
+                            This is a <a href="appendix-comma-delimited">comma delimited list</a> of Reuters Topic Codes</td>
                     </tr>
                     <tr>
                         <td><pre>StartDate</pre></td>
                         <td>The date that the search starts at.
                             <br />
-                            This is in the specific <a href="#models-date-format">date format</a>.
+                            This is in the specific <a href="#appendixs-date-format">date format</a>.
                         </td>
                     </tr>
                     <tr>
                         <td><pre>EndDate</pre></td>
                         <td>The date that the search ends at.
                             <br />
-                            This is in the specific <a href="#models-date-format">date format</a>.
+                            This is in the specific <a href="#appendixs-date-format">date format</a>.
                         </td>
                     </tr>
                 </tbody>
@@ -147,7 +147,7 @@ FAQ
                         <td>string</td>
                         <td>When the article was written.
                             <br />
-                            This is in the same format as the parameter: <i>%Y-%m-%dT%H:%M:%S.%fZ</i>.</td>
+                            This is in the specific <a href="#appendixs-date-format">date format</a>.
                     </tr>
                     <tr>
                         <td><pre>Headline</pre></td>
@@ -174,19 +174,36 @@ FAQ
             </p>
         </div>
         <hr>
-        <div id="models">
-            <h5>Models</h5>
+        <div id="appendix">
+            <h5>Appendix</h5>
             <p>
-                <b>TODO:</b> Write about the date format, NewsDataSet, success, articles, comma separated.
+                These are parts of the API that require additional information.
             </p>
-            <div id="model-basic">
-                <h6>Basic</h6>
+            <div id="appendix-comma-delimited">
+                <h5>Comma Delimited Lists</h5>
                 <p>
-                    <b>TODO:</b> This.
+                    A comma delimited list is just a long string where each smaller substring is an entry in an array. They are separted by comma symbols. It is important not to use spaces or extra symbols to indicate this. This is used to submit multi-value properties easily. Some examples are listed below showing how the comma delimited version is converted to a Python list syntax:
                 </p>
+                <table>
+                    <thead>
+                        <td>Comma delimited</td>
+                        <td>Python list syntax</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>BHP.AX,BLT.L</pre></td>
+                            <td><pre>['BHP.AX', 'BLT.L']</pre></td>
+                        </tr>
+                        <tr>
+                            <td><pre>AMERS,COM</pre></td>
+                            <td><pre>['AMERS', 'COM']</pre></td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
-            <div id="model-date-format">
-                <h6>Date Format</h6>
+            <div id="appendix-date-format">
+                <h5>Date Format</h5>
                 <p>
                     The date is in the format of <i>%Y-%m-%dT%H:%M:%S.%fZ</i>. To use this format, each <i>%x</i>, where <i>x</i> is any letter, must be replaced by a value below. Every other symbol must remain in the string. An example is <i>2015-10-01T00:00:00.000Z</i>
                 </p>
@@ -198,7 +215,7 @@ FAQ
                     <tbody>
                         <tr>
                             <td><pre>%Y</pre></td>
-                            <td>The year represented as four digits (ie. 2017).</td>
+                            <td>The year represented as four digits between 1970 and 2038.</td>
                         </tr>
                         <tr>
                             <td><pre>%m</pre></td>
@@ -227,13 +244,31 @@ FAQ
                     </tbody>
                 </table>
             </div>
-        </div>
-        <hr>
-        <div id="logs">
-            <h5>Logs</h5>
-            <p>
-                The server software logs operations constantly. The log files are private though.
-            </p>
+            <div id="appendix-languages">
+                <h5>Languages</h5>
+                <p>
+                    The following is a list of available languages.
+                </p>
+                <table>
+                    <thead>
+                        <td>Code</td>
+                        <td>Full Name</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>en</pre></td>
+                            <td>English</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div id="appendix-logs">
+                <h5>Logs</h5>
+                <p>
+                    The server software logs operations constantly. The log files are private though.
+                </p>
+            </div>
         </div>
         <hr>
         <p>Return to <a href="/coolbananas/">homepage</a>.</p>
