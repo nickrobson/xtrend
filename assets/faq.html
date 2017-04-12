@@ -21,6 +21,7 @@ FAQ
                 <a href="#models">Models</a>
                 <ul class="vertical menu" style="padding-left: 2rem; list-style: none;">
                     <li><a href="#model-basic">Basic</a></li>
+                    <li><a href="#model-date-format">Date Format</a></li>
                 </ul>
             </li>
             <hr>
@@ -73,17 +74,15 @@ FAQ
                         <td><pre>StartDate</pre></td>
                         <td>The date that the search starts at.
                             <br />
-                            This is in the format of <i>%Y-%m-%dT%H:%M:%S.%fZ</i>.
-                            <br />
-                            An example is <i>2015-10-01T00:00:00.000Z</i></td>
+                            This is in the specific <a href="#models-date-format">date format</a>.
+                        </td>
                     </tr>
                     <tr>
                         <td><pre>EndDate</pre></td>
                         <td>The date that the search ends at.
                             <br />
-                            This is in the format of <i>%Y-%m-%dT%H:%M:%S.%fZ</i>.
-                            <br />
-                            An example is <i>2015-10-10T00:00:00.000Z</i></td>
+                            This is in the specific <a href="#models-date-format">date format</a>.
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -185,6 +184,48 @@ FAQ
                 <p>
                     <b>TODO:</b> This.
                 </p>
+            </div>
+            <div id="model-date-format">
+                <h6>Date Format</h6>
+                <p>
+                    The date is in the format of <i>%Y-%m-%dT%H:%M:%S.%fZ</i>. To use this format, each <i>%x</i>, where <i>x</i> is any letter, must be replaced by a value below. Every other symbol must remain in the string. An example is <i>2015-10-01T00:00:00.000Z</i>
+                </p>
+                <table>
+                    <thead>
+                        <td>Term</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>%Y</pre></td>
+                            <td>The year represented as four digits (ie. 2017).</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%m</pre></td>
+                            <td>The month represented as two digits between 01 to 12.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%d</pre></td>
+                            <td>The day of the month represented as two digits between 01 to 31.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%H</pre></td>
+                            <td>The hour represented as two digits from 01 to 12.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%M</pre></td>
+                            <td>The minute represented as two digits from 01 to 60.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%S</pre></td>
+                            <td>The second represented as two digits from 01 to 60.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%f</pre></td>
+                            <td>The milliseconds represented as three digits from 000 to 999.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <hr>
