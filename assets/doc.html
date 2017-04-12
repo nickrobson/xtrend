@@ -1,0 +1,277 @@
+{% extends "assets/layout.html" %}
+
+{% block title %}
+Documentation
+{% endblock %}
+
+{% block scripts %}
+{% load static %}
+<script type="text/javascript" src="{% static 'doc.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="row" id="doc-all">
+    <div class="small-3 columns" id="doc-menu">
+        <ul class="vertical menu">
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="#input">Input</a></li>
+            <li><a href="#output">Output</a></li>
+            <hr>
+            <li>
+                <a href="#appendix">Appendix</a>
+                <ul class="vertical menu" style="padding-left: 2rem; list-style: none;">
+                    <li><a href="#appendix-comma-delimited">Comma Delimited Lists</a></li>
+                    <li><a href="#appendix-date-format">Date Format</a></li>
+                    <li><a href="#appendix-languages">Languages</a></li>
+                    <li><a href="#appendix-logs">Logs</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="small-9 columns" id="doc-body">
+        <h4>Documentation</h4>
+        <p><b>NOTE:</b> All URLs can be clicked on to experiment.</p>
+        <div id="usage">
+            <h5>Usage</h5>
+            <p>
+                The API can be accessed remotely via GET requests from the following URL:
+            </p>
+            <p>
+                <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/">https://nickr.xyz/coolbananas/api/</a></code>
+            </p>
+            <p>
+                In order for this to be a GET request, it needs to be followed by a ? symbol, followed by each of the parameters separated by & symbols. Each parameter has a key and a value assigned to it by an =. An example of this is:
+            </p>
+            <p>
+                <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z">https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z</a></code>
+            </p>
+            <p>
+                This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function in your terminal. You can also use it in programs by calling similar functions in your language of choice.
+            </p>
+        </div>
+        <hr>
+        <div id="input">
+            <h5>Input</h5>
+            <table>
+                <thead>
+                    <td>Parameter</td>
+                    <td>Description</td>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><pre>InstrumentIDs</pre></td>
+                        <td>An array of all the instrument IDs that you want to know about.
+                            <br />
+                            This is a <a href="appendix-comma-delimited">comma delimited list</a> of Reuters Instrument Codes.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>TopicCodes</pre></td>
+                        <td>An array of all the topic codes that you want to know about.
+                            <br />
+                            This is a <a href="appendix-comma-delimited">comma delimited list</a> of Reuters Topic Codes</td>
+                    </tr>
+                    <tr>
+                        <td><pre>StartDate</pre></td>
+                        <td>The date that the search starts at.
+                            <br />
+                            This is in the specific <a href="#appendix-date-format">date format</a>.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><pre>EndDate</pre></td>
+                        <td>The date that the search ends at.
+                            <br />
+                            This is in the specific <a href="#appendix-date-format">date format</a>.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div id="output">
+            <h5>Output</h5>
+            <p>
+                By querying, you will receive a JSON object, with the following properties:
+            </p>
+            <table>
+                <thead>
+                    <td>Property</td>
+                    <td>Type</td>
+                    <td>Description</td>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><pre>success</pre></td>
+                        <td>boolean</td>
+                        <td>Returns whether the search was successful or not.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>error</pre></td>
+                        <td>string</td>
+                        <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>query_time</pre></td>
+                        <td>float</td>
+                        <td>How long the server took to generate your results, in seconds. This only appears if <i>success</i> is true.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>NewsDataSet</pre></td>
+                        <td>[object]</td>
+                        <td>An array of all the results of the search. This only appears if <i>success</i> is true.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                The objects of <i>NewsDataSet</i> have the following properties:
+            </p>
+            <table>
+                <thead>
+                    <td>Property</td>
+                    <td>Type</td>
+                    <td>Description</td>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><pre>URI</pre></td>
+                        <td>string</td>
+                        <td>A link to the source of this object.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>Language</pre></td>
+                        <td>string</td>
+                        <td>The language this article is written in.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>TimeStamp</pre></td>
+                        <td>string</td>
+                        <td>When the article was written.
+                            <br />
+                            This is in the specific <a href="#appendix-date-format">date format</a>.
+                    </tr>
+                    <tr>
+                        <td><pre>Headline</pre></td>
+                        <td>string</td>
+                        <td>The headline of the article.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>NewsText</pre></td>
+                        <td>string</td>
+                        <td>The content of the article.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>InstrumentIDs</pre></td>
+                        <td>[string]</td>
+                        <td>All the instrument IDs that matched this article.</td>
+                    </tr>
+                    <tr>
+                        <td><pre>TopicCodes</pre></td>
+                        <td>[string]</td>
+                        <td>All the topic codes that matched this article.</td>
+                    </tr>
+                </tbody>
+            </table>
+            </p>
+        </div>
+        <hr>
+        <div id="appendix">
+            <h5>Appendix</h5>
+            <p>
+                These are parts of the API that require additional information.
+            </p>
+            <div id="appendix-comma-delimited">
+                <h5>Comma Delimited Lists</h5>
+                <p>
+                    A comma delimited list is just a long string where each smaller substring is an entry in an array. They are separted by comma symbols. It is important not to use spaces or extra symbols to indicate this. This is used to submit multi-value properties easily. Some examples are listed below showing how the comma delimited version is converted to a Python list syntax:
+                </p>
+                <table>
+                    <thead>
+                        <td>Comma delimited</td>
+                        <td>Python list syntax</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>BHP.AX,BLT.L</pre></td>
+                            <td><pre>['BHP.AX', 'BLT.L']</pre></td>
+                        </tr>
+                        <tr>
+                            <td><pre>AMERS,COM</pre></td>
+                            <td><pre>['AMERS', 'COM']</pre></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div id="appendix-date-format">
+                <h5>Date Format</h5>
+                <p>
+                    The date is in the format of <i>%Y-%m-%dT%H:%M:%S.%fZ</i>. To use this format, each <i>%x</i>, where <i>x</i> is any letter, must be replaced by a value below. Every other symbol must remain in the string. An example is <i>2015-10-01T00:00:00.000Z</i>
+                </p>
+                <table>
+                    <thead>
+                        <td>Term</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>%Y</pre></td>
+                            <td>The year represented as four digits between 1970 and 2038.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%m</pre></td>
+                            <td>The month represented as two digits between 01 to 12.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%d</pre></td>
+                            <td>The day of the month represented as two digits between 01 to 31.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%H</pre></td>
+                            <td>The hour represented as two digits from 01 to 12.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%M</pre></td>
+                            <td>The minute represented as two digits from 01 to 60.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%S</pre></td>
+                            <td>The second represented as two digits from 01 to 60.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>%f</pre></td>
+                            <td>The milliseconds represented as three digits from 000 to 999.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="appendix-languages">
+                <h5>Languages</h5>
+                <p>
+                    The following is a list of available languages.
+                </p>
+                <table>
+                    <thead>
+                        <td>Code</td>
+                        <td>Full Name</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>en</pre></td>
+                            <td>English</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div id="appendix-logs">
+                <h5>Logs</h5>
+                <p>
+                    The server software logs operations constantly. The log files are private though.
+                </p>
+            </div>
+        </div>
+        <hr>
+        <p>Return to <a href="/coolbananas/">homepage</a>.</p>
+    </div>
+</div>
+{% endblock %}

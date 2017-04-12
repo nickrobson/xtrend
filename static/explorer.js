@@ -61,3 +61,11 @@ function submitExplore() {
     };
     xhr.send();
 }
+
+function fillExample() {
+    $('#explore-rics').val("BHP.AX,BLT.L");
+    $('#explore-topics').val("AMERS,COM");
+    $('#explore-start-date').val("2015-10-01T00:00:00.000Z");
+    $('#explore-end-date').val("2015-10-10T00:00:00.000Z");
+    submitExplore();
+}

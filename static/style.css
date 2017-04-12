@@ -28,6 +28,10 @@
     transition: font-size .375s ease;
 }
 
+#title-div a {
+    color: white;
+}
+
 #title-div.shrink h1 {
     font-size: 350%; /* Used to be 10vw */
 }
