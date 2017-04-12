@@ -1,11 +1,11 @@
 $(document).ready(function() {
     var sections = [];
     var offsets = {};
-    var $li_a = $('#faq-menu ul li a');
-    var $faqMenu = $('#faq-menu');
+    var $li_a = $('#doc-menu ul li a');
+    var $docMenu = $('#doc-menu');
     var $titleDiv = $('#title-div');
-    var initialHeight = $faqMenu.position().top;
-    var widthRatio = $('#faq-all').width() / $(document).width();
+    var initialHeight = $docMenu.position().top;
+    var widthRatio = $('#doc-all').width() / $(document).width();
     $li_a.each(function(i, e) {
         var targetId = this.getAttribute('href');
         var $target = $(targetId);
@@ -19,7 +19,7 @@ $(document).ready(function() {
         window.scrollTo(0, offsets[targetId] + 90);
     })
     $(window).resize(function() {
-        $faqMenu.css({'width': widthRatio * $(document).width() / 4});
+        $docMenu.css({'width': widthRatio * $(document).width() / 4});
     })
     $(window).scroll(function() {
         var y = document.documentElement.scrollTop || document.body.scrollTop;
@@ -36,9 +36,9 @@ $(document).ready(function() {
         });
 
         if (y >= initialHeight + $titleDiv.height()) {
-            $faqMenu.css({'position': 'fixed', 'top': initialHeight + $titleDiv.height() / 2, 'left': $faqMenu.position().left});
+            $docMenu.css({'position': 'fixed', 'top': initialHeight + $titleDiv.height() / 2, 'left': $docMenu.position().left});
         } else {
-            $faqMenu.css({'position': 'static'});
+            $docMenu.css({'position': 'static'});
         }
     });
     $(window).resize();
