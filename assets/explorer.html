@@ -8,6 +8,7 @@ API Explorer
 <link rel="stylesheet" type="text/css" href="//rawgit.com/abodelot/jquery.json-viewer/master/json-viewer/jquery.json-viewer.css"></link>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css"></link>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.2/motion-ui.min.css"></link>
+<link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
@@ -15,7 +16,6 @@ API Explorer
 <script type="text/javascript" src="//rawgit.com/abodelot/jquery.json-viewer/master/json-viewer/jquery.json-viewer.js"></script>
 <script type="text/javascript" src="{% static 'explorer.js' %}"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/foundation.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.2/motion-ui.min.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -90,22 +90,14 @@ API Explorer
         <pre id="explore-result"></pre>
     </div>
 </div>
-<div class="row html-articles" style="display: none;">
-    <div class="columns">
-        <h5>Browse News Articles:</h5>
-    </div>
-    <div class="columns">
-        <div id="news-articles"></div>
-    </div>
-</div>
 
-
-<div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit>
+<div class="row orbit html-articles" role="region" aria-label="Favorite Space Pictures" style="display: none; width: 80%; margin: auto;" data-orbit id="news-articles-container" data-use-m-u-i="false">
+  <nav class="orbit-bullets" id="news-article-bullets"></nav>
   <ul class="orbit-container" id="news-articles">
     <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
     <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
   </ul>
-  <nav class="orbit-bullets" id="news-article-bullets"></nav>
+  
 </div>
 
 
