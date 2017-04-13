@@ -27,7 +27,7 @@ def query(rics=[], topics=[], date_range=[]):
     if len(topics):
         db_query &= Q(newsarticletopiccode__topic_code__in = topics)
 
-    results = NewsArticle.objects.filter(db_query).all()
+    results = NewsArticle.objects.filter(db_query).distinct()
     if len(results) > 0:
         logger.debug('Found query in LOCAL database')
 
