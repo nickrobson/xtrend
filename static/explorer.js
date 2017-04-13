@@ -2,12 +2,6 @@
 
 function viewArticlesWindow(jsonData) {
 
-    /*var html = '<h3>'
-    + jsonData.NewsDataSet[0].Headline
-    + '</h3>'
-    + '<div>'
-    + jsonData.NewsDataSet[0].NewsText;
-*/
     var $ulTag = $("#news-articles");
     $ulTag.find("li").remove(); // get rid of li tags inside
     // li tag .appendTo(html);
@@ -16,20 +10,27 @@ function viewArticlesWindow(jsonData) {
     // delete existing children
     for (var i = 0; i < jsonData.NewsDataSet.length; i++) {
         var article = jsonData.NewsDataSet[i];
+        
         // add new li tag
-        var $liTag = $("<li>").addClass("orbit-slide");
+        var $liTag = $("<li>").addClass("orbit-slide").addClass("card");
+        $liTag.css({'padding': '20px'});
         if (i == 0) {
             $liTag.addClass("is-active");
         }
-        var $h3Tag = $("<h3>").text(article.Headline);
-        var $textTag = $("<div>").text(article.NewsText).css({'font-family': 'Droid Sans Mono, monospace'});
+        var $h3Tag = $("<h3>").text(article.Headline).css({'font': 'normal 400 41px/43px "Unit Slab Pro Bold","Times New Roman",Times,serif'});
+        var $hrTag = $("<hr>");
+        var $textTag = $("<div>").text(article.NewsText).css({'font-family': "Times New Roman"});
+        var $dateTag = $("<div>").text(article.TimeStamp).css({'font-family': "Times New Roman", 'color': '#555'});
         $textTag.html($textTag.html().replace(/\n    /g, "<br><br>"));
-        // div tag
+        
         $h3Tag.appendTo($liTag);
+        $dateTag.appendTo($liTag);
+        $hrTag.appendTo($liTag);
         $textTag.appendTo($liTag);
         $liTag.appendTo($ulTag);
-        
 
+        $liTag.css({'height': 'auto'});
+        
         // add new bullet
         var $bullet = $("<button>").attr("data-slide", i.toString());
         if (i == 0) {
@@ -40,6 +41,7 @@ function viewArticlesWindow(jsonData) {
         $bullet.appendTo($bullets);
     }
     Foundation.reInit($('#news-articles-container'));
+    $("#news-articles").css({'height': 'auto'});
 }
 
 function viewNews() {
