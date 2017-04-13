@@ -86,7 +86,7 @@ function fillExample() {
     $('#explore-topics').val("AMERS,COM");
     $('#explore-start-date').val("2015-10-01T00:00:00");
     $('#explore-end-date').val("2015-10-10T00:00:00");
-    submitExplore();
+    viewNews();
 }
 
 function getValueOf(id) {
