@@ -1,7 +1,44 @@
+var flipHeight = -1;
 
+$(document).ready(function() {
+    $('#news-article-prev').click(function() {
+        var slide = parseInt($('#news-article-bullets .is-active').attr('data-slide'));
+        slide = slide == 0 ? $('#news-article-bullets').children().length - 1 : slide - 1;
+        setActiveSlide(slide);
+    });
+    $('#news-article-next').click(function() {
+        var slide = parseInt($('#news-article-bullets .is-active').attr('data-slide')) + 1;
+        slide = slide == $('#news-article-bullets').children().length ? 0 : slide;
+        setActiveSlide(slide);
+    });
 
-function viewArticlesWindow(jsonData) {
+    var $bullets = $('#news-article-bullets-container');
 
+    $(window).scroll(function(e) {
+        var y = e.currentTarget.scrollY;
+        if (flipHeight < 0)
+            return;
+        if (y >= flipHeight && $bullets.css('position') !== 'fixed') {
+            $bullets.css({
+                'position': 'fixed',
+                'top': 120,
+                'left': $bullets.offset().left,
+                'width': 'inherit'
+            });
+        }
+        if (y < flipHeight && $bullets.css('position') === 'fixed') {
+            $bullets.css({ 'position': 'initial', 'width': '100%' });
+        }
+    })
+    $(window).scroll();
+});
+
+function setActiveSlide(slide) {
+    $('#news-article-bullets').children().removeClass('is-active').eq(slide).addClass('is-active');
+    $('#news-articles').children().hide().eq(slide).show();
+}
+
+function loadFormatted(jsonData) {
     var $ulTag = $("#news-articles");
     $ulTag.find("li").remove(); // get rid of li tags inside
     // li tag .appendTo(html);
@@ -12,7 +49,7 @@ function viewArticlesWindow(jsonData) {
         var article = jsonData.NewsDataSet[i];
         
         // add new li tag
-        var $liTag = $("<li>").addClass("orbit-slide").addClass("card");
+        var $liTag = $("<li>").addClass("card");
         $liTag.css({'padding': '20px'});
         if (i == 0) {
             $liTag.addClass("is-active");
@@ -20,7 +57,7 @@ function viewArticlesWindow(jsonData) {
         var $h3Tag = $("<h3>").text(article.Headline).css({'font': 'normal 400 41px/43px "Unit Slab Pro Bold","Times New Roman",Times,serif'});
         var $hrTag = $("<hr>");
         var $textTag = $("<div>").text(article.NewsText).css({'font-family': "Times New Roman"});
-        var $dateTag = $("<div>").text(article.TimeStamp).css({'font-family': "Times New Roman", 'color': '#555'});
+        var $dateTag = $("<div>").text(new Date(article.TimeStamp).toString()).css({'font-family': "Times New Roman", 'color': '#555'});
         $textTag.html($textTag.html().replace(/\n    /g, "<br><br>"));
         
         $h3Tag.appendTo($liTag);
@@ -36,15 +73,22 @@ function viewArticlesWindow(jsonData) {
         if (i == 0) {
             $bullet.addClass("is-active");
         }
-        var $span = $("<span>").addClass("show-for-sr");
-        $span.appendTo($bullet);
         $bullet.appendTo($bullets);
     }
-    Foundation.reInit($('#news-articles-container'));
     $("#news-articles").css({'height': 'auto'});
+
+    $('#news-article-bullets button').click(function() {
+        var attr = this.getAttribute('data-slide');
+        if (attr == '')
+            return;
+        var slide = parseInt(attr);
+        setActiveSlide(slide);
+    });
+
+    setActiveSlide(0);
 }
 
-function viewNews() {
+function viewFormatted() {
     var query = readFormInput();
 
     var xhr = new XMLHttpRequest();
@@ -53,25 +97,24 @@ function viewNews() {
     xhr.onload = function() {
         if (xhr.readyState === xhr.DONE) {
             var data = JSON.parse(xhr.responseText);
-            viewArticlesWindow(data);
+            loadFormatted(data);
             $('.explore').hide();
             $('.html-articles').show();
+            flipHeight = $('#news-article-bullets-container').offset().top - 120;
+            $(window).scroll();
         }
     };
     xhr.send();
 }
 
-
-
-function submitExplore() {
-    var query = readFormInput()
+function viewJSON() {
+    var query = readFormInput();
 
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/coolbananas/api/' + query);
     xhr.onload = function() {
         if (xhr.readyState === xhr.DONE) {
             var data = JSON.parse(xhr.responseText);
-            console.log(data);
             $('#explore-query').text('/coolbananas/api/' + query);
             $('#explore-result').jsonViewer(data, {collapsed: false, withQuotes: true});
             $('.html-articles').hide();
@@ -86,7 +129,7 @@ function fillExample() {
     $('#explore-topics').val("AMERS,COM");
     $('#explore-start-date').val("2015-10-01T00:00:00");
     $('#explore-end-date').val("2015-10-10T00:00:00");
-    viewNews();
+    viewFormatted();
 }
 
 function getValueOf(id) {

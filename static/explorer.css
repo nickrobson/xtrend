@@ -1,0 +1,22 @@
+#news-article-bullets {
+    position: relative;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+    text-align: center;
+}
+
+#news-article-bullets button {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: 0.1rem;
+    border-radius: 50%;
+    background-color: #cacaca;
+}
+
+#news-article-bullets button:hover {
+    background-color: #8a8a8a;
+}
+
+#news-article-bullets button.is-active {
+    background-color: #8a8a8a;
+}
