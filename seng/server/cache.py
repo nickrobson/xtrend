@@ -12,8 +12,11 @@ from django.db.models import Q
 from .models import NewsArticle, NewsArticleRIC, NewsArticleTopicCode
 from ..core import logger, sparql, result as dbresult
 
-def query(rics=[], topics=[], date_range=[]):
+global cache
+cache = {}
 
+def query(rics=[], topics=[], date_range=[]):
+    global cache
     logger.debug('Searching in LOCAL database')
 
     db_query = reduce(operator.and_, (
@@ -27,10 +30,17 @@ def query(rics=[], topics=[], date_range=[]):
     if len(topics):
         db_query &= Q(newsarticletopiccode__topic_code__in = topics)
 
+    key = (*sorted(rics), *sorted(topics), date_range[0], date_range[1])
+
+    if key in cache:
+        logger.debug('Query already in cache, getting results from cache')
+        results = cache[key]
+        return list(map(NewsArticle.to_json, results))
+
     results = NewsArticle.objects.filter(db_query).distinct()
     if len(results) > 0:
-        logger.debug('Found query in LOCAL database')
-
+        logger.debug('Found query in LOCAL database and caching results')
+        cache = {key : results}
         return list(map(NewsArticle.to_json, results))
 
     results = sparql.query(
