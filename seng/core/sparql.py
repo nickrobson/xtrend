@@ -12,7 +12,7 @@ from datetime import datetime
 
 from . import logger
 from .result import QueryResultSet
-from .constants import QUERY_TEMPLATE, DB_DATE_FORMAT
+from .constants import DB_DATE_FORMAT, QUERY_TEMPLATE, LIST_RICS_TEMPLATE, LIST_TOPICS_TEMPLATE
 
 
 # Converts the submitted RIC string into the format required for the SPARQL.
@@ -43,9 +43,8 @@ def get_date_filter(start, end):
     cond = cond_format % tuple(map(mapper, [start, end]))
     return 'FILTER (%s)' % cond
 
-
 # Asks the external database using a given SPARQL query, and returns the result.
-def do_query(query):
+def query_db(query):
     logger.debug('Querying REMOTE database')
 
     encoded = urllib.parse.quote(query.strip())
@@ -55,8 +54,14 @@ def do_query(query):
 
     logger.debug('Retrieved from REMOTE database')
 
-    results = json.loads(data)
-    results = results['results']['bindings']
+    data = json.loads(data)
+    data = data['results']['bindings']
+
+    return data
+
+# Asks the external database using a given SPARQL query, and returns the result, mapping the values to a QueryResultSet.
+def do_query(query):
+    data = query_db(query)
     return QueryResultSet(results)
 
 
@@ -67,3 +72,13 @@ def query(rics=[], topics=[], date_range=[]):
     d = get_date_filter(*date_range)
     q = QUERY_TEMPLATE.format(filter_ric=r, filter_topic=t, filter_daterange=d)
     return do_query(q)
+
+# Gets a list of all RICs in the remote database.
+def get_rics():
+    data = query_db(LIST_RICS_TEMPLATE)
+    return sorted(map(lambda o: o['ric']['value'][o['ric']['value'].rfind('RIC_')+4:], data))
+
+# Gets a list of all topic codes in the remote database.
+def get_topics():
+    data = query_db(LIST_TOPICS_TEMPLATE)
+    return sorted(map(lambda o: o['topicCode']['value'][o['topicCode']['value'].rfind('N2:')+3:], data))

@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 
-from django.conf.urls import url
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.shortcuts import redirect
 
@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^coolbananas/changelog/$', changelog.ChangeLogView.as_view()),
     url(r'^coolbananas/explorer/$', explorer.ExplorerView.as_view()),
     url(r'^coolbananas/documentation/$', doc.DocView.as_view()),
-    url(r'^coolbananas/api/$', api.ApiView.as_view()),
+    url(r'^coolbananas/api/', include(api.urls)),
     url(r'^coolbananas/$', homepage.HomepageView.as_view()),
     url(r'^$', lambda r: redirect('/coolbananas/')),
 ]
