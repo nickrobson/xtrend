@@ -21,7 +21,7 @@ class RicsView(SingletonView):
 
     def __init__(self):
         self.rics = sparql.get_rics()
-        # self.rics = list(filter(RIC_PATTERN.fullmatch, self.rics))
+        self.rics = list(filter(RIC_PATTERN.fullmatch, self.rics))
 
     def get(self, request):
         exec_start_date = timezone.now()
