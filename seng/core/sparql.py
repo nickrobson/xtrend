@@ -62,7 +62,7 @@ def query_db(query):
 # Asks the external database using a given SPARQL query, and returns the result, mapping the values to a QueryResultSet.
 def do_query(query):
     data = query_db(query)
-    return QueryResultSet(results)
+    return QueryResultSet(data)
 
 
 # Takes lists of the input RICs, topics, and dates, and converts it all into a SPARQL request.
