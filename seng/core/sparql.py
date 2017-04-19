@@ -76,9 +76,11 @@ def query(rics=[], topics=[], date_range=[]):
 # Gets a list of all RICs in the remote database.
 def get_rics():
     data = query_db(LIST_RICS_TEMPLATE)
-    return sorted(map(lambda o: o['ric']['value'][o['ric']['value'].rfind('RIC_')+4:], data))
+    data = map(lambda o: o['ric']['value'], data)
+    return sorted(map(lambda o: o[o.rfind('RIC_')+4:], data))
 
 # Gets a list of all topic codes in the remote database.
 def get_topics():
     data = query_db(LIST_TOPICS_TEMPLATE)
-    return sorted(map(lambda o: o['topicCode']['value'][o['topicCode']['value'].rfind('N2:')+3:], data))
+    data = map(lambda o: o['topicCode']['value'], data)
+    return sorted(map(lambda o: o[o.rfind('N2:')+3:], data))
