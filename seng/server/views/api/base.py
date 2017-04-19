@@ -43,7 +43,7 @@ class ApiView(SingletonView):
 
             if len(get_query):
                 end_exec()
-                return err('Invalid query parameters: %s' % (', '.join(list(get_query)),))
+                return err('Invalid query parameters: %s' % (', '.join(get_query),))
 
             if len(rics) and not RIC_LIST_PATTERN.fullmatch(rics):
                 end_exec()
@@ -70,7 +70,7 @@ class ApiView(SingletonView):
 
                 if start_date > end_date:
                     end_exec()
-                    return err('Start date is after end date')
+                    return err('StartDate is after EndDate')
 
                 logger.debug('Received query for: RICs = %s, Topics = %s, Dates = %s' % (rics, topics, (start_date, end_date)))
 
@@ -95,12 +95,15 @@ class ApiView(SingletonView):
 
                 end_exec()
                 return HttpResponse(json.dumps(final_json), content_type="application/json")
+            elif not start_date and not end_date:
+                end_exec()
+                return err('Missing StartDate and EndDate')
             elif not start_date:
                 end_exec()
-                return err('Missing start date')
+                return err('Missing StartDate')
             elif not end_date:
                 end_exec()
-                return err('Missing end date')
+                return err('Missing EndDate')
             end_exec()
             return err('Missing fields')
         except Exception as e:
