@@ -4,6 +4,15 @@
 Changelog
 {% endblock %}
 
+{% block styles %}
+<style>
+li p {
+    line-height: normal;
+    margin-bottom: initial;
+}
+</style>
+{% endblock %}
+
 {% block body %}
 <div class="row">
     <div class="columns small-12">
@@ -17,7 +26,7 @@ Changelog
                 <h5><a href="https://github.com/nickrobson/SENG3011/tree/{{version.version}}">{{version.display}}</a> ({{version.date}})</h5>
                 <ul>
                     {% for change in version.changes %}
-                        <li>{{change}}</li>
+                        <li>{{change|safe}}</li>
                     {% endfor %}
                 </ul>
             </div>

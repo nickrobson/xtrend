@@ -7,7 +7,7 @@ from django.template.loader import get_template
 from django.http import HttpResponse
 
 from . import SingletonView
-from ...core import gitutils
+from ...core import gitutils, mk
 
 def _get_git_data(tag):
     display_version = tag.replace("_", ".")
@@ -15,7 +15,7 @@ def _get_git_data(tag):
     version_data = {
         'version': tag,
         'display': display_version,
-        'changes': tag_metadata['description'].split('\n\n'),
+        'changes': list(map(mk.convert, tag_metadata['description'].split('\n\n'))),
         'date': tag_metadata['date'].strftime('%d/%m/%y')
     }
     return version_data
