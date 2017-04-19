@@ -9,17 +9,34 @@ Documentation
 <script type="text/javascript" src="{% static 'doc.js' %}"></script>
 {% endblock %}
 
+{% block styles %}
+<style>
+.menu-indent {
+    padding-left: 2rem;
+    list-style: none;
+}
+</style>
+{% endblock %}
+
 {% block body %}
 <div class="row" id="doc-all">
     <div class="small-3 columns" id="doc-menu">
         <ul class="vertical menu">
-            <li><a href="#usage">Usage</a></li>
-            <li><a href="#input">Input</a></li>
-            <li><a href="#output">Output</a></li>
+            <li>
+                <a href="#doc-main">Main API</a>
+                <ul class="vertical menu menu-indent">
+                    <li><a href="#doc-main-usage">Usage</a></li>
+                    <li><a href="#doc-main-input">Input</a></li>
+                    <li><a href="#doc-main-output">Output</a></li>
+                </ul>
+            </li>
+            <hr>
+            <li><a href="#doc-rics">Listing Instrument IDs</a></li>
+            <li><a href="#doc-topics">Listing Topic Codes</a></li>
             <hr>
             <li>
                 <a href="#appendix">Appendix</a>
-                <ul class="vertical menu" style="padding-left: 2rem; list-style: none;">
+                <ul class="vertical menu menu-indent">
                     <li><a href="#appendix-comma-delimited">Comma Delimited Lists</a></li>
                     <li><a href="#appendix-date-format">Date Format</a></li>
                     <li><a href="#appendix-languages">Languages</a></li>
@@ -29,149 +46,247 @@ Documentation
         </ul>
     </div>
     <div class="small-9 columns" id="doc-body">
-        <h4>Documentation</h4>
-        <p><b>NOTE:</b> All URLs can be clicked on to experiment.</p>
-        <div id="usage">
-            <h5>Usage</h5>
-            <p>
-                The API can be accessed remotely via GET requests from the following URL:
-            </p>
-            <p>
-                <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/">https://nickr.xyz/coolbananas/api/</a></code>
-            </p>
-            <p>
-                In order for this to be a GET request, it needs to be followed by a ? symbol, followed by each of the parameters separated by & symbols. Each parameter has a key and a value assigned to it by an =. An example of this is:
-            </p>
-            <p>
-                <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z">https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z</a></code>
-            </p>
-            <p>
-                This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function in your terminal. You can also use it in programs by calling similar functions in your language of choice.
-            </p>
+        <h3>Documentation</h3>
+        <p><b>N.B.</b> All URLs can be clicked on to experiment.</p>
+        <div id="doc-main">
+            <h4>Main API</h4>
+            <div id="doc-main-usage">
+                <h5>Usage</h5>
+                <p>
+                    The API can be accessed remotely via GET requests from the following URL:
+                </p>
+                <p>
+                    <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/">https://nickr.xyz/coolbananas/api/</a></code>
+                </p>
+                <p>
+                    In order for this to be a GET request, it needs to be followed by a ? symbol, followed by each of the parameters separated by & symbols. Each parameter has a key and a value assigned to it by an =. An example of this is:
+                </p>
+                <p>
+                    <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z">https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z</a></code>
+                </p>
+                <p>
+                    This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function in your terminal. You can also use it in programs by calling similar functions in your language of choice.
+                </p>
+            </div>
+            <hr>
+            <div id="doc-main-input">
+                <h5>Input</h5>
+                <table>
+                    <thead>
+                        <td>Parameter</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>InstrumentIDs</pre></td>
+                            <td>An array of all the instrument IDs that you want to know about.
+                                <br />
+                                This is a <a href="#appendix-comma-delimited">comma delimited list</a> of Reuters Instrument Codes.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><pre>TopicCodes</pre></td>
+                            <td>An array of all the topic codes that you want to know about.
+                                <br />
+                                This is a <a href="#appendix-comma-delimited">comma delimited list</a> of Reuters Topic Codes
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><pre>StartDate</pre></td>
+                            <td>The date that the search starts at.
+                                <br />
+                                This is in the specific <a href="#appendix-date-format">date format</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><pre>EndDate</pre></td>
+                            <td>The date that the search ends at.
+                                <br />
+                                This is in the specific <a href="#appendix-date-format">date format</a>.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div id="doc-main-output">
+                <h5>Output</h5>
+                <p>
+                    By querying, you will receive a JSON object, with the following properties:
+                </p>
+                <table>
+                    <thead>
+                        <td>Property</td>
+                        <td>Type</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>success</pre></td>
+                            <td>boolean</td>
+                            <td>Returns whether the search was successful or not.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>error</pre></td>
+                            <td>string</td>
+                            <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>query_time</pre></td>
+                            <td>float</td>
+                            <td>How long the server took to generate your results, in seconds. This only appears if <i>success</i> is true.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>NewsDataSet</pre></td>
+                            <td>[object]</td>
+                            <td>An array of all the results of the search. This only appears if <i>success</i> is true.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    The objects of <i>NewsDataSet</i> have the following properties:
+                </p>
+                <table>
+                    <thead>
+                        <td>Property</td>
+                        <td>Type</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>URI</pre></td>
+                            <td>string</td>
+                            <td>A link to the source of this object.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>Language</pre></td>
+                            <td>string</td>
+                            <td>The language this article is written in.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>TimeStamp</pre></td>
+                            <td>string</td>
+                            <td>When the article was written.
+                                <br />
+                                This is in the specific <a href="#appendix-date-format">date format</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><pre>Headline</pre></td>
+                            <td>string</td>
+                            <td>The headline of the article.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>NewsText</pre></td>
+                            <td>string</td>
+                            <td>The content of the article.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>InstrumentIDs</pre></td>
+                            <td>[string]</td>
+                            <td>All the instrument IDs that matched this article.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>TopicCodes</pre></td>
+                            <td>[string]</td>
+                            <td>All the topic codes that matched this article.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </p>
+            </div>
         </div>
         <hr>
-        <div id="input">
-            <h5>Input</h5>
-            <table>
-                <thead>
-                    <td>Parameter</td>
-                    <td>Description</td>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><pre>InstrumentIDs</pre></td>
-                        <td>An array of all the instrument IDs that you want to know about.
-                            <br />
-                            This is a <a href="#appendix-comma-delimited">comma delimited list</a> of Reuters Instrument Codes.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>TopicCodes</pre></td>
-                        <td>An array of all the topic codes that you want to know about.
-                            <br />
-                            This is a <a href="#appendix-comma-delimited">comma delimited list</a> of Reuters Topic Codes</td>
-                    </tr>
-                    <tr>
-                        <td><pre>StartDate</pre></td>
-                        <td>The date that the search starts at.
-                            <br />
-                            This is in the specific <a href="#appendix-date-format">date format</a>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><pre>EndDate</pre></td>
-                        <td>The date that the search ends at.
-                            <br />
-                            This is in the specific <a href="#appendix-date-format">date format</a>.
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div id="doc-rics">
+            <h4>Listing Instrument IDs</h4>
+            <div id="doc-rics-usage">
+                <h5>Usage</h5>
+                <p>
+                    A list of Instrument IDs can be retrieved through a GET request to the following URL:
+                </p>
+                <p>
+                    <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/rics/">https://nickr.xyz/coolbananas/api/rics/</a></code>
+                </p>
+                <p>
+                    This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function in your terminal. You can also use it in programs by calling similar functions in your language of choice.
+                </p>
+            </div>
+            <div id="doc-rics-output">
+                <h5>Output</h5>
+                <p>
+                    By querying, you will receive a JSON object, with the following properties:
+                </p>
+                <table>
+                    <thead>
+                        <td>Property</td>
+                        <td>Type</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>success</pre></td>
+                            <td>boolean</td>
+                            <td>Returns whether the search was successful or not.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>error</pre></td>
+                            <td>string</td>
+                            <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>InstrumentIDs</pre></td>
+                            <td>[string]</td>
+                            <td>A list of instrument IDs known to this API. This only appears if <i>success</i> is true.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <hr>
-        <div id="output">
-            <h5>Output</h5>
-            <p>
-                By querying, you will receive a JSON object, with the following properties:
-            </p>
-            <table>
-                <thead>
-                    <td>Property</td>
-                    <td>Type</td>
-                    <td>Description</td>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><pre>success</pre></td>
-                        <td>boolean</td>
-                        <td>Returns whether the search was successful or not.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>error</pre></td>
-                        <td>string</td>
-                        <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>query_time</pre></td>
-                        <td>float</td>
-                        <td>How long the server took to generate your results, in seconds. This only appears if <i>success</i> is true.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>NewsDataSet</pre></td>
-                        <td>[object]</td>
-                        <td>An array of all the results of the search. This only appears if <i>success</i> is true.</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>
-                The objects of <i>NewsDataSet</i> have the following properties:
-            </p>
-            <table>
-                <thead>
-                    <td>Property</td>
-                    <td>Type</td>
-                    <td>Description</td>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><pre>URI</pre></td>
-                        <td>string</td>
-                        <td>A link to the source of this object.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>Language</pre></td>
-                        <td>string</td>
-                        <td>The language this article is written in.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>TimeStamp</pre></td>
-                        <td>string</td>
-                        <td>When the article was written.
-                            <br />
-                            This is in the specific <a href="#appendix-date-format">date format</a>.
-                    </tr>
-                    <tr>
-                        <td><pre>Headline</pre></td>
-                        <td>string</td>
-                        <td>The headline of the article.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>NewsText</pre></td>
-                        <td>string</td>
-                        <td>The content of the article.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>InstrumentIDs</pre></td>
-                        <td>[string]</td>
-                        <td>All the instrument IDs that matched this article.</td>
-                    </tr>
-                    <tr>
-                        <td><pre>TopicCodes</pre></td>
-                        <td>[string]</td>
-                        <td>All the topic codes that matched this article.</td>
-                    </tr>
-                </tbody>
-            </table>
-            </p>
+        <div id="doc-topics">
+            <h4>Listing Topic Codes</h4>
+            <div id="doc-topics-usage">
+                <h5>Usage</h5>
+                <p>
+                    A list of Topic Codes can be retrieved through a GET request to the following URL:
+                </p>
+                <p>
+                    <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/topics/">https://nickr.xyz/coolbananas/api/topics/</a></code>
+                </p>
+                <p>
+                    This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function in your terminal. You can also use it in programs by calling similar functions in your language of choice.
+                </p>
+            </div>
+            <div id="doc-topics-output">
+                <h5>Output</h5>
+                <p>
+                    By querying, you will receive a JSON object, with the following properties:
+                </p>
+                <table>
+                    <thead>
+                        <td>Property</td>
+                        <td>Type</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>success</pre></td>
+                            <td>boolean</td>
+                            <td>Returns whether the search was successful or not.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>error</pre></td>
+                            <td>string</td>
+                            <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>TopicCodes</pre></td>
+                            <td>[string]</td>
+                            <td>A list of topic codes known to this API. This only appears if <i>success</i> is true.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <hr>
         <div id="appendix">

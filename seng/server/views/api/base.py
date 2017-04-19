@@ -1,4 +1,4 @@
-# api.py
+# base.py
 # SENG3011 - Cool Bananas
 #
 # Handles the API's GET requests, and returns the JSON response for them.
@@ -8,25 +8,15 @@ import pytz
 import time
 
 from collections import OrderedDict
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from django.utils import timezone
 from datetime import datetime
 
-from . import SingletonView
-from .. import cache
-from ...core import logger
-from ...core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN
-
-
-def get_error_json(message):
-    return json.dumps(OrderedDict([
-            ('error', message),
-            ('success', False)
-        ]))
-
-
-def err(message):
-    return HttpResponseBadRequest(get_error_json(message), content_type='application/json')
+from .utils import err, get_error_json
+from .. import SingletonView
+from ... import cache
+from ....core import logger
+from ....core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, TOPIC_LIST_PATTERN
 
 
 class ApiView(SingletonView):
@@ -59,9 +49,9 @@ class ApiView(SingletonView):
                 end_exec()
                 return err('Invalid RICs list (must match regex of %s)' % RIC_LIST_PATTERN.pattern)
 
-            if len(topics) and not RIC_LIST_PATTERN.fullmatch(topics):
+            if len(topics) and not TOPIC_LIST_PATTERN.fullmatch(topics):
                 end_exec()
-                return err('Invalid topic codes list (must match regex of %s)' % RIC_LIST_PATTERN.pattern)
+                return err('Invalid topic codes list (must match regex of %s)' % TOPIC_LIST_PATTERN.pattern)
 
             if start_date and end_date:
                 # Then extract the data.
@@ -100,8 +90,8 @@ class ApiView(SingletonView):
 
                 final_json = OrderedDict()
                 final_json['NewsDataSet'] = cache_results
-                final_json['success'] = True
                 final_json['query_time'] = end_time - start_time
+                final_json['success'] = True
 
                 end_exec()
                 return HttpResponse(json.dumps(final_json), content_type="application/json")
