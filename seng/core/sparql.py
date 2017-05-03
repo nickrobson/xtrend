@@ -8,11 +8,11 @@ import json
 import urllib.parse
 import urllib.request
 
-from datetime import datetime
+from datetime import date, datetime
 
 from . import logger
 from .result import QueryResultSet
-from .constants import DB_DATE_FORMAT, QUERY_TEMPLATE, LIST_RICS_TEMPLATE, LIST_TOPICS_TEMPLATE
+from .constants import DB_DATE_FORMAT, API_DATE_FORMAT, DATE_FORMAT, QUERY_TEMPLATE, LIST_RICS_QUERY, LIST_TOPICS_QUERY, LIST_DATES_QUERY
 
 
 # Converts the submitted RIC string into the format required for the SPARQL.
@@ -75,12 +75,22 @@ def query(rics=[], topics=[], date_range=[]):
 
 # Gets a list of all RICs in the remote database.
 def get_rics():
-    data = query_db(LIST_RICS_TEMPLATE)
+    data = query_db(LIST_RICS_QUERY)
     data = map(lambda o: o['ric']['value'], data)
-    return sorted(map(lambda o: o[o.rfind('RIC_')+4:], data))
+    return sorted(map(lambda o: o[o.rfind('RIC_')+4:].upper(), data))
 
 # Gets a list of all topic codes in the remote database.
 def get_topics():
-    data = query_db(LIST_TOPICS_TEMPLATE)
+    data = query_db(LIST_TOPICS_QUERY)
     data = map(lambda o: o['topicCode']['value'], data)
-    return sorted(map(lambda o: o[o.rfind('N2:')+3:], data))
+    return sorted(map(lambda o: o[o.rfind('N2:')+3:].upper(), data))
+
+# Gets a list of all datetimes in the remote database.
+def get_datetimes():
+    data = query_db(LIST_DATES_QUERY)
+    data = map(lambda o: o['time']['value'], data)
+    return sorted(map(lambda d: datetime.strptime(d, API_DATE_FORMAT), data))
+
+# Gets a list of all dates in the remote database.
+def get_dates():
+    return sorted(set(map(datetime.date, get_datetimes())))
