@@ -3,6 +3,15 @@
 #
 # Functions used for converting user input into SPARQL, and querying the master database.
 
+# RACE CONDITION EXPLANATION:
+# ---------------------------
+# When there is a FILTER statement with one condition (no || or &&),
+#   the database software (for some reason) ignores the condition entirely
+#   and instead matches it as 'FALSE'. Hence no results are returned!
+# The crude fix for this is to add an extra condition that is NEVER true.
+#   for this case we use the dummy "qwertyuiop" which is neither a valid RIC
+#   nor a valid topic code. Hence it will never match it, only the first condition.
+
 import base64
 import json
 import urllib.parse
@@ -21,7 +30,7 @@ def get_ric_filter(rics):
         return ''
     each = map('?ric = ins:RIC_{}'.format, rics)
     cond = ' || '.join(each)
-    return 'FILTER (%s)' % cond
+    return 'FILTER (%s || ?ric = ins:RIC_qwertyuiop)' % cond # the last condition is to fix the race condition explained above
 
 
 # Converts the submitted topic filters into the format required for the SPARQL.
@@ -30,7 +39,7 @@ def get_topic_filter(topics):
         return ''
     each = map('?topicCode = "N2:{}"'.format, topics)
     cond = ' || '.join(each)
-    return 'FILTER (%s)' % cond
+    return 'FILTER (%s || ?topicCode = "N2:qwertyuiop")' % cond # the last condition is to fix the race condition explained above
 
 
 # Converts the submitted dates into the format required for the SPARQL.
