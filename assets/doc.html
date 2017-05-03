@@ -33,6 +33,7 @@ Documentation
             <hr>
             <li><a href="#doc-rics">Listing Instrument IDs</a></li>
             <li><a href="#doc-topics">Listing Topic Codes</a></li>
+            <li><a href="#doc-dates">Listing Dates</a></li>
             <hr>
             <li>
                 <a href="#appendix">Appendix</a>
@@ -65,7 +66,7 @@ Documentation
                     <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z">https://nickr.xyz/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z</a></code>
                 </p>
                 <p>
-                    This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function in your terminal. You can also use it in programs by calling similar functions in your language of choice.
+                    This GET request can be accessed either directly from the URL in your web browser, or by using <i>wget</i> or <i>curl</i> in your terminal. You can also use it in programs by calling similar functions in your language of choice.
                 </p>
             </div>
             <hr>
@@ -129,17 +130,17 @@ Documentation
                         <tr>
                             <td><pre>error</pre></td>
                             <td>string</td>
-                            <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
+                            <td>A message explaining what went wrong.<br>This only appears if <i>success</i> is false.</td>
                         </tr>
                         <tr>
                             <td><pre>query_time</pre></td>
                             <td>float</td>
-                            <td>How long the server took to generate your results, in seconds. This only appears if <i>success</i> is true.</td>
+                            <td>How long the server took to generate your results, in seconds.<br>This only appears if <i>success</i> is true.</td>
                         </tr>
                         <tr>
                             <td><pre>NewsDataSet</pre></td>
                             <td>[object]</td>
-                            <td>An array of all the results of the search. This only appears if <i>success</i> is true.</td>
+                            <td>An array of all the results of the search.<br>This only appears if <i>success</i> is true.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -208,7 +209,7 @@ Documentation
                     <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/rics/">https://nickr.xyz/coolbananas/api/rics/</a></code>
                 </p>
                 <p>
-                    This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function in your terminal. You can also use it in programs by calling similar functions in your language of choice.
+                    This GET request can be accessed either directly from the URL in your web browser, or by using <i>wget</i> or <i>curl</i> in your terminal. You can also use it in programs by calling similar functions in your language of choice.
                 </p>
             </div>
             <div id="doc-rics-output">
@@ -231,12 +232,12 @@ Documentation
                         <tr>
                             <td><pre>error</pre></td>
                             <td>string</td>
-                            <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
+                            <td>A message explaining what went wrong.<br>This only appears if <i>success</i> is false.</td>
                         </tr>
                         <tr>
                             <td><pre>InstrumentIDs</pre></td>
                             <td>[string]</td>
-                            <td>A list of instrument IDs known to this API. This only appears if <i>success</i> is true.</td>
+                            <td>A list of instrument IDs known to this API.<br>This only appears if <i>success</i> is true.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -254,7 +255,7 @@ Documentation
                     <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/topics/">https://nickr.xyz/coolbananas/api/topics/</a></code>
                 </p>
                 <p>
-                    This GET request can be accessed either directly from the URL in your web browser, or by using a wget or curl function in your terminal. You can also use it in programs by calling similar functions in your language of choice.
+                    This GET request can be accessed either directly from the URL in your web browser, or by using <i>wget</i> or <i>curl</i> in your terminal. You can also use it in programs by calling similar functions in your language of choice.
                 </p>
             </div>
             <div id="doc-topics-output">
@@ -277,12 +278,69 @@ Documentation
                         <tr>
                             <td><pre>error</pre></td>
                             <td>string</td>
-                            <td>A message explaining what went wrong. This only appears if <i>success</i> is false.</td>
+                            <td>A message explaining what went wrong.<br>This only appears if <i>success</i> is false.</td>
                         </tr>
                         <tr>
                             <td><pre>TopicCodes</pre></td>
                             <td>[string]</td>
-                            <td>A list of topic codes known to this API. This only appears if <i>success</i> is true.</td>
+                            <td>A list of topic codes known to this API.<br>This only appears if <i>success</i> is true.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <div id="doc-dates">
+            <h4>Listing Dates</h4>
+            <div id="doc-dates-usage">
+                <h5>Usage</h5>
+                <p>
+                    A list of unique dates (excluding times) on which articles have been published can be retrieved through a GET request to the following URL:
+                </p>
+                <p>
+                    <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/dates/">https://nickr.xyz/coolbananas/api/dates/</a></code>
+                </p>
+                <p>
+                    A list of unique dates (including times) on which articles have been published can be retrieved through a GET request to the following URL:
+                </p>
+                <p>
+                    <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/dates/">https://nickr.xyz/coolbananas/api/dates/?time=1</a></code>
+                </p>
+                <p>
+                    These GET requests can be accessed either directly from the URL in your web browser, or by using <i>wget</i> or <i>curl</i> in your terminal. You can also use them in programs by calling similar functions in your language of choice.
+                </p>
+            </div>
+            <div id="doc-dates-output">
+                <h5>Output</h5>
+                <p>
+                    By querying, you will receive a JSON object, with the following properties:
+                </p>
+                <table>
+                    <thead>
+                        <td>Property</td>
+                        <td>Type</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>success</pre></td>
+                            <td>boolean</td>
+                            <td>Returns whether the search was successful or not.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>error</pre></td>
+                            <td>string</td>
+                            <td>A message explaining what went wrong.<br>This only appears if <i>success</i> is false.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>Dates</pre></td>
+                            <td>[string]</td>
+                            <td>A list of dates on which articles have been published.<br>This only appears if <i>success</i> is true, and the <i>time</i> parameter <b>was not</b> used.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>Datetimes</pre></td>
+                            <td>[string]</td>
+                            <td>A list of datetimes on which articles have been published.<br>This only appears if <i>success</i> is true, and the <i>time</i> parameter <b>was</b> used.</td>
                         </tr>
                     </tbody>
                 </table>
