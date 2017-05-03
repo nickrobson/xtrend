@@ -4,15 +4,12 @@
 # Allows getting a list of topic codes
 
 import json
-import pytz
-import time
 
 from collections import OrderedDict
 from django.http import HttpResponse
 from django.utils import timezone
-from datetime import datetime
 
-from .utils import err, get_error_json
+from .utils import err
 from .. import SingletonView
 from ....core import logger, sparql
 from ....core.constants import TOPIC_PATTERN
