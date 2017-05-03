@@ -31,7 +31,10 @@ class DatesView(SingletonView):
             logger.info('Execution completed in', exec_end_date - exec_start_date)
         try:
             final_json = OrderedDict()
-            final_json['Datetimes' if show_times else 'Dates'] = self.datetimes if show_times else self.dates
+            if show_times:
+                final_json['Datetimes'] = self.datetimes
+            else:
+                final_json['Dates'] = self.dates
             final_json['success'] = True
             end_exec()
             return HttpResponse(json.dumps(final_json), content_type="application/json")
