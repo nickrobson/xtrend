@@ -12,8 +12,4 @@ from textblob import TextBlob
 
 def get_sentiment(text):
     blob = TextBlob(text)
-    sentiment = blob.sentiment
-    return OrderedDict([
-        ('polarity', sentiment.polarity),
-        ('subjectivity', sentiment.subjectivity)
-    ])
+    return blob.sentiment

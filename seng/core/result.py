@@ -141,7 +141,10 @@ class QueryResultSet(object):
             out['NewsText'] = first.news_body
             out['InstrumentIDs'] = sorted(set(reduce(lambda a, b: a + [ b.ric ], items, [])))
             out['TopicCodes'] = sorted(set(reduce(lambda a, b: a + [ b.topic_code ], items, [])))
-            out['Sentiment'] = first.sentiment
+            out['Sentiment'] = OrderedDict([
+                ('Polarity', first.sentiment.polarity),
+                ('Subjectivity', first.sentiment.subjectivity)
+            ])
 
             self.json_results.append(out)
 

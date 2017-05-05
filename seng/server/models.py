@@ -39,8 +39,8 @@ class NewsArticle(models.Model):
         if inst.polarity < -1 or inst.polarity > 1 or inst.subjectivity < 0 or inst.subjectivity > 1:
             logger.info('No sentiment data found for article in LOCAL database - analysing.')
             sentiment = get_sentiment(inst.news_text)
-            inst.polarity = sentiment['polarity']
-            inst.subjectivity = sentiment['subjectivity']
+            inst.polarity = sentiment.polarity
+            inst.subjectivity = sentiment.subjectivity
             inst.save()
         return inst
 
