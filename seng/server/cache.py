@@ -14,7 +14,7 @@ from ..core import logger, sparql, result as dbresult
 
 cache = {}
 
-def query(rics=[], topics=[], date_range=[]):
+def query(rics, topics, date_range):
     logger.debug('Searching in LOCAL database')
 
     db_query = reduce(operator.and_, (
@@ -56,7 +56,9 @@ def query(rics=[], topics=[], date_range=[]):
                 'language': result['Language'],
                 'time_stamp': result['TimeStamp'],
                 'headline': result['Headline'],
-                'news_text': result['NewsText']
+                'news_text': result['NewsText'],
+                'polarity': result['Sentiment']['Polarity'],
+                'subjectivity': result['Sentiment']['Subjectivity']
             })
         if created:
             n.save()

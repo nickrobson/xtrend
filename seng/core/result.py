@@ -11,6 +11,7 @@ from itertools import groupby
 from functools import reduce
 
 from .constants import API_DATE_FORMAT
+from .sentiment import get_sentiment
 
 class QueryResult(object):
 
@@ -40,6 +41,7 @@ class QueryResult(object):
         self._time = datetime.strptime(data['time']['value'][:-1] + '000Z', API_DATE_FORMAT)
         self._headline = data['headline']['value']
         self._news_body = data['newsBody']['value']
+        self._sentiment = get_sentiment(self._news_body)
 
     @property
     def uri(self):
@@ -90,6 +92,13 @@ class QueryResult(object):
         '''
         return self._news_body
 
+    @property
+    def sentiment(self):
+        '''
+        This article's sentiment.
+        '''
+        return self._sentiment
+
     def __hash__(self):
         return hash(self.uri)
 
@@ -132,6 +141,10 @@ class QueryResultSet(object):
             out['NewsText'] = first.news_body
             out['InstrumentIDs'] = sorted(set(reduce(lambda a, b: a + [ b.ric ], items, [])))
             out['TopicCodes'] = sorted(set(reduce(lambda a, b: a + [ b.topic_code ], items, [])))
+            out['Sentiment'] = OrderedDict([
+                ('Polarity', first.sentiment.polarity),
+                ('Subjectivity', first.sentiment.subjectivity)
+            ])
 
             self.json_results.append(out)
 

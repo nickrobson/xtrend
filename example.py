@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # example.py
 # SENG3011 - Cool Bananas
@@ -21,7 +21,7 @@ def run():
 
     json_output = results.to_json()
 
-    print(json.dumps(json_output))
+    print(json.dumps(json_output, indent=4, separators=(',', ': ')))
 
 
 if __name__ == '__main__':
