@@ -66,7 +66,7 @@ def run():
 
     data = json.loads(results)
 
-    print(data)
+    print(json.dumps(data, indent=4, separators=(',', ': ')))
 
 
 if __name__ == '__main__':
