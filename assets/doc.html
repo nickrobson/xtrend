@@ -32,6 +32,7 @@ Documentation
             </li>
             <hr>
             <li><a href="#doc-rics">Listing Instrument IDs</a></li>
+            <li><a href="#doc-companies">Listing Companies</a></li>
             <li><a href="#doc-topics">Listing Topic Codes</a></li>
             <li><a href="#doc-dates">Listing Dates</a></li>
             <hr>
@@ -194,7 +195,6 @@ Documentation
                         </tr>
                     </tbody>
                 </table>
-                </p>
             </div>
         </div>
         <hr>
@@ -238,6 +238,110 @@ Documentation
                             <td><pre>InstrumentIDs</pre></td>
                             <td>[string]</td>
                             <td>A list of instrument IDs known to this API.<br>This only appears if <i>success</i> is true.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <div id="doc-companies">
+            <h4>Listing Instrument IDs</h4>
+            <div id="doc-companies-usage">
+                <h5>Usage</h5>
+                <p>
+                    There are two URLs that can be requested:
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            A list of companies including their Instrument IDs and names can be retrieved through a GET request to the following URL:
+                        </p>
+                        <p>
+                            <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/companies/">https://nickr.xyz/coolbananas/api/companies/</a></code>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Information about a company can be retrieved through a GET request to the following template URL:
+                        </p>
+                        <p>
+                            <code>https://nickr.xyz/coolbananas/api/companies/[Instrument ID here]/</code>
+                        </p>
+                        <p>
+                            For example, to retrieve information with Instrument ID of BHP (BHP Billiton Limited):
+                        </p>
+                        <p>
+                            <code><a target="_blank" href="https://nickr.xyz/coolbananas/api/companies/BHP/">https://nickr.xyz/coolbananas/api/companies/BHP/</a></code>
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    These GET request can be accessed either directly from the URL in your web browser, or by using <i>wget</i> or <i>curl</i> in your terminal. You can also use them in programs by calling similar functions in your language of choice.
+                </p>
+            </div>
+            <div id="doc-companies-output">
+                <h5>Output</h5>
+                <p>
+                    By querying the first URL, you will receive a JSON object, with the following properties:
+                </p>
+                <table>
+                    <thead>
+                        <td>Property</td>
+                        <td>Type</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>success</pre></td>
+                            <td>boolean</td>
+                            <td>Returns whether the search was successful or not.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>error</pre></td>
+                            <td>string</td>
+                            <td>A message explaining what went wrong.<br>This only appears if <i>success</i> is false.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>Companies</pre></td>
+                            <td>object</td>
+                            <td>The keys of the returned object are the instrument IDs, and the values are the names.<br>This only appears if <i>success</i> is true.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    By querying the second URL, you will receive a JSON object, with the following properties:
+                </p>
+                <table>
+                    <thead>
+                        <td>Property</td>
+                        <td>Type</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><pre>success</pre></td>
+                            <td>boolean</td>
+                            <td>Returns whether the search was successful or not.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>error</pre></td>
+                            <td>string</td>
+                            <td>A message explaining what went wrong.<br>This only appears if <i>success</i> is false.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>InstrumentID</pre></td>
+                            <td>string</td>
+                            <td>The requested company's instrument ID<br>This only appears if <i>success</i> is true.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>Name</pre></td>
+                            <td>string</td>
+                            <td>The requested company's name<br>This only appears if <i>success</i> is true.</td>
+                        </tr>
+                        <tr>
+                            <td><pre>Exchanges</pre></td>
+                            <td>[string]</td>
+                            <td>The ticker symbols for the stock exchanges on which the company's stock is present.<br>This only appears if <i>success</i> is true.</td>
                         </tr>
                     </tbody>
                 </table>
