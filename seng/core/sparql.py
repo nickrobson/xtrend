@@ -21,8 +21,28 @@ from datetime import date, datetime
 
 from . import logger
 from .result import QueryResultSet
-from .constants import DB_DATE_FORMAT, API_DATE_FORMAT, DATE_FORMAT, QUERY_TEMPLATE, LIST_RICS_QUERY, LIST_TOPICS_QUERY, LIST_DATES_QUERY
+from .constants import *
 
+RICS_LIST, TOPICS_LIST, DATES_LIST, DATETIMES_LIST = [], [], [], []
+
+def _load_db_data():
+    global RICS_LIST, TOPICS_LIST, DATETIMES_LIST, DATES_LIST
+
+    data = query_db(LIST_RICS_QUERY)
+    data = map(lambda o: o['ric']['value'], data)
+    rics = set(map(lambda o: o[o.rfind('RIC_')+4:].upper(), data))
+    RICS_LIST = sorted(filter(RIC_PATTERN.fullmatch, rics))
+
+    data = query_db(LIST_TOPICS_QUERY)
+    data = map(lambda o: o['topicCode']['value'], data)
+    topics = set(map(lambda o: o[o.rfind('N2:')+3:].upper(), data))
+    TOPICS_LIST = sorted(filter(TOPIC_PATTERN.fullmatch, topics))
+
+    data = query_db(LIST_DATES_QUERY)
+    data = map(lambda o: o['time']['value'], data)
+    DATETIMES_LIST = sorted(set(map(lambda d: datetime.strptime(d, API_DATE_FORMAT), data)))
+
+    DATES_LIST = sorted(set(map(datetime.date, get_datetimes())))
 
 # Converts the submitted RIC string into the format required for the SPARQL.
 def get_ric_filter(rics):
@@ -40,7 +60,6 @@ def get_topic_filter(topics):
     each = map('?topicCode = "N2:{}"'.format, topics)
     cond = ' || '.join(each)
     return 'FILTER (%s || ?topicCode = "N2:qwertyuiop")' % cond # the last condition is to fix the race condition explained above
-
 
 # Converts the submitted dates into the format required for the SPARQL.
 def get_date_filter(start, end):
@@ -73,7 +92,6 @@ def do_query(query):
     data = query_db(query)
     return QueryResultSet(data)
 
-
 # Takes lists of the input RICs, topics, and dates, and converts it all into a SPARQL request.
 def query(rics=[], topics=[], date_range=[]):
     r = get_ric_filter(rics)
@@ -84,22 +102,18 @@ def query(rics=[], topics=[], date_range=[]):
 
 # Gets a list of all RICs in the remote database.
 def get_rics():
-    data = query_db(LIST_RICS_QUERY)
-    data = map(lambda o: o['ric']['value'], data)
-    return sorted(set(map(lambda o: o[o.rfind('RIC_')+4:].upper(), data)))
+    return list(RICS_LIST)
 
 # Gets a list of all topic codes in the remote database.
 def get_topics():
-    data = query_db(LIST_TOPICS_QUERY)
-    data = map(lambda o: o['topicCode']['value'], data)
-    return sorted(set(map(lambda o: o[o.rfind('N2:')+3:].upper(), data)))
+    return list(TOPICS_LIST)
 
 # Gets a list of all datetimes in the remote database.
 def get_datetimes():
-    data = query_db(LIST_DATES_QUERY)
-    data = map(lambda o: o['time']['value'], data)
-    return sorted(set(map(lambda d: datetime.strptime(d, API_DATE_FORMAT), data)))
+    return list(DATETIMES_LIST)
 
 # Gets a list of all dates in the remote database.
 def get_dates():
-    return sorted(set(map(datetime.date, get_datetimes())))
+    return list(DATES_LIST)
+
+_load_db_data()
