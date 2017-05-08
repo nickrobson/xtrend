@@ -12,13 +12,11 @@ from django.utils import timezone
 from .utils import err
 from .. import SingletonView
 from ....core import logger, sparql
-from ....core.constants import TOPIC_PATTERN
 
 class TopicsView(SingletonView):
 
     def __init__(self):
         self.topics = sparql.get_topics()
-        self.topics = list(filter(TOPIC_PATTERN.fullmatch, self.topics))
 
     def get(self, request):
         exec_start_date = timezone.now()
