@@ -245,7 +245,7 @@ Documentation
         </div>
         <hr>
         <div id="doc-companies">
-            <h4>Listing Instrument IDs</h4>
+            <h4>Listing Companies</h4>
             <div id="doc-companies-usage">
                 <h5>Usage</h5>
                 <p>
@@ -304,7 +304,7 @@ Documentation
                         <tr>
                             <td><pre>Companies</pre></td>
                             <td>object</td>
-                            <td>The keys of the returned object are the instrument IDs, and the values are the names.<br>This only appears if <i>success</i> is true.</td>
+                            <td>The keys of the returned object are the instrument IDs.<br>The values are objects of the below <i>Company Data Format.</i><br>This only appears if <i>success</i> is true.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -329,6 +329,20 @@ Documentation
                             <td>A message explaining what went wrong.<br>This only appears if <i>success</i> is false.</td>
                         </tr>
                         <tr>
+                            <td><pre>(extra)</pre></td>
+                            <td colspan="2">When success is true, all fields in the below <i>Company Data Format</i> are present.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h5>Company Data Format</h5>
+                <table>
+                    <thead>
+                        <td>Property</td>
+                        <td>Type</td>
+                        <td>Description</td>
+                    </thead>
+                    <tbody>
+                        <tr>
                             <td><pre>InstrumentID</pre></td>
                             <td>string</td>
                             <td>The requested company's instrument ID<br>This only appears if <i>success</i> is true.</td>
@@ -340,8 +354,8 @@ Documentation
                         </tr>
                         <tr>
                             <td><pre>Exchanges</pre></td>
-                            <td>[string]</td>
-                            <td>The ticker symbols for the stock exchanges on which the company's stock is present.<br>This only appears if <i>success</i> is true.</td>
+                            <td>object</td>
+                            <td>The keys are ticker symbols for the stock exchanges on which the company's stock is present, and the values are the exchanges' names.<br>This only appears if <i>success</i> is true.</td>
                         </tr>
                     </tbody>
                 </table>
