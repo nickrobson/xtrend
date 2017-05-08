@@ -27,8 +27,8 @@ class CompaniesView(SingletonView):
             company_exchanges.append(exchange)
             companies_to_exchanges[company] = company_exchanges
 
-        def get_company_dict(company):
-            return OrderedDict([
+        def get_company_tuple(company):
+            return company.ric, OrderedDict([
                 ('InstrumentID', company.ric),
                 ('Name', company.name),
                 ('Exchanges', OrderedDict(
@@ -37,7 +37,7 @@ class CompaniesView(SingletonView):
             ])
 
         self.exchanges = OrderedDict(sorted(map(lambda exchange: (exchange.code, exchange.name), exchanges)))
-        self.companies = list(map(get_company_dict, sorted(companies, key = lambda c: c.ric)))
+        self.companies = OrderedDict(sorted(map(get_company_tuple, companies), key = lambda c: c[0]))
 
     def get(self, request, ric = None):
         exec_start_date = timezone.now()
@@ -49,7 +49,7 @@ class CompaniesView(SingletonView):
         try:
             final_json = OrderedDict()
             if ric is None:
-                final_json['Companies'] = self.companies
+                final_json['Companies'] = sorted(self.companies.values(), key = lambda c: c['InstrumentID'])
                 final_json['success'] = True
             else:
                 ric = ric.upper()
