@@ -187,7 +187,7 @@ COMPANIES = [
     ('YAL', 'Yancoal Australia Ltd'),
     ('YHOO', 'Yahoo! Inc'),
     ('YOKU', 'Youk Tudo Inc'),
-    ('ZSPH', 'ZS Pharma Inc')
+    ('ZSPH', 'ZS Pharma Inc'),
 ]
 
 if __name__ == '__main__':
