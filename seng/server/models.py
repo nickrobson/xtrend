@@ -59,3 +59,25 @@ class NewsArticleTopicCode(models.Model):
 
     class Meta:
         unique_together = (('article', 'topic_code'),)
+
+class Company(models.Model):
+
+    ric = models.CharField(null = False, unique = True, max_length = 20)
+    name = models.CharField(null = False, max_length = 120)
+
+    def to_json(self):
+        return OrderedDict([
+            ('InstrumentID', self.ric),
+            ('Name', self.name),
+        ])
+
+class StockExchange(models.Model):
+
+    code = models.CharField(null = False, unique = True, max_length = 5)
+    name = models.CharField(null = False, unique = True, max_length = 120)
+
+    def to_json(self):
+        return OrderedDict([
+            ('Code', self.code),
+            ('Name', self.name),
+        ])

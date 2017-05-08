@@ -86,19 +86,19 @@ def query(rics=[], topics=[], date_range=[]):
 def get_rics():
     data = query_db(LIST_RICS_QUERY)
     data = map(lambda o: o['ric']['value'], data)
-    return sorted(map(lambda o: o[o.rfind('RIC_')+4:].upper(), data))
+    return sorted(set(map(lambda o: o[o.rfind('RIC_')+4:].upper(), data)))
 
 # Gets a list of all topic codes in the remote database.
 def get_topics():
     data = query_db(LIST_TOPICS_QUERY)
     data = map(lambda o: o['topicCode']['value'], data)
-    return sorted(map(lambda o: o[o.rfind('N2:')+3:].upper(), data))
+    return sorted(set(map(lambda o: o[o.rfind('N2:')+3:].upper(), data)))
 
 # Gets a list of all datetimes in the remote database.
 def get_datetimes():
     data = query_db(LIST_DATES_QUERY)
     data = map(lambda o: o['time']['value'], data)
-    return sorted(map(lambda d: datetime.strptime(d, API_DATE_FORMAT), data))
+    return sorted(set(map(lambda d: datetime.strptime(d, API_DATE_FORMAT), data)))
 
 # Gets a list of all dates in the remote database.
 def get_dates():
