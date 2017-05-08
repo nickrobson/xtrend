@@ -11,21 +11,33 @@ from django.utils import timezone
 
 from .utils import err
 from .. import SingletonView
-from ...models import Company
+from ...models import Company, StockExchange
 from ....core import logger, sparql
 from ....core.constants import RIC_PATTERN
 
 class CompaniesView(SingletonView):
 
     def __init__(self):
-        self.companies = Company.objects.all()
-        self.companies = OrderedDict(sorted(map(lambda c: (c.ric, c.name), self.companies)))
-        self.companies_to_exchanges = {}
+        companies = Company.objects.all()
+        exchanges = StockExchange.objects.all()
+        companies_to_exchanges = {}
         for ric in sparql.get_rics():
             company, exchange = ric.split('.', 1)
-            exchanges = self.companies_to_exchanges.get(company, [])
-            exchanges.append(exchange)
-            self.companies_to_exchanges[company] = exchanges
+            company_exchanges = companies_to_exchanges.get(company, [])
+            company_exchanges.append(exchange)
+            companies_to_exchanges[company] = company_exchanges
+
+        def get_company_tuple(company):
+            return company.ric, OrderedDict([
+                ('InstrumentID', company.ric),
+                ('Name', company.name),
+                ('Exchanges', OrderedDict(
+                    sorted(map(lambda code: (code, self.exchanges[code]), companies_to_exchanges[company.ric]))
+                ))
+            ])
+
+        self.exchanges = OrderedDict(sorted(map(lambda exchange: (exchange.code, exchange.name), exchanges)))
+        self.companies = OrderedDict(sorted(map(get_company_tuple, companies), key = lambda c: c[0]))
 
     def get(self, request, ric = None):
         exec_start_date = timezone.now()
@@ -37,14 +49,12 @@ class CompaniesView(SingletonView):
         try:
             final_json = OrderedDict()
             if ric is None:
-                final_json['Companies'] = self.companies
+                final_json['Companies'] = sorted(self.companies.values(), key = lambda c: c['InstrumentID'])
                 final_json['success'] = True
             else:
                 ric = ric.upper()
                 if ric in self.companies:
-                    final_json['InstrumentID'] = ric.upper()
-                    final_json['Name'] = self.companies[ric]
-                    final_json['Exchanges'] = self.companies_to_exchanges[ric]
+                    final_json.update(self.companies[ric])
                     final_json['success'] = True
                 else:
                     final_json['error'] = 'Invalid RIC: not applicable'
