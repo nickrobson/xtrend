@@ -27,8 +27,8 @@ class CompaniesView(SingletonView):
             company_exchanges.append(exchange)
             companies_to_exchanges[company] = company_exchanges
 
-        def get_company_tuple(company):
-            return company.ric, OrderedDict([
+        def get_company_dict(company):
+            return OrderedDict([
                 ('InstrumentID', company.ric),
                 ('Name', company.name),
                 ('Exchanges', OrderedDict(
@@ -37,7 +37,7 @@ class CompaniesView(SingletonView):
             ])
 
         self.exchanges = OrderedDict(sorted(map(lambda exchange: (exchange.code, exchange.name), exchanges)))
-        self.companies = OrderedDict(sorted(map(get_company_tuple, companies)))
+        self.companies = list(map(get_company_dict, sorted(companies, key = lambda c: c.ric)))
 
     def get(self, request, ric = None):
         exec_start_date = timezone.now()
