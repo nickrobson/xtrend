@@ -7,6 +7,7 @@
 
 from datetime import datetime, date
 from seng.core.constants import DB_DATE_FORMAT
+import urllib.parse
 import urllib.request
 import json, sys
 
@@ -20,9 +21,7 @@ class CompanyReturn(object):
         # TODO: Asserts.
 
         self._ric = data['InstrumentID']
-        self._data = []
-        for d in data['Data']:
-            self._data.append(Data(d))
+        self._data = list(map(Data, data['Data']))
 
     @property
     def ric(self):
@@ -48,14 +47,8 @@ class Data(object):
         self._date = result_date_convert(data['Date'])
         self._return = data['Return']
         self._return_percentage = data['Return_Percentage']
-        if 'CM_Return' in data:
-            self._cm_return = data['CM_Return']
-        else:
-            self._cm_return = None
-        if 'AV_Return' in data:
-            self._av_return = data['AV_Return']
-        else:
-            self._av_return = None
+        self._cm_return = data.get('CM_Return')
+        self._av_return = data.get('AV_Return')
         self._open = data['Open']
         self._high = data['High']
         self._low = data['Low']
@@ -149,59 +142,40 @@ class Data(object):
 
 # Converts the submitted RIC string into the format required for the SPARQL.
 def get_ric_filter(rics):
-    s = 'InstrumentID='
-    for r in rics:
-        s += r
-        s += ','
-    s = s[:-1]
-    return s
+    return 'InstrumentID=' + ','.join(map(urllib.parse.quote, rics)) if len(rics) else ''
 
 # Converts the submitted vars into the format required for the SPARQL.
 def get_var_filter(var):
-    s = ''
-    for v in var:
-        s += 'ListOfVar='
-        s += v
-        s += '&'
-    s = s[:-1]
-    return s
-
+    return '&'.join(map(lambda s: 'ListOfVar=' + urllib.parse.quote(s), var))
 
 # Converts the submitted date into the format required for the SPARQL.
 def get_date_filter(d):
-    s = 'DateOfInterest='
-    s += str(d.day)
-    s += '%2F'
-    s += str(d.month)
-    s += '%2F'
-    s += str(d.year)
-    return s
+    return 'DateOfInterest=' + urllib.parse.quote(d.strftime('%d/%m/%Y'))
 
 def result_date_convert(s):
-    return date(int(s[0:4]), int(s[5:7]), int(s[8:10]))
+    return date(*map(int, s.split('-')))
 
 # Does the query.
 def do_query(query):
     print(query)
-    return urllib.request.urlopen(query).read().decode('utf-8')
+    with urllib.request.urlopen(query) as conn:
+        data = conn.read().decode()
+    return data
 
 # Converts the arguments into the proper SPARQL command, then does it.
 def query(rics=[], var=[], upper_window=0, lower_window=0, date_of_interest=date(1970, 1, 1)):
-    r = get_ric_filter(rics)
-    v = get_var_filter(var)
-    u = 'UpperWindow=' + str(upper_window)
-    l = 'LowerWindow=' + str(lower_window)
-    d = get_date_filter(date_of_interest)
-    return do_query(stingray_url + r + '&' + v + '&' + u + '&' + l + '&' + d)
+    ric_filter = get_ric_filter(rics)
+    var_filter = get_var_filter(var)
+    date_filter = get_date_filter(date_of_interest)
+    upper_window = 'UpperWindow={}'.format(upper_window)
+    lower_window = 'LowerWindow={}'.format(lower_window)
+    filters = [ric_filter, var_filter, upper_window, lower_window, date_filter]
+    json_data = do_query(f'{stingray_url}{"&".join(filters)}')
+    return json.loads(json_data)
 
 # Turns the json.loads object data into proper classes.
 def generate_company_returns(data):
-    # TODO: Asserts.
-    company_returns = []
-    for c in data['CompanyReturns']:
-        company_returns.append(CompanyReturn(c))
-
-    return company_returns
+    return list(map(CompanyReturn, data['CompanyReturns']))
 
 def run():
     results = query(
@@ -212,13 +186,11 @@ def run():
         date_of_interest = date(2012, 12, 10)
     )
 
-    data = json.loads(results)
+    print(json.dumps(results, indent=4, separators=(',', ': ')))
 
-    print(json.dumps(data, indent=4, separators=(',', ': ')))
+    company_returns = generate_company_returns(results)
 
-    company_returns = generate_company_returns(data)
-
-    pass
+    print(company_returns)
 
 if __name__ == '__main__':
     run()
