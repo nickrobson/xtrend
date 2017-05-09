@@ -36,8 +36,13 @@ class CompaniesView(SingletonView):
                 ))
             ])
 
-        self.exchanges = OrderedDict(sorted(map(lambda exchange: (exchange.code, exchange.name), exchanges)))
-        self.companies = OrderedDict(sorted(map(get_company_tuple, companies), key = lambda c: c[0]))
+        try:
+            self.exchanges = OrderedDict(sorted(map(lambda exchange: (exchange.code, exchange.name), exchanges)))
+            self.companies = OrderedDict(sorted(map(get_company_tuple, companies), key = lambda c: c[0]))
+        except:
+            self.exchanges = {}
+            self.companies = {}
+            return
 
     def get(self, request, ric = None):
         exec_start_date = timezone.now()
