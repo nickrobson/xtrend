@@ -129,7 +129,10 @@ function fillExample() {
     chosenRics.add('BLT.L');
     updateChosenRics();
 
-    $('#explore-topics').val("AMERS,COM");
+    chosenTopics.add('AMERS');
+    chosenTopics.add('COM');
+    updateChosenTopics();
+
     $('#explore-start-date').val("2015-10-01T00:00:00");
     $('#explore-end-date').val("2015-10-10T00:00:00");
     viewFormatted();
@@ -141,7 +144,7 @@ function getValueOf(id) {
 
 function readFormInput() {
     var rics = Array.from(chosenRics).join(',');
-    var topics = getValueOf('explore-topics');
+    var topics = Array.from(chosenTopics).join(',');
     var startDate = getValueOf('explore-start-date');
     var endDate = getValueOf('explore-end-date');
 
