@@ -125,8 +125,14 @@ function viewJSON() {
 }
 
 function fillExample() {
-    $('#explore-rics').val("BHP.AX,BLT.L");
-    $('#explore-topics').val("AMERS,COM");
+    chosenRics.add('BHP.AX');
+    chosenRics.add('BLT.L');
+    updateChosenRics();
+
+    chosenTopics.add('AMERS');
+    chosenTopics.add('COM');
+    updateChosenTopics();
+
     $('#explore-start-date').val("2015-10-01T00:00:00");
     $('#explore-end-date').val("2015-10-10T00:00:00");
     viewFormatted();
@@ -137,8 +143,8 @@ function getValueOf(id) {
 }
 
 function readFormInput() {
-    var rics = getValueOf('explore-rics');
-    var topics = getValueOf('explore-topics');
+    var rics = Array.from(chosenRics).join(',');
+    var topics = Array.from(chosenTopics).join(',');
     var startDate = getValueOf('explore-start-date');
     var endDate = getValueOf('explore-end-date');
 
