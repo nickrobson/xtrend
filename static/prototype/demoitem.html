@@ -1,0 +1,118 @@
+<html>
+    <style>
+        #title-div {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            z-index: 10;
+
+            display: flex;
+            background-color: black;
+
+            width: 100%;
+            height: 200px;
+            transition: height .375s ease;
+        }
+        
+
+        #title-div.shrink {
+            height: 100px;
+        }
+
+        #title-div h1 {
+            color: white; 
+            text-align: center;
+            width: 100%;
+            align-self: center;
+            margin: auto;
+            font-size: 700%; /* Used to be 10vw */
+            font-family: 'Arial';
+            transition: font-size .375s ease;
+        }
+
+        #title-div a {
+            color: white;
+        }
+
+        #title-div.shrink h1 {
+            font-size: 350%; /* Used to be 10vw */
+        }
+        
+
+        .offset {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-top: 200px;
+            width: 100%;
+        }
+
+        .buy-block {
+            text-align: center;
+        }
+        .sell-block {
+            text-align: center;
+        }
+
+        .home-links {
+            text-align: center;
+            font-family: 'Oxygen', sans-serif;
+            font-weight: 500;
+            font-size: 2vw;
+        }
+    </style>
+
+    <head>
+        <title>XShare</title>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css"></link>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Oxygen:400,700">
+    </head>
+    <body>
+        <div id="title-div" class="shadow">
+            <h1><a href="homepage.html">XShare</a></h1>
+        </div>
+        <div class="offset">
+            <br />
+            <div class="row">
+                <div class="columns small-4">
+                    <h2>BHP</h2>
+                </div>
+                <div class="columns small-4">
+                    <h4>+50.3</h4>
+                    Add a bar here.
+                </div>
+                <div class="columns small-4">
+                    Trading at: $599.99
+                    Add a + or -
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="columns small-6">
+                    Add a lovely graph here.
+                </div>
+                <div class="columns small-6">
+                    <h4>Most recent articles</h4>
+                    <h5>Faltering Chinese demand keeps beating down coal prices</h5>
+                    <i>Mon Oct 05 2015 18:20:32 GMT+1100 (AUS Eastern Summer Time)</i>
+                    <p>* Morgan Stanley cuts long-term coal price forecast</p>
+                    <p>* Producers benefit from weaker currencies to lift production</p>
+                    <p>* Coal most prominent victim of end of commodity "super-cycle"</p>
+                    <p>By Jacob Gronholt-Pedersen and Henning Gloystein</p>
+                    <p>SINGAPORE, Oct 5 (Reuters) - Slumping Chinese demand continues to batter thermal coal prices in the first week of the fourth quarter, with benchmark physical cargoes dropping to their lowest in more than eight years. </p>
+                    <p>Read more...</p>
+                    <hr />
+                    <h5>UPDATE 1-Peru copper output surges again in August on Antamina, new mines</h5>
+                    <i>Fri Oct 02 2015 04:35:46 GMT+1000 (AUS Eastern Standard Time)</i>
+                    <p>LIMA, Oct 1 (Reuters) - Copper production in Peru, the world's No. 3 producer of the red metal, surged 30 percent for a second straight month in August while gold, zinc and tin output all dropped, the Energy and Mines Ministry said on Thursday.</p>
+                    <p>Read more...</p>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/foundation.min.js"></script>
+    </body>
+</html>
