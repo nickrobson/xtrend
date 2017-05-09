@@ -15,6 +15,7 @@ API Explorer
 {% load static %}
 <script type="text/javascript" src="//rawgit.com/abodelot/jquery.json-viewer/master/json-viewer/jquery.json-viewer.js"></script>
 <script type="text/javascript" src="{% static 'explorer.js' %}"></script>
+<script type="text/javascript" src="{% static 'ricpicker.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -33,8 +34,7 @@ API Explorer
     </div>
     <div class="row">
         <div class="columns">
-            <label>Instrument IDs
-                <input type="text" id="explore-rics" placeholder="RIC1,RIC2,RIC3">
+            <label id="ricpicker-container">
             </label>
         </div>
     </div>
