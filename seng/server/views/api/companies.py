@@ -42,7 +42,6 @@ class CompaniesView(SingletonView):
         except:
             self.exchanges = {}
             self.companies = {}
-            return
 
     def get(self, request, ric = None):
         exec_start_date = timezone.now()
