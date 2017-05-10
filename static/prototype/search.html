@@ -36,15 +36,20 @@
                 </div>
                 <div class="row">
                     <div class="columns">
-                        <label>Share Price Range <b>PUT IN A SLIDEY THING</b>
-                            <input type="text" id="search-share-price-range">
-                        </label>
+                        <label>Share Price Range</label>
+                        <div class="slider" data-slider data-initial-start="25" data-initial-end="75">
+                            <span class="slider-handle" data-slider-handle role="slider" tabindex="1"></span>
+                            <span class="slider-fill" data-slider-fill></span>
+                            <span class="slider-handle" data-slider-handle role="slider" tabindex="1"></span>
+                            <input type="hidden">
+                            <input type="hidden">
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="columns">
                         <label>Days Since Last Update <i>(0 is don't care)</i>
-                            <input type="number" min="0" id="search-date" placeholder="5">
+                            <input type="number" min="0" id="search-date" placeholder="0">
                         </label>
                     </div>
                 </div>
