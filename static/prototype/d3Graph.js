@@ -1,7 +1,6 @@
-
 // Set the dimensions of the canvas / graph
 var margin = {top: 30, right: 20, bottom: 30, left: 50},
-    width = 500 - margin.left - margin.right,
+    width = $('.graphContainer').width() - margin.left - margin.right,
     height = 250 - margin.top - margin.bottom;
 // Parse the date / time
 var parseDate = d3.time.format("%Y-%m-%d").parse;
@@ -10,12 +9,16 @@ var parseDate = d3.time.format("%Y-%m-%d").parse;
 var x = d3.time.scale().range([0, width]);
 var y = d3.scale.linear().range([height, 0]);
 
+// Axis formatter
+var commasFormatter = d3.format(",.0f")
+
 // Define the axes
 var xAxis = d3.svg.axis().scale(x)
     .orient("bottom").ticks(d3.time.week, 2);
 
 var yAxis = d3.svg.axis().scale(y)
-    .orient("left").ticks(5);
+    .orient("left").ticks(5)
+    .tickFormat(function(d) { return "$" + commasFormatter(d); });
 
 // Define the line
 var valueline = d3.svg.line()
