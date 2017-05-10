@@ -22,18 +22,7 @@
             <div style="height: 30px"></div>
             <form id="search" action="searchresults.html">
                 <div class="row">
-                    <div class="columns">
-                        <label>Instrument IDs
-                            <input type="text" id="search-rics" placeholder="RIC1,RIC2,RIC3">
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="columns">
-                        <label>Topic Codes
-                            <input type="text" id="search-topics" placeholder="TopicCode1,TopicCode2,TopicCode3">
-                        </label>
-                    </div>
+                    <div class="columns" id="ricpicker-container"></div>
                 </div>
                 <div class="row">
                     <div class="columns">
@@ -81,6 +70,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/foundation.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.2.0/nouislider.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"></script>
+        <script type="text/javascript" src="/coolbananas/static/pickers.js"></script>
         <script>
             var slider = document.getElementById('slider');
 
