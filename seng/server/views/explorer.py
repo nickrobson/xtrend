@@ -6,12 +6,12 @@
 from django.template.loader import get_template
 from django.http import HttpResponse
 
-from . import SingletonView
+from ...utils import SingletonView
 
 class ExplorerView(SingletonView):
 
     def __init__(self):
-        template = get_template('assets/explorer.html')
+        template = get_template('assets/api/explorer.html')
         self.content = template.render()
 
     def get(self, request):

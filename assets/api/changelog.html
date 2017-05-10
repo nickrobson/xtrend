@@ -1,4 +1,4 @@
-{% extends "assets/layout.html" %}
+{% extends "assets/api/layout.html" %}
 
 {% block title %}
 Changelog
@@ -16,7 +16,7 @@ li p {
 {% block body %}
 <div class="row">
     <div class="columns small-12">
-        <h4>Changelog</h4>
+        <h3 class="fancy-font">Changelog</h3>
     </div>
 </div>
     {% for version in versions %}

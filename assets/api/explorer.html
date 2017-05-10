@@ -1,4 +1,4 @@
-{% extends "assets/layout.html" %}
+{% extends "assets/api/layout.html" %}
 
 {% block title %}
 API Explorer
@@ -8,20 +8,20 @@ API Explorer
 {% load static %}
 <link rel="stylesheet" type="text/css" href="//rawgit.com/abodelot/jquery.json-viewer/master/json-viewer/jquery.json-viewer.css"></link>
 <link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono" rel="stylesheet">
-<link href="{% static 'explorer.css' %}" rel="stylesheet">
+<link href="{% static 'api/explorer.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
 {% load static %}
 <script type="text/javascript" src="//rawgit.com/abodelot/jquery.json-viewer/master/json-viewer/jquery.json-viewer.js"></script>
-<script type="text/javascript" src="{% static 'explorer.js' %}"></script>
-<script type="text/javascript" src="{% static 'pickers.js' %}"></script>
+<script type="text/javascript" src="{% static 'api/explorer.js' %}"></script>
+<script type="text/javascript" src="{% static 'api/pickers.js' %}"></script>
 {% endblock %}
 
 {% block body %}
 <div class="row">
     <div class="columns small-12">
-        <h4>API Explorer</h4>
+        <h3 class="fancy-font">API Explorer</h3>
     </div>
 </div>
 <div style="height: 30px"></div>

@@ -1,10 +1,6 @@
-{% extends "assets/layout.html" %}
+{% extends "assets/api/layout.html" %}
 
-{% block title %}
-Home
-{% endblock %}
-
-{% block linkhome %}{% endblock %}
+{% block title %} Home {% endblock %}
 
 {% block body %}
 {% load static %}
@@ -41,7 +37,7 @@ Home
             </div>
         </div>
     </div>
-    <h3>Versions</h3>
+    <h3 class="fancy-font">Versions</h3>
     {% for version in versions %}
         <div class="card" style="padding: 10px;">
             <div class="row">

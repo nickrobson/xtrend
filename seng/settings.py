@@ -50,13 +50,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'seng.server.urls'
+ROOT_URLCONF = 'seng.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.dirname(os.path.dirname(BASE_DIR))
+            os.path.dirname(BASE_DIR)
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'seng.server.wsgi.application'
+WSGI_APPLICATION = 'seng.wsgi.application'
 
 
 # Database
@@ -119,5 +119,5 @@ USE_TZ = True
 STATIC_URL = '/coolbananas/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'static')
+    os.path.join(os.path.dirname(BASE_DIR), 'static')
 ]

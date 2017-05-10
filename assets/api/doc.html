@@ -1,4 +1,4 @@
-{% extends "assets/layout.html" %}
+{% extends "assets/api/layout.html" %}
 
 {% block title %}
 Documentation
@@ -6,7 +6,7 @@ Documentation
 
 {% block scripts %}
 {% load static %}
-<script type="text/javascript" src="{% static 'doc.js' %}"></script>
+<script type="text/javascript" src="{% static 'api/doc.js' %}"></script>
 {% endblock %}
 
 {% block styles %}
@@ -48,7 +48,7 @@ Documentation
         </ul>
     </div>
     <div class="small-9 columns" id="doc-body">
-        <h3>Documentation</h3>
+        <h3 class="fancy-font">Documentation</h3>
         <p><b>N.B.</b> All URLs can be clicked on to experiment.</p>
         <div id="doc-main">
             <h4>Main API</h4>

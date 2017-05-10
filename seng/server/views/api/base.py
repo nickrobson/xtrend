@@ -13,10 +13,10 @@ from django.utils import timezone
 from datetime import datetime
 
 from .utils import err, get_error_json
-from .. import SingletonView
 from ... import cache
 from ....core import logger
 from ....core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, TOPIC_LIST_PATTERN
+from ....utils import SingletonView
 
 
 class ApiView(SingletonView):

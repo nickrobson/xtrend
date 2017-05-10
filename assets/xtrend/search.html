@@ -1,0 +1,107 @@
+{% extends "assets/xtrend/layout.html" %}
+
+{% block title %} Search Results {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.2.0/nouislider.min.css">
+{% endblock %}
+
+{% block scripts %}
+{% load static %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.2.0/nouislider.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/wnumb/1.1.0/wNumb.min.js"></script>
+<script type="text/javascript" src="{% static 'api/pickers.js' %}"></script>
+<script>
+    var slider = document.getElementById('slider');
+
+    noUiSlider.create(slider, {
+        start: [20, 250],
+        connect: true,
+        tooltips: true,
+        step: 1,
+        format: wNumb({
+            decimals: 0,
+            prefix: '$'
+        }),
+        range: {
+            'min': 0,
+            '10%': 10,
+            '32.36%': 50,
+            '50%': 100,
+            '75%': 500,
+            'max': 1000
+        },
+        pips: {
+            mode: 'range',
+            density: 3,
+            format: wNumb({
+                decimals: 0,
+                prefix: '$'
+            })
+        },
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="columns small-12">
+        <h4>Search</h4>
+    </div>
+</div>
+<div style="height: 30px"></div>
+<form id="search" action="/coolbananas/xtrend/search/results/">
+    <div class="row">
+        <div class="columns" id="ricpicker-container"></div>
+    </div>
+    <div class="row">
+        <div class="columns">
+            <label>Share Price Range</label>
+            <br />
+            <br />
+            <div id="slider"></div>
+            <br />
+            <br />
+        </div>
+    </div>
+    <div class="row">
+        <div class="columns">
+            <label>Days Since Last Update <i>(0 is don't care)</i>
+                <input type="number" min="0" id="search-date" placeholder="0">
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="columns small-12">
+            <fieldset class="fieldset">
+                <legend>Buy / Sell?</legend>
+                <input id="buy-checkbox" type="checkbox" checked><label for="buy-checkbox">Buy</label>
+                <input id="sell-checkbox" type="checkbox" checked><label for="sell-checkbox">Sell</label>
+            </fieldset>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="columns" style="align-content: center; width: 100%;">
+            <button class="button" type="submit" style="width: 100%;">Search</button>
+        </div>
+    </div>
+</form>
+<div class="row explore" style="display: none;">
+    <div class="columns">
+        <h5>Query:</h5>
+    </div>
+    <div class="columns">
+        <pre id="explore-query"></pre>
+    </div>
+</div>
+<br>
+<div class="row explore" style="display: none;">
+    <div class="columns">
+        <h5>Result:</h5>
+    </div>
+    <div class="columns">
+        <pre id="explore-result"></pre>
+    </div>
+</div>
+{% endblock %}

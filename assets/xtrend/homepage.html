@@ -1,0 +1,87 @@
+{% extends "assets/xtrend/layout.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block styles %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'xtrend/xtrend.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="middle">
+    <div class="home-links">
+        <div class="row">
+            <div class="large-4 columns">
+                <h4></h4>
+            </div>
+            <div class="large-4 columns">
+                <h4><a href="/coolbananas/xtrend/search/">&#x1F50D; Search</a></h4>
+            </div>
+            <div class="large-4 columns">
+                <h4></h4>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row middle">
+    <div class="buy-block">
+        <h2>Best Buys</h2>
+        <div class="columns small-4">
+            <h3><a href="/coolbananas/xtrend/demoitem/">NAB.AX</a></h3>
+            <h5>+69.4</h5>
+            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                <div class="progress-meter" style="width: 84.7%"></div>
+            </div>
+        </div>
+        <div class="columns small-4">
+            <h3><a href="/coolbananas/xtrend/demoitem/">ANZ.AX</a></h3>
+            <h5>+50.3</h5>
+            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                <div class="progress-meter" style="width: 75.15%"></div>
+            </div>
+        </div>
+        <div class="columns small-4">
+            <h3><a href="/coolbananas/xtrend/demoitem/">OR.TO</a></h3>
+            <h5>+34.4</h5>
+            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                <div class="progress-meter" style="width: 67.2%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row middle">
+    <div class="sell-block">
+        <h2>Best Sells</h2>
+        <div class="columns small-4">
+            <h3><a href="/coolbananas/xtrend/demoitem/">BHP.AX</a></h3>
+            <h5>-57.2</h5>
+            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                <div class="progress-meter" style="width: 21.4%"></div>
+            </div>
+        </div>
+        <div class="columns small-4">
+            <h3><a href="/coolbananas/xtrend/demoitem/">IGO.AX</a></h3>
+            <h5>-32.8</h5>
+            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                <div class="progress-meter" style="width: 33.6%"></div>
+            </div>
+        </div>
+        <div class="columns small-4">
+            <h3><a href="/coolbananas/xtrend/demoitem/">PAOC.OB</a></h3>
+            <h5>-24.7</h5>
+            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                <div class="progress-meter" style="width: 37.65%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <br />
+    <br />
+    <br />
+    <br />
+    <pre style="text-align: center;">Team Cool Bananas</pre>
+</div>
+{% endblock %}

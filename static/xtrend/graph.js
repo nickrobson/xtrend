@@ -35,7 +35,7 @@ var svg = d3.select("body").select(".graphContainer")
               "translate(" + margin.left + "," + margin.top + ")");
 
 // Get the data
-d3.csv("data.csv", function(error, data) {
+d3.csv("/coolbananas/static/xtrend/data.csv", function(error, data) {
     data.forEach(function(d) {
         d.date = parseDate(d.date);
         d.close = +d.close;

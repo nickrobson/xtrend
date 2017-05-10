@@ -9,8 +9,8 @@ import subprocess
 from django.http import FileResponse, HttpResponseBadRequest, HttpResponseServerError
 from django.shortcuts import redirect
 
-from . import SingletonView
 from ...core import gitutils
+from ...utils import SingletonView
 
 class DownloadTagView(SingletonView):
 

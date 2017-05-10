@@ -10,10 +10,10 @@ from django.http import HttpResponse
 from django.utils import timezone
 
 from .utils import err
-from .. import SingletonView
 from ...models import Company, StockExchange
 from ....core import logger, sparql
 from ....core.constants import RIC_PATTERN
+from ....utils import SingletonView
 
 class CompaniesView(SingletonView):
 
