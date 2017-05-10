@@ -59,3 +59,21 @@
 	font-weight: 500;
 	font-size: 2vw;
 }
+
+path { 
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.graphContainer {
+    width: 100%;
+}
