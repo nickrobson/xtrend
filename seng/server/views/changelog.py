@@ -6,8 +6,8 @@
 from django.template.loader import get_template
 from django.http import HttpResponse
 
-from . import SingletonView
 from ...core import gitutils, mk
+from ...utils import SingletonView
 
 def _get_git_data(tag):
     display_version = tag.replace("_", ".")
@@ -24,7 +24,7 @@ class ChangeLogView(SingletonView):
 
     def __init__(self):
         versions = list(map(_get_git_data, reversed(gitutils.get_tags())))
-        template = get_template('assets/changelog.html')
+        template = get_template('assets/api/changelog.html')
         self.content = template.render({'versions': versions})
 
     def get(self, request):

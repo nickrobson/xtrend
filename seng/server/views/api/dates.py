@@ -11,9 +11,9 @@ from django.utils import timezone
 from datetime import date, datetime
 
 from .utils import err
-from .. import SingletonView
 from ....core import logger, sparql
 from ....core.constants import DATE_FORMAT, API_DATE_FORMAT
+from ....utils import SingletonView
 
 class DatesView(SingletonView):
 

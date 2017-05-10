@@ -36,7 +36,7 @@
     font-size: 350%; /* Used to be 10vw */
 }
 
-h3, .fancy-font {
+.fancy-font {
     font-family: 'Lobster', cursive;
 }
 

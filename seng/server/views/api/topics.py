@@ -10,8 +10,8 @@ from django.http import HttpResponse
 from django.utils import timezone
 
 from .utils import err
-from .. import SingletonView
 from ....core import logger, sparql
+from ....utils import SingletonView
 
 class TopicsView(SingletonView):
 
