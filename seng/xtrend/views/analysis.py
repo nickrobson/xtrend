@@ -8,10 +8,10 @@ from django.http import HttpResponse
 
 from ...utils import SingletonView
 
-class DemoItemView(SingletonView):
+class RICAnalysisView(SingletonView):
 
     def __init__(self):
-        template = get_template('assets/xtrend/demoitem.html')
+        template = get_template('assets/xtrend/analysis.html')
         self.content = template.render()
 
     def get(self, request):
