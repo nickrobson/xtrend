@@ -35,7 +35,7 @@ class RICAnalysisView(SingletonView):
             raise Http404('You need to specify an instrument ID!')
         if not RIC_PATTERN.fullmatch(ric):
             raise Http404('Invalid instrument ID!')
-        articles = NewsArticle.objects.filter(newsarticleric__ric = ric).order_by('time_stamp').reverse()[:10].all()
+        articles = NewsArticle.objects.filter(newsarticleric__ric = ric).order_by('time_stamp').reverse()[:50].all()
         if not len(articles):
             raise Http404('We have no analysis on %s, as there are no news articles.' % ric)
         articles = list(map(lambda article: {
@@ -45,7 +45,6 @@ class RICAnalysisView(SingletonView):
                 'uri': article.uri,
                 'polarity': article.polarity,
                 'polarity_image': get_polarity_image(article.polarity),
-                'polarity_width': 100 if -.1 < article.polarity < .1 else math.ceil(math.log(500+1.1**abs(article.polarity * 100))*10),
             }, articles))
         content = self.template.render({
             'InstrumentID': ric,
