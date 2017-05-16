@@ -1,11 +1,12 @@
 var xtrendLoadGraph = function(){};
 
-    (function(){
+(function(){
 
     // Set the dimensions of the canvas / graph
     var margin = {top: 30, right: 20, bottom: 30, left: 50},
         width = $('.graphContainer').width() - margin.left - margin.right,
         height = 250 - margin.top - margin.bottom;
+
     // Parse the date / time
     var parseDate = d3.timeParse("%Y-%m-%d");
 
@@ -76,10 +77,4 @@ var xtrendLoadGraph = function(){};
 
         });
     }
-
-    $(window).resize(function() {
-        if (globalRic !== undefined) {
-            xtrendLoadGraph(globalRic);
-        }
-    });
 })();

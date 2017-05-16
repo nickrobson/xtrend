@@ -54,10 +54,10 @@ function loadFormatted(jsonData) {
         if (i == 0) {
             $liTag.addClass("is-active");
         }
-        var $h3Tag = $("<h3>").text(article.Headline).css({'font': 'normal 400 41px/43px "Unit Slab Pro Bold","Times New Roman",Times,serif'});
+        var $h3Tag = $("<h3>").text(article.Headline);
         var $hrTag = $("<hr>");
-        var $textTag = $("<div>").text(article.NewsText).css({'font-family': "Times New Roman"});
-        var $dateTag = $("<div>").text(new Date(article.TimeStamp).toString()).css({'font-family': "Times New Roman", 'color': '#555'});
+        var $textTag = $("<div>").text(article.NewsText);
+        var $dateTag = $("<div>").text(new Date(article.TimeStamp).toString());
         $textTag.html($textTag.html().replace(/\n    /g, "<br><br>"));
         
         $h3Tag.appendTo($liTag);

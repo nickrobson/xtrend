@@ -12,6 +12,18 @@ from .. import models
 from ...utils import SingletonView
 from ...core.constants import URI_PATTERN
 
+def format_body(text):
+    lines = text.split('\n    ')
+    lines = map(lambda line: '<p>%s</p>' % line, lines)
+    return '\n\n'.join(lines)
+
+def get_polarity_image(polarity):
+    if polarity > .1:
+        return '/coolbananas/static/sentiment/arrow_up.svg'
+    if polarity < -.1:
+        return '/coolbananas/static/sentiment/arrow_down.svg'
+    return '/coolbananas/static/sentiment/neutral.svg'
+
 class APIArticleView(SingletonView):
 
     def __init__(self):
@@ -26,10 +38,14 @@ class APIArticleView(SingletonView):
         if article is None:
             raise Http404('There is no article with URI: %s' % (uri,))
         render_context = {
-            'uri': uri,
-            'headline': article.headline,
-            'timestamp': article.time_stamp,
-            'body': html.escape(article.news_text).replace('\n    ', '<br><br>'),
+            'article': {
+                'headline': article.headline,
+                'timestamp': article.time_stamp,
+                'body': format_body(article.news_text),
+                'uri': article.uri,
+                'polarity': article.polarity,
+                'polarity_image': get_polarity_image(article.polarity),
+            },
         }
         content = self.template.render(render_context)
         return HttpResponse(content, content_type='text/html')
