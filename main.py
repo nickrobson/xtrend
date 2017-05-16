@@ -9,11 +9,17 @@
 
 if __name__ == '__main__':
 
+    import json
     import os
     import sys
 
     from django.core.management import execute_from_command_line
 
+    with open('config.json') as f:
+        config = f.read()
+
+    os.environ.setdefault('SECRET_KEY', config['secret_key'])
+    os.environ.setdefault('DEBUG', config['debug'])
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "seng.settings")
 
     if len(sys.argv[1:]):
