@@ -3,7 +3,7 @@
 import sqlite3
 
 def main():
-    conn = sqlite3.connect('seng/server/db.sqlite3')
+    conn = sqlite3.connect('seng/db.sqlite3')
     curs = conn.cursor()
 
     curs.execute('DELETE FROM server_stockexchange')
