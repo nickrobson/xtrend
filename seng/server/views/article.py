@@ -10,6 +10,7 @@ from django.http import HttpResponse, Http404
 
 from .. import models
 from ...utils import SingletonView
+from ...core.constants import URI_PATTERN
 
 class APIArticleView(SingletonView):
 
@@ -19,6 +20,8 @@ class APIArticleView(SingletonView):
     def get(self, request, uri = None):
         if uri is None:
             raise Http404('You need to specify an article URI!')
+        if not URI_PATTERN.fullmatch(uri):
+            raise Http404('Invalid URI!')
         article = models.NewsArticle.objects.get(uri = uri)
         if article is None:
             raise Http404('There is no article with URI: %s' % (uri,))
