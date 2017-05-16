@@ -48,7 +48,7 @@ var xtrendLoadGraph = function(){};
                 .attr("transform", 
                       "translate(" + margin.left + "," + margin.top + ")");
 
-        d3.csv("/coolbananas/static/xtrend/data.csv", function(error, data) {
+        d3.csv("/coolbananas/xtrend/returns/?InstrumentID=BHP.AX", function(error, data) {
             data.forEach(function(d) {
                 d.date = parseDate(d.date);
                 d.close = +d.close;
