@@ -22,6 +22,6 @@ class ReturnsView(SingletonView):
         for r in query:
             if r.ric == ric:
                 for d in r.data:
-                    returnCSV += str(d.date) + ',' + str(d.adjusted_close) + '\n'
-        return HttpResponse(returnCSV, content_type='text/plain')
+                    returnCSV += '{},{}\n'.format(d.date, d.adjusted_close)
+        return HttpResponse(returnCSV, content_type='text/csv')
 
