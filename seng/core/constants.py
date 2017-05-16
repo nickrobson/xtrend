@@ -11,6 +11,8 @@ DB_DATE_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 API_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
 DATE_FORMAT = '%Y-%m-%d'
 
+URI_PATTERN = re.compile(r'[0-9]{8}-[0-9]{9}-[A-Za-z0-9]{10}-[0-9]-[0-9]')
+
 _RIC_PATTERN = r'(?:[A-Z0-9]+\.[A-Z]+)'
 RIC_PATTERN = re.compile(_RIC_PATTERN)
 RIC_LIST_PATTERN = re.compile(r'(?:'+_RIC_PATTERN+',)*'+_RIC_PATTERN)

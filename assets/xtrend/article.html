@@ -1,0 +1,24 @@
+{% extends "assets/xtrend/layout.html" %}
+
+{% block title %}
+Article {{uri}}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="columns small-12" id="news-articles">
+        <div class="card" style="padding: 20px">
+            <h3 style="font: normal 400 41px/43px &quot;Unit Slab Pro Bold&quot;,&quot;Times New Roman&quot;,Times,serif">
+                {{headline}}
+            </h3>
+            <div style="font-family: Times New Roman; color: #555">
+                {{timestamp}}
+            </div>
+            <hr>
+            <div style="font-family: Times New Roman">
+                {{body|safe}}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

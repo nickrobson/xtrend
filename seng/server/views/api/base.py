@@ -13,11 +13,10 @@ from django.utils import timezone
 from datetime import datetime
 
 from .utils import err, get_error_json
-from ... import cache
+from ... import cache, models
 from ....core import logger
-from ....core.constants import API_DATE_FORMAT, RIC_LIST_PATTERN, TOPIC_LIST_PATTERN
+from ....core.constants import API_DATE_FORMAT, URI_PATTERN, RIC_LIST_PATTERN, TOPIC_LIST_PATTERN
 from ....utils import SingletonView
-
 
 class ApiView(SingletonView):
 
@@ -35,11 +34,26 @@ class ApiView(SingletonView):
             # This is the stuff after the question mark:
             # http://127.0.0.1:5002/coolbananas/api/?InstrumentIDs=BHP.AX,BLT.L&TopicCodes=AMERS,COM&StartDate=2015-10-01T00:00:00.000Z&EndDate=2015-10-10T00:00:00.000Z
             get_query = request.GET.dict()
+            uri = get_query.pop('URI', '')
             rics = get_query.pop('InstrumentIDs', '')
             topics = get_query.pop('TopicCodes', '')
             start_date = get_query.pop('StartDate', '')
             end_date = get_query.pop('EndDate', '')
             sentiment = get_query.pop('Sentiment', '0') == '1'
+
+            if len(uri):
+                if not URI_PATTERN.fullmatch(uri):
+                    end_exec()
+                    return err('Invalid URI (must match regex of %s)' % URI_PATTERN.pattern)
+                article = models.NewsArticle.objects.get(uri = uri)
+                end_exec()
+                if article is None:
+                    return err('No article found')
+                final_json = OrderedDict([
+                    ('Article', article.to_json()),
+                    ('success', True),
+                ])
+                return HttpResponse(json.dumps(final_json), content_type='application/json')
 
             if len(get_query):
                 end_exec()
