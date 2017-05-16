@@ -16,11 +16,11 @@ class ReturnsView(SingletonView):
         with open('static/xtrend/data.csv') as f:
             self.data = f.read()
 
-    def get(self, request):
-        query = companyreturn.stingrayQuery(('BHP.AX',), ('AV_Return', 'CM_Return'), 14, 90, date(2015, 12, 31))
+    def get(self, request, ric):
+        query = companyreturn.stingrayQuery((ric,), ('AV_Return', 'CM_Return'), 14, 90, date(2015, 12, 31))
         returnCSV = 'date,close\n'
         for r in query:
-            if r.ric == 'BHP.AX':
+            if r.ric == ric:
                 for d in r.data:
                     returnCSV += str(d.date) + ',' + str(d.adjusted_close) + '\n'
         return HttpResponse(returnCSV, content_type='text/plain')
