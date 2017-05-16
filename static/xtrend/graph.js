@@ -56,7 +56,7 @@ var xtrendLoadGraph = function(){};
 
             // Scale the range of the data
             x.domain(d3.extent(data, function(d) { return d.date; }));
-            y.domain([15, 25]);
+            y.domain(d3.extent(data, function(d) { return d.close; }).map(function(e, i) { return (i ? Math.floor : Math.ceil)(e + i * 3 - 1.5); }));
 
             // Add the valueline path.
             svg.append("path")
