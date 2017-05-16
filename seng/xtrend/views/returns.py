@@ -5,8 +5,10 @@
 
 from django.template.loader import get_template
 from django.http import HttpResponse
+from datetime import datetime, date
 
 from ...utils import SingletonView
+from ..core import companyreturn
 
 class ReturnsView(SingletonView):
 
@@ -15,5 +17,11 @@ class ReturnsView(SingletonView):
             self.data = f.read()
 
     def get(self, request):
-        return HttpResponse(self.data, content_type='text/html')
+        query = companyreturn.stingrayQuery(('BHP.AX',), ('AV_Return', 'CM_Return'), 14, 90, date(2015, 12, 31))
+        returnCSV = 'date,close\n'
+        for r in query:
+            if r.ric == 'BHP.AX':
+                for d in r.data:
+                    returnCSV += str(d.date) + ',' + str(d.adjusted_close) + '\n'
+        return HttpResponse(returnCSV, content_type='text/plain')
 
