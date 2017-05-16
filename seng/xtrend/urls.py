@@ -4,14 +4,14 @@ from django.template.loader import get_template
 from django.urls.exceptions import Resolver404
 
 from .views import article, analysis, homepage, returns, search, searchresults
-from ..core.constants import URI_PATTERN
+from ..core.constants import RIC_PATTERN, URI_PATTERN
 
 xtrend_urls = [
-    url(r'^analysis/$', analysis.RICAnalysisView.as_view()),
+    url(r'^analysis/(?P<ric>'+RIC_PATTERN.pattern+')?$', analysis.RICAnalysisView.as_view()),
+    url(r'^article/(?P<uri>'+URI_PATTERN.pattern+')?$', article.XtrendArticleView.as_view()),
     url(r'^returns/$', returns.ReturnsView.as_view()),
     url(r'^search/results/$', searchresults.SearchResultsView.as_view()),
     url(r'^search/$', search.SearchView.as_view()),
-    url(r'^article/(?P<uri>'+URI_PATTERN.pattern+')?$', article.XtrendArticleView.as_view()),
     url(r'^$', homepage.HomepageView.as_view()),
 ]
 
