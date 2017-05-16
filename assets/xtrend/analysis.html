@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block body %}
+{% load l10n %}
 <div class="row">
     <div class="columns small-4">
         <h2>{{InstrumentID}}</h2>
@@ -45,7 +46,7 @@
                 <div class="row">
                     <div class="columns small-11">
                         <h4>{{article.headline}}</h4>
-                        <i>{{article.timestamp}}</i>
+                        <i>{{article.timestamp|localize}}</i>
                     </div>
                     <div class="columns small-1">
                         <img    title="{{article.polarity}}"
@@ -65,7 +66,7 @@
                 <div class="row">
                     <div class="columns small-11">
                         <h4>{{article.headline}}</h4>
-                        <i>{{article.timestamp}}</i>
+                        <i>{{article.timestamp|localize}}</i>
                     </div>
                     <div class="columns small-1">
                         <img    title="{{article.polarity}}"

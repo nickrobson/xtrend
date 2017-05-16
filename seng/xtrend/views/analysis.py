@@ -20,10 +20,10 @@ def format_body(text):
 
 def get_polarity_image(polarity):
     if polarity > .1:
-        return '/coolbananas/static/xtrend/arrow_up.svg'
+        return '/coolbananas/static/sentiment/arrow_up.svg'
     if polarity < -.1:
-        return '/coolbananas/static/xtrend/arrow_down.svg'
-    return '/coolbananas/static/xtrend/neutral.svg'
+        return '/coolbananas/static/sentiment/arrow_down.svg'
+    return '/coolbananas/static/sentiment/neutral.svg'
 
 class RICAnalysisView(SingletonView):
 
@@ -40,7 +40,7 @@ class RICAnalysisView(SingletonView):
             raise Http404('We have no analysis on %s, as there are no news articles.' % ric)
         articles = list(map(lambda article: {
                 'headline': article.headline,
-                'timestamp': article.time_stamp.strftime('%H:%M%p, %b %d, %Y'),
+                'timestamp': article.time_stamp,
                 'body': format_body(article.news_text),
                 'uri': article.uri,
                 'polarity': article.polarity,
