@@ -32,12 +32,8 @@ var xtrendLoadGraph = function(){};
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.close); });
 
-    var globalRic = undefined;
-
     // Get the data
     xtrendLoadGraph = function(ric) {
-        globalRic = ric;
-
         $('.graphContainer').empty();
         
         // Adds the svg canvas
@@ -55,9 +51,12 @@ var xtrendLoadGraph = function(){};
                 d.close = +d.close;
             });
 
+            var y_extent = d3.extent(data, function(d) { return d.close; });
+            var y_diff = (y_extent[1] - y_extent[0]) / 10;
+
             // Scale the range of the data
             x.domain(d3.extent(data, function(d) { return d.date; }));
-            y.domain(d3.extent(data, function(d) { return d.close; }).map(function(e, i) { return (i ? Math.floor : Math.ceil)(e + i * 3 - 1.5); }));
+            y.domain(y_extent.map(function(e, i) { return e + y_diff * (i * 2 - 1); }));
 
             // Add the valueline path.
             svg.append("path")
