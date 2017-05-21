@@ -3,25 +3,30 @@
 #
 # Gets company returns for a specific Instrument ID
 
+import json
+
+from collections import OrderedDict
+from datetime import date
 from django.template.loader import get_template
 from django.http import HttpResponse
-from datetime import datetime, date
 
+from ..core import stocks
 from ...utils import SingletonView
-from ..core import companyreturn
 
 class ReturnsView(SingletonView):
 
-    def __init__(self):
-        with open('static/xtrend/data.csv') as f:
-            self.data = f.read()
-
-    def get(self, request, ric):
-        query = companyreturn.stingrayQuery((ric,), ('AV_Return', 'CM_Return'), 14, 90, date(2015, 12, 31))
-        returnCSV = 'date,close\n'
-        for r in query:
-            if r.ric == ric:
-                for d in r.data:
-                    returnCSV += '{},{}\n'.format(d.date, d.adjusted_close)
-        return HttpResponse(returnCSV, content_type='text/csv')
+    def get(self, request, rics):
+        query = stocks.get(
+            rics = rics.split(','),
+            upper_window = 14,
+            lower_window = 90,
+            doi = date(2015, 12, 31)
+        )
+        response_json = OrderedDict()
+        for ric, company_return in query.items():
+            company_array = []
+            for data in company_return:
+                company_array.append(data.to_dict())
+            response_json[ric] = company_array
+        return HttpResponse(json.dumps(response_json), content_type='application/json')
 
