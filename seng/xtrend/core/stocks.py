@@ -45,7 +45,7 @@ def query_see_sharp(ric, upper_window = 0, lower_window = 0, doi = date(1970, 1,
     try:
         with urllib.request.urlopen(url) as conn:
             data = json.loads(conn.read().decode())
-        return SeeSharpCompanyReturn(data[0]['CompanyReturns'])
+        return SeeSharpCompanyReturn(data['CompanyReturns'][0])
     except:
         return SeeSharpCompanyReturn({'InstrumentID': ric})
 
