@@ -12,10 +12,10 @@ from ...server.cache import query
 currentDate = date(2015, 12, 31)
 dateRange = 60
 
-def getRating(ric):
-	return calculateRating(ric)
+def get_rating(ric):
+	return calculate_rating(ric)
 
-def calculateRating(ric):
+def calculate_rating(ric):
 	# The rating works by basing it as a percentage change over the past fortnight.
 	# More recent changes will affect the rating more than previous changes.
 	# The overall rating is based 60-40 between news ratings and stock prices when
@@ -121,8 +121,8 @@ def calculateRating(ric):
 	# thing as before.
 
 	# Current rating / magnitude rating	
-
-	rating = stockFinalRating * 0.4 + (max(min(newsCount, 5), 1) * 0.4 + 0.2) * newsFinalRating * 100
+	artificialScale = 0.453
+	rating = max(min(stockFinalRating * 0.4 + (max(min(newsCount, 5), 1) * 0.4 + 0.2) * newsFinalRating * 100 * artificialScale, 100), -100)
 
 	# Step 3: weigh the two scores appropriately.
 

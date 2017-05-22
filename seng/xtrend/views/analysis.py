@@ -12,7 +12,7 @@ from ...core import mk
 from ...core.constants import RIC_PATTERN
 from ...server.models import NewsArticle
 from ...utils import SingletonView
-from ..core.rating import getRating
+from ..core.rating import get_rating
 
 def format_body(text):
     lines = text.split('\n    ')[:6]
@@ -47,7 +47,7 @@ class RICAnalysisView(SingletonView):
                 'polarity': article.polarity,
                 'polarity_image': get_polarity_image(article.polarity),
             }, articles))
-        rating = getRating(ric)
+        rating = get_rating(ric)
         extraSymbol = ''
         if rating >= 0:
             extraSymbol = '+'
