@@ -10,6 +10,7 @@ from . import stocks
 from ...server.cache import query
 
 currentDate = date(2015, 12, 31)
+dateRange = 60
 
 def getRating(ric):
 	return calculateRating(ric)
@@ -24,8 +25,8 @@ def calculateRating(ric):
 	# TODO: Sanity checks.
 	# TODO: Double check this works; this is just a theoretical model.
 
-	relatedStocks = stocks.get((ric,), 14, 1, currentDate)
-	relatedArticles = query((ric,), (), (currentDate - timedelta(days = 14), currentDate))
+	relatedStocks = stocks.get((ric,), dateRange, 1, currentDate)
+	relatedArticles = query((ric,), (), (currentDate - timedelta(days = dateRange), currentDate))
 
 	rating = 0.0
 
