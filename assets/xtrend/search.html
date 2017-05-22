@@ -40,6 +40,24 @@
             })
         },
     });
+    function doSearch(companies, exchanges, 
+        buy, sell, instrument_ids, 
+        range_low, range_hi, days) {
+        
+    }
+
+    function showBuy() {
+        $("sell").css("display","none");
+        $("buy").css("display","inherit");
+    }
+
+    function showSell() {
+        console.log("hello")
+        console.log($(".buy").css("display"));
+        $(".buy").css("display","none");
+        $(".sell").css("display","inherit");
+    }
+
 </script>
 {% endblock %}
 
@@ -50,11 +68,23 @@
     </div>
 </div>
 <div style="height: 30px"></div>
+<div class="columns small-12">
+        <button class="button" type="submit" onclick="showBuy()" style="width: 45%;">Buy</button>
+        <button class="button" type="submit" onclick="showSell()" style="width: 45%;">Sell</button>
+
+       <!--  <fieldset class="fieldset">
+            <legend>Buy / Sell?</legend>
+            <input id="buy-checkbox" type="checkbox" checked><label for="buy-checkbox">Buy</label>
+            <input id="sell-checkbox" type="checkbox" checked><label for="sell-checkbox">Sell</label>
+        </fieldset> -->
+    </div>
 <form id="search" action="/coolbananas/xtrend/search/results/">
     <div class="row">
+</div>
+    <div class="row buy sell" style="display: none;">
         <div class="columns" id="ricpicker-container"></div>
     </div>
-    <div class="row">
+    <div class="row buy sell" style="display: none;">
         <div class="columns">
             <label>Share Price Range</label>
             <br />
@@ -64,24 +94,15 @@
             <br />
         </div>
     </div>
-    <div class="row">
+    <div class="row buy sell" style="display: none;">
         <div class="columns">
             <label>Days Since Last Update <i>(0 is don't care)</i>
                 <input type="number" min="0" id="search-date" placeholder="0">
             </label>
         </div>
     </div>
-    <div class="row">
-        <div class="columns small-12">
-            <fieldset class="fieldset">
-                <legend>Buy / Sell?</legend>
-                <input id="buy-checkbox" type="checkbox" checked><label for="buy-checkbox">Buy</label>
-                <input id="sell-checkbox" type="checkbox" checked><label for="sell-checkbox">Sell</label>
-            </fieldset>
-        </div>
-    </div>
     
-    <div class="row">
+    <div class="row buy sell" style="display: none;">
         <div class="columns" style="align-content: center; width: 100%;">
             <button class="button" type="submit" style="width: 100%;">Search</button>
         </div>
