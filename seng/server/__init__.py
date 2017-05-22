@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
-class SengAppConfig(AppConfig):
+class XNewsAppConfig(AppConfig):
 
     name = 'seng.server'
     verbose_name = 'SENG3011 Cool Bananas'
@@ -50,4 +50,4 @@ class SengAppConfig(AppConfig):
         update_thread = threading.Thread(name='Update Checker', target=run_update_thread, daemon=True)
         update_thread.start()
 
-default_app_config = 'seng.server.SengAppConfig'
+default_app_config = 'seng.server.XNewsAppConfig'
