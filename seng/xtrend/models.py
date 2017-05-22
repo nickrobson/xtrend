@@ -6,6 +6,11 @@ class StockPrice(models.Model):
     ric = models.CharField(null = False, max_length = 20)
     relative_date = models.IntegerField()
     date = models.DateField(null = False)
+    open = models.FloatField()
+    high = models.FloatField()
+    low = models.FloatField()
+    close = models.FloatField()
+    volume = models.FloatField()
     adjusted_close = models.FloatField()
     return_value = models.FloatField()
     pc_return = models.FloatField()
@@ -20,6 +25,10 @@ class StockPrice(models.Model):
             ('RelativeDate', self.relative_date),
             ('Date', self.date.strftime('%Y-%m-%d')),
             ('Return', self.return_value),
+            ('Open', self.open),
+            ('High', self.high),
+            ('Close', self.close),
+            ('Volume', self.volume),
             ('AdjustedClose', self.adjusted_close),
             ('PC_Return', self.pc_return),
             ('CM_Return', self.cm_return),
