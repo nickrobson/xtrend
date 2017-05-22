@@ -12,6 +12,7 @@ from ...core import mk
 from ...core.constants import RIC_PATTERN
 from ...server.models import NewsArticle
 from ...utils import SingletonView
+from ..core.rating import getRating
 
 def format_body(text):
     lines = text.split('\n    ')[:6]
@@ -46,10 +47,12 @@ class RICAnalysisView(SingletonView):
                 'polarity': article.polarity,
                 'polarity_image': get_polarity_image(article.polarity),
             }, articles))
+        rating = getRating(ric)
         content = self.template.render({
             'InstrumentID': ric,
             'ArticlesFirst': articles[::2],
             'ArticlesSecond': articles[1::2],
+            'Rating': str('{0:0.1f}'.format(rating))
         })
         return HttpResponse(content, content_type='text/html')
 

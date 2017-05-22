@@ -3,9 +3,10 @@
 #
 # Functions for calculating ratings based on RICs.
 
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
+import math
 
-from .core import companyreturn
+from . import stocks
 from ...server.cache import query
 
 currentDate = date(2015, 12, 31)
@@ -23,8 +24,10 @@ def calculateRating(ric):
 	# TODO: Sanity checks.
 	# TODO: Double check this works; this is just a theoretical model.
 
-	relatedStocks = stingrayQuery((ric,), ("CM_Return", "AV_Return"), 14, 0, currentDate)
-	relatedArticles = query((ric,), (), (date - datetime.timedelta(days = 14), date))
+	relatedStocks = stocks.get((ric,), 14, 1, currentDate)
+	relatedArticles = query((ric,), (), (currentDate - timedelta(days = 14), currentDate))
+
+	rating = 0.0
 
 
 	# Step 1: calculate the rating based on stock prices..
@@ -35,6 +38,17 @@ def calculateRating(ric):
 	# these dates and apply this formula to the total score (and the absolute of
 	# this to the magnitude score).
 
+	stockRating = 0.0
+	stockMagnitude = 0.0
+
+	previousStock = None
+	for stock in relatedStocks[ric]:
+		if previousStock is None:
+			previousStock = stock
+			continue
+		stockRating += (1 - (stock.adjusted_close - previousStock.adjusted_close) / previousStock.adjusted_close) / (math.fabs(stock.relative_date) + 1)
+		stockMagnitude += math.fabs((1 - (stock.adjusted_close - previousStock.adjusted_close) / previousStock.adjusted_close) / (math.fabs(stock.relative_date) + 1))
+	
 	# (1 - (Price this day - Price yesterday)/ Price yesterday) / (Days since now + 1).
 
 	# This value should be positive if the price when down, and negative if the price
@@ -59,6 +73,27 @@ def calculateRating(ric):
 	# This one works in a similar way as before. Basically, for each article,
 	# apply this formula to two new variables.
 
+	newsRating = 0.0
+	newsMagnitude = 0.0
+
+	articleCount = 0
+
+	for article in relatedArticles:
+		timeStamp = article['TimeStamp'][0:10]
+		articleDate = date(int(timeStamp[0:4]), int(timeStamp[5:7]), int(timeStamp[8:10]))
+		newsRating += (article['Sentiment']['Polarity'] * (1 - article['Sentiment']['Subjectivity'])) / ((currentDate - articleDate).days + 1)
+		newsMagnitude += math.fabs((article['Sentiment']['Polarity'] * (1 - article['Sentiment']['Subjectivity'])) / ((currentDate - articleDate).days + 1))
+		articleCount += 1
+
+	# for stock in relatedStocks[ric]:
+	# 	if previousStock is None:
+	# 		previousStock = stock
+	# 		continue
+	# 	stockRating += (1 - (stock.adjusted_close - previousStock.adjusted_close) / previousStock.adjusted_close) / (math.fabs(stock.relative_date) + 1)
+	# 	stockMagnitude += math.fabs((1 - (stock.adjusted_close - previousStock.adjusted_close) / previousStock.adjusted_close) / (math.fabs(stock.relative_date) + 1))
+	
+	# print(stockRating / stockMagnitude)
+
 	# (Polarity * (1 - Subjectivity)) / Days since now.
 
 	# The subjectivity part might need to be changed. This is a basic check to see
@@ -71,6 +106,7 @@ def calculateRating(ric):
 
 	# Current rating / magnitude rating	
 
+	rating = (stockRating / stockMagnitude) * 0.4 + (max(min(articleCount, 5), 1) * 0.4 + 0.2) * (newsRating / newsMagnitude) * 100
 
 	# Step 3: weigh the two scores appropriately.
 
@@ -91,4 +127,5 @@ def calculateRating(ric):
 
 	
 	# Once this is all implemented, return the proper value.
-	return 0.0
+	print(rating)
+	return rating
