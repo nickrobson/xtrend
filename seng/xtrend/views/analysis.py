@@ -48,11 +48,15 @@ class RICAnalysisView(SingletonView):
                 'polarity_image': get_polarity_image(article.polarity),
             }, articles))
         rating = getRating(ric)
+        extraSymbol = ''
+        if rating >= 0:
+            extraSymbol = '+'
         content = self.template.render({
             'InstrumentID': ric,
             'ArticlesFirst': articles[::2],
             'ArticlesSecond': articles[1::2],
-            'Rating': str('{0:0.1f}'.format(rating))
+            'Rating': extraSymbol + str('{0:0.1f}'.format(rating)),
+            'RatingPercentage': '{0:0.1f}'.format((rating + 100) / 2)
         })
         return HttpResponse(content, content_type='text/html')
 

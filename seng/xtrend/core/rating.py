@@ -40,6 +40,8 @@ def calculateRating(ric):
 
 	stockRating = 0.0
 	stockMagnitude = 0.0
+	
+	stockCount = 0
 
 	previousStock = None
 	for stock in relatedStocks[ric]:
@@ -48,7 +50,19 @@ def calculateRating(ric):
 			continue
 		stockRating += (1 - (stock.adjusted_close - previousStock.adjusted_close) / previousStock.adjusted_close) / (math.fabs(stock.relative_date) + 1)
 		stockMagnitude += math.fabs((1 - (stock.adjusted_close - previousStock.adjusted_close) / previousStock.adjusted_close) / (math.fabs(stock.relative_date) + 1))
+		stockCount += 1
+		print(stockMagnitude)
 	
+	stockFinalRating = 0.0000000000001
+	# TODO: Try me.
+	try:
+		stockFinalRating = (stockRating / stockMagnitude) * (math.fabs(stockRating) / stockCount)
+	except:
+		print("stockMagnitude was 0 despite having {} entries.".format(stockCount))
+		pass
+
+	print(stockFinalRating)
+
 	# (1 - (Price this day - Price yesterday)/ Price yesterday) / (Days since now + 1).
 
 	# This value should be positive if the price when down, and negative if the price
@@ -76,23 +90,24 @@ def calculateRating(ric):
 	newsRating = 0.0
 	newsMagnitude = 0.0
 
-	articleCount = 0
+	newsCount = 0
 
 	for article in relatedArticles:
 		timeStamp = article['TimeStamp'][0:10]
 		articleDate = date(int(timeStamp[0:4]), int(timeStamp[5:7]), int(timeStamp[8:10]))
 		newsRating += (article['Sentiment']['Polarity'] * (1 - article['Sentiment']['Subjectivity'])) / ((currentDate - articleDate).days + 1)
 		newsMagnitude += math.fabs((article['Sentiment']['Polarity'] * (1 - article['Sentiment']['Subjectivity'])) / ((currentDate - articleDate).days + 1))
-		articleCount += 1
-
-	# for stock in relatedStocks[ric]:
-	# 	if previousStock is None:
-	# 		previousStock = stock
-	# 		continue
-	# 	stockRating += (1 - (stock.adjusted_close - previousStock.adjusted_close) / previousStock.adjusted_close) / (math.fabs(stock.relative_date) + 1)
-	# 	stockMagnitude += math.fabs((1 - (stock.adjusted_close - previousStock.adjusted_close) / previousStock.adjusted_close) / (math.fabs(stock.relative_date) + 1))
+		newsCount += 1
 	
-	# print(stockRating / stockMagnitude)
+	newsFinalRating = 0.0000000000001
+	# TODO: Try me.
+	try:
+		newsFinalRating = newsRating / newsMagnitude
+	except:
+		print("newsMagnitude was 0 despite having {} articles.".format(newsCount))
+		pass
+	
+	print(newsFinalRating)
 
 	# (Polarity * (1 - Subjectivity)) / Days since now.
 
@@ -106,7 +121,7 @@ def calculateRating(ric):
 
 	# Current rating / magnitude rating	
 
-	rating = (stockRating / stockMagnitude) * 0.4 + (max(min(articleCount, 5), 1) * 0.4 + 0.2) * (newsRating / newsMagnitude) * 100
+	rating = stockFinalRating * 0.4 + (max(min(newsCount, 5), 1) * 0.4 + 0.2) * newsFinalRating * 100
 
 	# Step 3: weigh the two scores appropriately.
 
