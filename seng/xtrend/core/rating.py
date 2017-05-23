@@ -59,10 +59,10 @@ def calculate_rating(ric):
 	try:
 		stockFinalRating = (stockRating / stockMagnitude) * (math.fabs(stockRating) / stockCount)
 	except:
-		print("stockMagnitude was 0 despite having {} entries.".format(stockCount))
+		# print("stockMagnitude was 0 despite having {} entries.".format(stockCount))
 		pass
 
-	print(stockFinalRating)
+	# print(stockFinalRating)
 
 	# (1 - (Price this day - Price yesterday)/ Price yesterday) / (Days since now + 1).
 
@@ -105,10 +105,10 @@ def calculate_rating(ric):
 	try:
 		newsFinalRating = newsRating / newsMagnitude
 	except:
-		print("newsMagnitude was 0 despite having {} articles.".format(newsCount))
+		# print("newsMagnitude was 0 despite having {} articles.".format(newsCount))
 		pass
 	
-	print(newsFinalRating)
+	# print(newsFinalRating)
 
 	# (Polarity * (1 - Subjectivity)) / Days since now.
 
@@ -143,5 +143,5 @@ def calculate_rating(ric):
 
 	
 	# Once this is all implemented, return the proper value.
-	print(rating)
+	# print(rating)
 	return rating
