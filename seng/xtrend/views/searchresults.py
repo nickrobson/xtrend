@@ -54,6 +54,7 @@ class SearchResultsView(SingletonView):
         newsAPIOutput = cache.query(searchRics, [], date_range);
 
         searchResults = []
+        numResults = 0
         for i in range(0, len(newsAPIOutput)):
             instrument_id = newsAPIOutput[i]['InstrumentIDs']
             print("hi")
@@ -75,62 +76,22 @@ class SearchResultsView(SingletonView):
                     #print(stockJsonOutput[instrument_id[j]][0])
                     if (len(stockJsonOutput[instrument_id[j]]) > 0):
                         currResult = {}
+                        currResult['instrument_id'] = instrument_id[j]
                         currResult['sentiment'] = newsAPIOutput[i]['Sentiment']['Polarity']
                         lastStock = stockJsonOutput[instrument_id[j]][len(stockJsonOutput[instrument_id[j]]) - 1]
                         currResult['tradingAt'] = lastStock.av_return
-                        # currResult['lastReturn'] = 
+                        currResult['lastReturn'] = 0 #fix
                         searchResults.append(currResult)
+                        numResults += 1
 
         print(searchResults)
 
 
-        # searchOutput = []
-        # for ric in newsAPIOutput:
-        #     stockJsonOutput = stocks.get(ric, 
-        #         upper_window,
-        #         lower_window, 
-        #         doi)
-        #     if newsAPIOutput.sentiment < 0 && buy
-        #         or sentiment > 1 and sell
-        #     if sentiment is pos / neg as appropriate
-        #     and 
+        self.content = self.template.render({
+            'range': range(0, numResults)
+            'searchResults': searchResults
+        });
 
-        #     /*
-       
-
-        # urlResults = "";
-        # urlResults = urlResults + "numResults=" + resultsJson.length;
-        # console.log("hi");
-        # for (i = 0; i < resultsJson.length; i++) {
-        #     urlResults = urlResults + "&company=" + resultsJson[i].company
-        #     + "&exchange=" + resultsJson[i].exchange
-        #     + "&sentiment=" + resultsJson[i].sentiment
-        #     + "&tradingAt=" + resultsJson[i].tradingAt
-        #     + "&lastReturn=" + resultsJson[i].lastReturn
-        # }
-
-        # // loop through resultsJson and make a url string
-        # //window.location.href = "/coolbananas/xtrend/search/results?" + urlResults;
-        # return "/coolbananas/xtrend/search/results?" + urlResults;
-
-        # self.content = self.template.render({
-        #     'range': range(0, int(request.GET.get('numResults'))),
-        #     'company': request.GET.getlist('company'),
-        #     'exchange': request.GET.getlist('exchange'),
-        #     'sentiment': request.GET.getlist('sentiment'),
-        #     'tradingAt': request.GET.getlist('tradingAt'),
-        #     'lastReturn': request.GET.getlist('lastReturn')
-        # })
-
-        # self.content = self.template.render({
-        #     'range': range(0, int(request.GET.get('numResults'))),
-        #     'company': request.GET.getlist('company'),
-        #     'exchange': request.GET.getlist('exchange'),
-        #     'sentiment': request.GET.getlist('sentiment'),
-        #     'tradingAt': request.GET.getlist('tradingAt'),
-        #     'lastReturn': request.GET.getlist('lastReturn')
-        # });
-        self.content = self.template.render();
         return HttpResponse(self.content, content_type='text/html')
 
     
