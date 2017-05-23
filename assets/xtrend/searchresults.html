@@ -1,6 +1,7 @@
 {% extends "assets/xtrend/layout.html" %}
 
 {% block title %} Search Results {% endblock %}
+{% load lookup%}
 
 {% block body %}
 <div class="row">
@@ -10,71 +11,22 @@
         </h4>
     </div>
 </div>
-<div class="row">
-    <div class="columns small-4">
-        <h2><a href="/coolbananas/xtrend/analysis/BHP.AX">BHP.AX</a></h2>
-    </div>
-    <div class="columns small-4">
-        <h4>-57.2</h4>
-        <div class="success progress" style="width: 25%; background-color: #cc4b37;">
-            <div class="progress-meter" style="width: 21.4%"></div>
+{% for i in range %}
+    <div class="row">
+        <div class="columns small-4">
+            <h2><a href="/coolbananas/xtrend/analysis/{{company|lookup:.i}}.{{exchange|lookup:.i}}">{{company|lookup:.i}}.{{exchange|lookup:.i}}</a></h2>
+        </div>
+        <div class="columns small-4">
+            <h4>{{sentiment|lookup:.i}}</h4>
+            <div class="success progress" style="width: 25%; background-color: #cc4b37;">
+                <div class="progress-meter" style="width: 68.2%"></div>
+            </div>
+        </div>
+        <div class="columns small-4">
+            <i>Trading at:</i> {{tradingAt|lookup:.i}}
+            <br />
+            <i>Last Return:</i> {{lastReturn|lookup:.i}}
         </div>
     </div>
-    <div class="columns small-4">
-        <i>Trading at:</i> 18.09
-        <br />
-        <i>Last Return:</i> -0.005
-    </div>
-</div>
-<hr />
-<div class="row">
-    <div class="columns small-4">
-        <h2><a href="/coolbananas/xtrend/analysis/OZL.AX">OZL.AX</a></h2>
-    </div>
-    <div class="columns small-4">
-        <h4>+47.9</h4>
-        <div class="success progress" style="width: 25%; background-color: #cc4b37;">
-            <div class="progress-meter" style="width: 73.95%"></div>
-        </div>
-    </div>
-    <div class="columns small-4">
-        <i>Trading at:</i> 43.02
-        <br />
-        <i>Last Return:</i> +0.001
-    </div>
-</div>
-<hr />
-<div class="row">
-    <div class="columns small-4">
-        <h2><a href="/coolbananas/xtrend/analysis/RR.L">RR.L</a></h2>
-    </div>
-    <div class="columns small-4">
-        <h4>+48.6</h4>
-        <div class="success progress" style="width: 25%; background-color: #cc4b37;">
-            <div class="progress-meter" style="width: 74.3%"></div>
-        </div>
-    </div>
-    <div class="columns small-4">
-        <i>Trading at:</i> 1.52
-        <br />
-        <i>Last Return:</i> -0.029
-    </div>
-</div>
-<hr />
-<div class="row">
-    <div class="columns small-4">
-        <h2><a href="/coolbananas/xtrend/analysis/LXRX.O">LXRX.O</a></h2>
-    </div>
-    <div class="columns small-4">
-        <h4>+36.4</h4>
-        <div class="success progress" style="width: 25%; background-color: #cc4b37;">
-            <div class="progress-meter" style="width: 68.2%"></div>
-        </div>
-    </div>
-    <div class="columns small-4">
-        <i>Trading at:</i> 5.98
-        <br />
-        <i>Last Return:</i> -0.015
-    </div>
-</div>
+{% endfor %}
 {% endblock %}

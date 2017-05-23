@@ -10,7 +10,7 @@ xtrend_urls = [
     url(r'^analysis/(?P<ric>'+RIC_PATTERN.pattern+')?$', analysis.RICAnalysisView.as_view()),
     url(r'^article/(?P<uri>'+URI_PATTERN.pattern+')?$', article.XtrendArticleView.as_view()),
     url(r'^returns/(?P<ric>'+RIC_PATTERN.pattern+')$', returns.ReturnsView.as_view()),
-    url(r'^search/results/$', searchresults.SearchResultsView.as_view()),
+    url(r'^search/results', searchresults.SearchResultsView.as_view()),
     url(r'^search/$', search.SearchView.as_view()),
     url(r'^$', homepage.HomepageView.as_view()),
 ]

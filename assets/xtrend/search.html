@@ -40,11 +40,6 @@
             })
         },
     });
-    function doSearch(companies, exchanges, 
-        buy, sell, instrument_ids, 
-        range_low, range_hi, days) {
-        
-    }
 
     function showBuy() {
         $("sell").css("display","none");
@@ -52,11 +47,56 @@
     }
 
     function showSell() {
-        console.log("hello")
-        console.log($(".buy").css("display"));
         $(".buy").css("display","none");
         $(".sell").css("display","inherit");
     }
+    function doSearch(companies, exchanges, 
+        buy, sell, instrument_ids, 
+        range_low, range_hi, days) {
+
+        apiQueryUrl = "";
+        /*resultsJson = [
+        {
+            'company': 'BHP',
+            'exchange': 'AX',
+            'sentiment': '-57.2',
+            'tradingAt': '18.09',
+            'lastReturn': '-0.005',
+        }];*/
+        
+        
+
+            /*
+        $.getJSON(apiQueryUrl, function(data) {
+           //console.log(data);
+           resultsJson = "";
+        });*/
+
+        urlResults = "";
+        urlResults = urlResults + "numResults=" + resultsJson.length;
+        console.log("hi");
+        for (i = 0; i < resultsJson.length; i++) {
+            urlResults = urlResults + "&company=" + resultsJson[i].company
+            + "&exchange=" + resultsJson[i].exchange
+            + "&sentiment=" + resultsJson[i].sentiments
+            + "&tradingAt=" + resultsJson[i].tradingAt
+            + "&lastReturn=" + resultsJson[i].lastReturn
+        }
+
+        // loop through resultsJson and make a url string
+        //window.location.href = "/coolbananas/xtrend/search/results?" + urlResults;
+        return "/coolbananas/xtrend/search/results?" + urlResults;
+
+        // EXAMPLE:
+        // ?mode=buy&price=50&ric=BHP.AX,IGO.AX&days_since=0
+
+        /*
+http://.../?urls=foo&urls=bar&...
+
+        */
+    }
+
+
 
 </script>
 {% endblock %}
@@ -78,7 +118,7 @@
             <input id="sell-checkbox" type="checkbox" checked><label for="sell-checkbox">Sell</label>
         </fieldset> -->
     </div>
-<form id="search" action="/coolbananas/xtrend/search/results/">
+<form id="search" action="javascript:window.location.href = doSearch();">
     <div class="row">
 </div>
     <div class="row buy sell" style="display: none;">
