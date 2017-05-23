@@ -29,8 +29,8 @@ var xtrendLoadGraph = function(){};
 
     // Define the line
     var valueline = d3.line()
-        .x(function(d) { return x(d.date); })
-        .y(function(d) { return y(d.close); });
+        .x(function(d) { return x(d.Date); })
+        .y(function(d) { return y(d.AdjustedClose); });
 
     // Get the data
     xtrendLoadGraph = function(ric) {
@@ -45,17 +45,22 @@ var xtrendLoadGraph = function(){};
                 .attr("transform", 
                       "translate(" + margin.left + "," + margin.top + ")");
 
-        d3.csv("/coolbananas/xtrend/returns/"+encodeURIComponent(ric), function(error, data) {
-            data.forEach(function(d) {
-                d.date = parseDate(d.date);
-                d.close = +d.close;
+        d3.json("/coolbananas/xtrend/returns/" + encodeURIComponent(ric), function(error, data) {
+            data = data[ric];
+            data = data.filter(function(d) {
+                return d.AdjustedClose >= 0;
+            }).map(function(d) {
+                return {
+                    Date: parseDate(d.Date),
+                    AdjustedClose: +d.AdjustedClose,
+                };
             });
 
-            var y_extent = d3.extent(data, function(d) { return d.close; });
+            var y_extent = d3.extent(data, function(d) { return d.AdjustedClose; });
             var y_diff = (y_extent[1] - y_extent[0]) / 10;
 
             // Scale the range of the data
-            x.domain(d3.extent(data, function(d) { return d.date; }));
+            x.domain(d3.extent(data, function(d) { return d.Date; }));
             y.domain(y_extent.map(function(e, i) { return e + y_diff * (i * 2 - 1); }));
 
             // Add the valueline path.

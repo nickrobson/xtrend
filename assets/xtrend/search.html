@@ -50,50 +50,32 @@
         $(".buy").css("display","none");
         $(".sell").css("display","inherit");
     }
-    function doSearch(companies, exchanges, 
-        buy, sell, instrument_ids, 
+    function doSearch(instrument_ids, 
+        buy, sell, 
         range_low, range_hi, days) {
 
-        apiQueryUrl = "";
-        /*resultsJson = [
-        {
-            'company': 'BHP',
-            'exchange': 'AX',
-            'sentiment': '-57.2',
-            'tradingAt': '18.09',
-            'lastReturn': '-0.005',
-        }];*/
-        
-        
 
-            /*
-        $.getJSON(apiQueryUrl, function(data) {
-           //console.log(data);
-           resultsJson = "";
-        });*/
+        urlResults = "hi=1";
 
-        urlResults = "";
-        urlResults = urlResults + "numResults=" + resultsJson.length;
-        console.log("hi");
-        for (i = 0; i < resultsJson.length; i++) {
-            urlResults = urlResults + "&company=" + resultsJson[i].company
-            + "&exchange=" + resultsJson[i].exchange
-            + "&sentiment=" + resultsJson[i].sentiments
-            + "&tradingAt=" + resultsJson[i].tradingAt
-            + "&lastReturn=" + resultsJson[i].lastReturn
+        /* dummy data: */
+        instrument_ids = ["FMG.AX", "DATA.N"]
+        range_low = "250"
+        range_hi = "20"
+        days = 100
+        sell = 1
+        buy = 0
+
+
+        for (var i = 0; i < instrument_ids.length; i++) {
+            urlResults = urlResults + "&instrument_id=" + instrument_ids[i];
         }
+        urlResults = urlResults + "&buy=" + buy
+        + "&sell=" + sell
+        + "&range_low=" + range_low
+        + "&range_hi=" + range_hi
+        + "&days=" + days;
 
-        // loop through resultsJson and make a url string
-        //window.location.href = "/coolbananas/xtrend/search/results?" + urlResults;
         return "/coolbananas/xtrend/search/results?" + urlResults;
-
-        // EXAMPLE:
-        // ?mode=buy&price=50&ric=BHP.AX,IGO.AX&days_since=0
-
-        /*
-http://.../?urls=foo&urls=bar&...
-
-        */
     }
 
 

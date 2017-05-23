@@ -14,18 +14,18 @@
 {% for i in range %}
     <div class="row">
         <div class="columns small-4">
-            <h2><a href="/coolbananas/xtrend/analysis/{{company|lookup:.i}}.{{exchange|lookup:.i}}">{{company|lookup:.i}}.{{exchange|lookup:.i}}</a></h2>
+            <h2><a href="/coolbananas/xtrend/analysis/{{company|lookup:i}}.{{exchange|lookup:i}}">{{company|lookup:i}}.{{exchange|lookup:i}}</a></h2>
         </div>
         <div class="columns small-4">
-            <h4>{{sentiment|lookup:.i}}</h4>
+            <h4>{{sentiment|lookup:i}}</h4>
             <div class="success progress" style="width: 25%; background-color: #cc4b37;">
                 <div class="progress-meter" style="width: 68.2%"></div>
             </div>
         </div>
         <div class="columns small-4">
-            <i>Trading at:</i> {{tradingAt|lookup:.i}}
+            <i>Trading at:</i> {{tradingAt|lookup:i}}
             <br />
-            <i>Last Return:</i> {{lastReturn|lookup:.i}}
+            <i>Last Return:</i> {{lastReturn|lookup:i}}
         </div>
     </div>
 {% endfor %}
