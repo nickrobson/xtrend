@@ -88,7 +88,7 @@ class SearchResultsView(SingletonView):
 
 
         self.content = self.template.render({
-            'range': range(0, numResults)
+            'range': range(0, numResults),
             'searchResults': searchResults
         });
 

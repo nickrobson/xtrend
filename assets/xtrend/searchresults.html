@@ -13,20 +13,23 @@
 </div>
 {% for i in range %}
     <div class="row">
+        {% with results=searchResults|lookup:i %}
         <div class="columns small-4">
-            <h2><a href="/coolbananas/xtrend/analysis/{{searchResults|lookup:i['instrument_id']}}">{{searchResults|lookup:i['instrument_id']}}</a></h2>
+            <h2><a href="/coolbananas/xtrend/analysis/{{results.instrument_id}}">{{results.instrument_id}}</a></h2>
         </div>
         <div class="columns small-4">
-            <h4>{{searchResults|lookup:i['sentiment']}}</h4>
+            <h4>{{results.sentiment}}</h4>
             <div class="success progress" style="width: 25%; background-color: #cc4b37;">
                 <div class="progress-meter" style="width: 68.2%"></div>
             </div>
         </div>
         <div class="columns small-4">
-            <i>Trading at:</i> {{searchResults|lookup:i['tradingAt']}}
+            <i>Trading at:</i> {{results.tradingAt}}
             <br />
-            <i>Last Return:</i> {{searchResults|lookup:i['lastReturn']}}
+            <i>Last Return:</i> {{results.lastReturn}}
         </div>
+        {% endwith %}
     </div>
+
 {% endfor %}
 {% endblock %}
