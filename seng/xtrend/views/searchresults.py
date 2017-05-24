@@ -27,8 +27,7 @@ class SearchResultsView(SingletonView):
         searchRics = request.GET.getlist('instrument_id')
         searchBuy = request.GET.get('buy')
         searchSell = request.GET.get('sell')
-        searchRangeLow = int(request.GET.get('range_low'))
-        searchRangeHi = int(request.GET.get('range_hi'))
+        searchRange = int(request.GET.get('range'))
         searchDays = request.GET.get('days')
 
         currentDate = date(2015, 12, 31)
@@ -54,9 +53,9 @@ class SearchResultsView(SingletonView):
                     break
             price = lastStock.adjusted_close
             if (((ricRating <= 0 and searchSell == "1")
-                or (ricRating > 0 and searchBuy == "0"))
-                and (price > searchRangeLow)
-                and (price < searchRangeHi)):
+                and (price > searchRange))
+                or ((ricRating > 0 and searchBuy == "0")
+                    and (price < searchRange))):
                 currResult = {}
                 currResult['instrument_id'] = ric
                 currResult['sentiment'] = '{0:0.4f}'.format(ricRating)

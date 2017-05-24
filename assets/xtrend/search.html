@@ -18,7 +18,7 @@
 
     noUiSlider.create(slider, {
         start: 250,
-        //connect: true,
+        connect: true,
         tooltips: true,
         step: 1,
         format: wNumb({
@@ -43,33 +43,6 @@
         },
     });
 
-    // noUiSlider.create(slider, {
-    //     start: [20, 250],
-    //     connect: true,
-    //     tooltips: true,
-    //     step: 1,
-    //     format: wNumb({
-    //         decimals: 0,
-    //         prefix: '$'
-    //     }),
-    //     range: {
-    //         'min': 0,
-    //         '10%': 10,
-    //         '32.36%': 50,
-    //         '50%': 100,
-    //         '75%': 500,
-    //         'max': 1000
-    //     },
-    //     pips: {
-    //         mode: 'range',
-    //         density: 3,
-    //         format: wNumb({
-    //             decimals: 0,
-    //             prefix: '$'
-    //         })
-    //     },
-    // });
-
     function showBuy() {
         $("sell").css("display","none");
         $("buy").css("display","inherit");
@@ -85,12 +58,10 @@
         buy, sell, 
         range_low, range_hi, days) {
 
-
         urlResults = "hi=1";
 
         instrument_ids = chosenRics;
-        range_low = slider.noUiSlider.get()[0];
-        range_hi = slider.noUiSlider.get()[1];
+        range = slider.noUiSlider.get();
         days = document.getElementById('search-date').value;
         sell = globalSell;
         buy = globalBuy;
@@ -100,8 +71,7 @@
         }
         urlResults = urlResults + "&buy=" + buy
         + "&sell=" + sell
-        + "&range_low=" + range_low.substring(1)
-        + "&range_hi=" + range_hi.substring(1)
+        + "&range=" + range.substring(1)
         + "&days=" + days;
 
         return "/coolbananas/xtrend/search/results?" + urlResults;
