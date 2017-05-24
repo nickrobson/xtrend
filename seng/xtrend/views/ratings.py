@@ -27,5 +27,5 @@ class RatingsView(SingletonView):
             print('Doing ' + ric)
             s += ric + ',' + str(get_rating(ric)) + '\n'
         
-        return HttpResponse(s, content_type='text/json')
+        return HttpResponse(s, content_type='text/plain')
 
