@@ -11,14 +11,58 @@
 <div class="middle">
     <div class="home-links">
         <div class="row">
-            <div class="large-4 columns">
+            <div class="large-3 columns">
                 <h4></h4>
             </div>
-            <div class="large-4 columns">
+            <div class="large-3 columns">
                 <h4><a href="/coolbananas/xtrend/search/">&#x1F50D; Search</a></h4>
             </div>
-            <div class="large-4 columns">
+            <div class="large-3 columns">
+                <h4><a onclick="$('#help-part').slideToggle();">&#x2139; Help</a></h4>
+            </div>
+            <div class="large-3 columns">
                 <h4></h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row middle" id="help-part">
+    <div class="warning callout" style="text-align: center;">
+        <div class="row">
+            <div class="columns small-2">
+                <p></p>
+            </div>
+            <div class="columns small-8">
+                <h2>What is this?</h2>
+            </div>
+            <div class="columns small-2">
+                <a onclick="$('#help-part').slideToggle();" class="button">Close</a>
+            </div>
+        </div>
+        <p>Through complex algorithms, news articles and stock changes are observed and are weighted to give a rating indicating how confident that a stock price will go up and down.</p>
+        <p>The rating spans between -100 to 100, and allows you to compare different stocks.</p>
+        <hr>
+        <div class="row">
+            <div class="columns small-4" style="padding-left: 10px; padding-right: 10px;">
+                <h5>-52.2562</h5>
+                <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                    <div class="progress-meter" style="width: 23.9%"></div>
+                </div>
+                <p>A rating in the negatives indicates that this is a stock you should definitely sell.</p>
+            </div>
+            <div class="columns small-4" style="padding-left: 10px; padding-right: 10px; border-left: 1px solid #cacaca; border-right: 1px solid #cacaca;">
+                <h5>+3.2936</h5>
+                <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                    <div class="progress-meter" style="width: 51.1%"></div>
+                </div>
+                <p>A rating close to 0 indicates that there's either not enough information, or the stock isn't likely to change much.</p>
+            </div>
+            <div class="columns small-4" style="padding-left: 10px; padding-right: 10px;">
+                <h5>+48.0168</h5>
+                <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                    <div class="progress-meter" style="width: 74.0%"></div>
+                </div>
+                <p>A rating in the positive indicates that this is a stock you should definitely buy.</p>
             </div>
         </div>
     </div>
@@ -27,54 +71,30 @@
 <div class="row middle">
     <div class="buy-block">
         <h2>Best Buys</h2>
-        <div class="columns small-4">
-            <h3><a href="/coolbananas/xtrend/analysis/NAB.AX">NAB.AX</a></h3>
-            <h5>+69.4</h5>
-            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
-                <div class="progress-meter" style="width: 84.7%"></div>
+        {% for bb in BestBuys %}
+            <div class="columns small-4">
+                <h3><a href="/coolbananas/xtrend/analysis/{{bb.InstrumentID}}">{{bb.InstrumentID}}</a></h3>
+                <h5>{{bb.Rating}}</h5>
+                <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                    <div class="progress-meter" style="width: {{bb.BarPercent}}%"></div>
+                </div>
             </div>
-        </div>
-        <div class="columns small-4">
-            <h3><a href="/coolbananas/xtrend/analysis/ANZ.AX">ANZ.AX</a></h3>
-            <h5>+50.3</h5>
-            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
-                <div class="progress-meter" style="width: 75.15%"></div>
-            </div>
-        </div>
-        <div class="columns small-4">
-            <h3><a href="/coolbananas/xtrend/analysis/OR.TO">OR.TO</a></h3>
-            <h5>+34.4</h5>
-            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
-                <div class="progress-meter" style="width: 67.2%"></div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 <br />
 <div class="row middle">
     <div class="sell-block">
         <h2>Best Sells</h2>
-        <div class="columns small-4">
-            <h3><a href="/coolbananas/xtrend/analysis/BHP.AX">BHP.AX</a></h3>
-            <h5>-57.2</h5>
-            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
-                <div class="progress-meter" style="width: 21.4%"></div>
+        {% for bb in BestSells %}
+            <div class="columns small-4">
+                <h3><a href="/coolbananas/xtrend/analysis/{{bb.InstrumentID}}">{{bb.InstrumentID}}</a></h3>
+                <h5>{{bb.Rating}}</h5>
+                <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
+                    <div class="progress-meter" style="width: {{bb.BarPercent}}%"></div>
+                </div>
             </div>
-        </div>
-        <div class="columns small-4">
-            <h3><a href="/coolbananas/xtrend/analysis/IGO.AX">IGO.AX</a></h3>
-            <h5>-32.8</h5>
-            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
-                <div class="progress-meter" style="width: 33.6%"></div>
-            </div>
-        </div>
-        <div class="columns small-4">
-            <h3><a href="/coolbananas/xtrend/analysis/PAOC.OB">PAOC.OB</a></h3>
-            <h5>-24.7</h5>
-            <div class="success progress" style="width: 25%; margin: auto; background-color: #cc4b37;">
-                <div class="progress-meter" style="width: 37.65%"></div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 <div class="footer">
