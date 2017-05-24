@@ -34,3 +34,13 @@ class StockPrice(models.Model):
             ('CM_Return', self.cm_return),
             ('AV_Return', self.av_return),
         ])
+
+class CompanyRating(models.Model):
+
+    ric = models.CharField(null = False, max_length = 20)
+    date = models.DateField(null = False)
+    rating = models.FloatField()
+    schema = models.IntegerField()
+
+    class Meta:
+        unique_together = (('ric', 'date', 'schema'),)

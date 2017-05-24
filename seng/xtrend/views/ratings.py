@@ -15,17 +15,21 @@ from ...utils import SingletonView
 from ..core.rating import get_rating
 from ...core import sparql
 
+_CHECKED_RICS = sparql.get_rics()
+_CHECKED_RICS = list(filter(lambda ric: ric.endswith('.AX'), _CHECKED_RICS))
+
+def get_ratings(rics = None):
+    if rics is None:
+        rics = _CHECKED_RICS
+    res = {}
+    for ric in rics:
+        res[ric] = get_rating(ric)
+    return res
+
 class RatingsView(SingletonView):
 
     def __init__(self):
-        self.rics = sparql.get_rics()
+        self.ratings = get_ratings()
 
     def get(self, request):
-
-        s = 'RIC,Rating\n'
-        for ric in self.rics:
-            print('Doing ' + ric)
-            s += ric + ',' + str(get_rating(ric)) + '\n'
-        
-        return HttpResponse(s, content_type='text/plain')
-
+        return HttpResponse(json.dumps(self.ratings), content_type='application/json')
