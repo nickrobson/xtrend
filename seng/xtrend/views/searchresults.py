@@ -63,8 +63,8 @@ class SearchResultsView(SingletonView):
                 searchResults.append({
                     'instrument_id': ric,
                     'sentiment': '{0:0.4f}'.format(ricRating),
-                    'tradingAt': '{0:0.3f}'.format(lastStock.adjusted_close),
-                    'lastReturn': '{0:0.3f}'.format(lastStock.return_value),
+                    'tradingAt': '${0:0.2f}'.format(lastStock.adjusted_close),
+                    'lastReturn': '{0:0.4f}'.format(lastStock.return_value),
                     'ratingPercentage': '{0:0.1f}'.format((ricRating + 100) / 2),
                 })
             else:
