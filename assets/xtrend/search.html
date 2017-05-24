@@ -24,8 +24,7 @@
 <script type="text/javascript" src="{% static 'xtrend/pickers.js' %}"></script>
 <script>
     var slider = document.getElementById('slider');
-    var globalSell = 0;
-    var globalBuy = 0;
+    var globalMode = 'buy';
 
     function createSlider(pos) {
         var currVal = 250;
@@ -67,46 +66,58 @@
         createSlider("upper");
         $("#big-buttons").hide();
         $("#small-buttons").show();
-        $("#small-sell-button").removeClass("primary");
-        $("#small-sell-button").addClass("secondary");
-        $("#small-buy-button").removeClass("secondary");
-        $("#small-buy-button").addClass("primary");
-
-        $(".sell").css("display","none");
-        $(".buy").css("display","inherit");
-        globalBuy = 1;
-        globalSell = 0;
+        $("#small-sell-button").removeClass("primary").addClass("secondary");
+        $("#small-buy-button").removeClass("secondary").addClass("primary");
+        $(".buy-sell").show();
+        globalMode = 'buy';
     }
 
     function showSell() {
         createSlider("lower");
         $("#big-buttons").hide();
         $("#small-buttons").show();
-        $("#small-buy-button").removeClass("primary");
-        $("#small-buy-button").addClass("secondary");
-        $("#small-sell-button").removeClass("secondary");
-        $("#small-sell-button").addClass("primary");
-
-        $(".buy").css("display","none");
-        $(".sell").css("display","inherit");
-        globalSell = 1;
-        globalBuy = 0;
+        $("#small-buy-button").removeClass("primary").addClass("secondary");
+        $("#small-sell-button").removeClass("secondary").addClass("primary");
+        $(".buy-sell").show();
+        globalMode = 'sell';
     }
 
     function doSearch() {
-        var instrument_ids = Array.from(chosenRics.values()).map(function(a){ return '&instrument_id=' + a; });
-        var range = slider.noUiSlider.get();
-        var days = document.getElementById('search-date').value;
-        var sell = globalSell;
-        var buy = globalBuy;
+        var params = [
+            ['mode', globalMode],
+            ['range', slider.noUiSlider.get().substring(1)],
+            ['instrument_id', Array.from(chosenRics).join(',')]
+        ];
+        return "/coolbananas/xtrend/search/results?" + params.map(function(a){ return a[0] + '=' + encodeURIComponent(a[1]); }).join('&');
+    }
 
-        var urlResults = instrument_ids
-            + "&buy=" + buy
-            + "&sell=" + sell
-            + "&range=" + range.substring(1)
-            + "&days=" + days;
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
 
-        return "/coolbananas/xtrend/search/results?" + urlResults;
+    var instrument_id = getParameterByName('instrument_id');
+    if (instrument_id !== null) {
+        var rics = instrument_id.split(',');
+        rics.forEach(function(ric) {
+            chosenRics.add(ric);
+        });
+        updateChosenRics();
+    }
+    var range = getParameterByName('range');
+    if (range !== null) {
+        slider.noUiSlider.set(parseInt(range));
+    }
+    var mode = getParameterByName('mode');
+    if (mode === 'sell') {
+        showSell();
+    } else if (mode === 'buy') {
+        showBuy();
     }
 </script>
 {% endblock %}
@@ -155,10 +166,10 @@
     </div>
 </div>
 <form id="search" action="javascript:window.location.href = doSearch();">
-    <div class="row buy sell" style="display: none;">
+    <div class="row buy-sell" style="display: none;">
         <div class="columns" id="ricpicker-container"></div>
     </div>
-    <div class="row buy sell" style="display: none;">
+    <div class="row buy-sell" style="display: none;">
         <div class="columns">
             <label>Share Price Range</label>
             <br />
@@ -168,35 +179,11 @@
             <br />
         </div>
     </div>
-    <div class="row buy sell" style="display: none;">
-        <div class="columns">
-            <label>Days Since Last Update <i>(0 is don't care)</i>
-                <input type="number" min="0" id="search-date" placeholder="0">
-            </label>
-        </div>
+    <div class="row buy-sell" style="display: none; height: 30px;">
+        <br>
     </div>
-    
-    <div class="row buy sell" style="display: none;">
-        <div class="columns" style="align-content: center; width: 100%;">
-            <button class="button" type="submit" style="width: 100%;">Search</button>
-        </div>
+    <div class="row buy-sell" style="display: none;">
+        <button class="columns small-12 button" type="submit">Search</button>
     </div>
 </form>
-<div class="row explore" style="display: none;">
-    <div class="columns">
-        <h5>Query:</h5>
-    </div>
-    <div class="columns">
-        <pre id="explore-query"></pre>
-    </div>
-</div>
-<br>
-<div class="row explore" style="display: none;">
-    <div class="columns">
-        <h5>Result:</h5>
-    </div>
-    <div class="columns">
-        <pre id="explore-result"></pre>
-    </div>
-</div>
 {% endblock %}

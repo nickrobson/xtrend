@@ -4,7 +4,7 @@
 # Displays homepage with list of revisions of code
 
 from django.template.loader import get_template
-from django.http import HttpResponse, QueryDict
+from django.http import HttpResponse, QueryDict, Http404
 
 from ...utils import SingletonView
 
@@ -20,19 +20,24 @@ class SearchResultsView(SingletonView):
         self.template = get_template('assets/xtrend/searchresults.html')
         
     def get(self, request):
-        resultsJson = [];
+        searchRics = request.GET.get('instrument_id', '').strip()
+        if not len(searchRics):
+            raise Http404('You need to specify some companies to search for!')
+        searchRics = searchRics.split(',')
 
-        # for each ric:
-        searchRics = request.GET.getlist('instrument_id')
-        searchBuy = request.GET.get('buy')
-        searchSell = request.GET.get('sell')
-        searchRange = int(request.GET.get('range'))
-        searchDays = request.GET.get('days')
+        searchMode = request.GET.get('mode')
+        if searchMode not in ('sell', 'buy'):
+            raise Http404('Invalid search mode!')
+
+        try:
+            searchRange = int(request.GET.get('range'))
+        except:
+            raise Http404('Invalid range given!')
 
         currentDate = date(2015, 12, 31)
 
         searchResults = []
-        numResults = 0
+        not_included = []
 
         for ric in searchRics:
             ricRating = rating.get_rating(ric)
@@ -42,33 +47,41 @@ class SearchResultsView(SingletonView):
                 [ric],
                 upper_window,
                 lower_window,
-                currentDate #doi
+                currentDate
             )
-            #print(stockJsonOutput)
-            lastStock = stockJsonOutput[ric][-1]
+            lastStock = None
             for stock in reversed(stockJsonOutput[ric]):
-                if (stock.adjusted_close > 0):
+                if stock.adjusted_close >= 0:
                     lastStock = stock
                     break
+            if lastStock is None:
+                not_included.append('{} was not included in the search results as no price data is available for it.'.format(ric))
+                continue
             price = lastStock.adjusted_close
-            if (((ricRating <= 0 and searchSell == "1")
-                and (price > searchRange))
-                or ((ricRating > 0 and searchBuy == "0")
-                    and (price < searchRange))):
-                print(price)
-                currResult = {}
-                currResult['instrument_id'] = ric
-                currResult['sentiment'] = '{0:0.4f}'.format(ricRating)
-                
-                currResult['tradingAt'] = '{0:0.3f}'.format(lastStock.adjusted_close)
-                currResult['lastReturn'] = '{0:0.3f}'.format(lastStock.return_value)
-                currResult['ratingPercentage'] = '{0:0.1f}'.format((ricRating + 100) / 2)
-                searchResults.append(currResult)
-                numResults += 1
+            if ((searchMode == 'sell' and ricRating <= 0 and price >= searchRange)
+                    or (searchMode == 'buy' and ricRating >= 0 and price <= searchRange)):
+                searchResults.append({
+                    'instrument_id': ric,
+                    'sentiment': '{0:0.4f}'.format(ricRating),
+                    'tradingAt': '{0:0.3f}'.format(lastStock.adjusted_close),
+                    'lastReturn': '{0:0.3f}'.format(lastStock.return_value),
+                    'ratingPercentage': '{0:0.1f}'.format((ricRating + 100) / 2),
+                })
+            else:
+                if searchMode == 'sell' and ricRating >= 0:
+                    no_results_message = "{}'s rating is positive, which would suggest that you buy it - not sell it.".format(ric)
+                elif searchMode == 'buy' and ricRating <= 0:
+                    no_results_message = "{}'s rating is negative, which would suggest that you sell it - not buy it.".format(ric)
+                else:
+                    quantifier = 'only ' if searchMode == 'sell' else ''
+                    lt_or_gt = 'less' if searchMode == 'sell' else 'greater'
+                    no_results_message = "{}'s stock price is {}${:.2f}, which is {} than your cut-off of ${}.".format(ric, quantifier, price, lt_or_gt, searchRange)
+                not_included.append(no_results_message)
 
         self.content = self.template.render({
-            'range': range(0, numResults),
-            'searchResults': searchResults
+            'SearchResults': searchResults,
+            'NotIncluded': not_included,
+            'QueryString': request.GET.urlencode(),
         });
 
         return HttpResponse(self.content, content_type='text/html')
