@@ -59,9 +59,8 @@
 
         /* dummy data: */
         instrument_ids = chosenRics;
-        console.log("hi")
-        range_low = "250";
-        range_hi = "20";
+        range_low = slider.noUiSlider.get()[0];
+        range_hi = slider.noUiSlider.get()[1];
         days = 100;
         sell = 1;
         buy = 0;
