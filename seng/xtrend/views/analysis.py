@@ -77,8 +77,8 @@ class RICAnalysisView(SingletonView):
             'ArticlesSecond': articles[1::2],
             'Rating': extraSymbol + str('{0:0.1f}'.format(rating)),
             'RatingPercentage': '{0:0.1f}'.format((rating + 100) / 2),
-            'tradingAt': '{0:0.3f}'.format(lastStock.adjusted_close),
-            'lastReturn': '{0:0.3f}'.format(lastStock.return_value)
+            'tradingAt': '{0:0.2f}'.format(lastStock.adjusted_close),
+            'lastReturn': '{0:0.4f}'.format(lastStock.return_value)
         })
         return HttpResponse(content, content_type='text/html')
 

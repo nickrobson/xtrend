@@ -15,7 +15,7 @@ var xtrendLoadGraph = function(){};
     var y = d3.scaleLinear().range([height, 0]);
 
     // Axis formatter
-    var commasFormatter = d3.format(",.0f")
+    var commasFormatter = d3.format(",.2f")
 
     // Define the axes
     var xAxis = d3.axisBottom()
