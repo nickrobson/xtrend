@@ -57,8 +57,6 @@ class SearchResultsView(SingletonView):
         numResults = 0
         for i in range(0, len(newsAPIOutput)):
             instrument_id = newsAPIOutput[i]['InstrumentIDs']
-            print("hi")
-            print(instrument_id)
             lower_window = 0
             upper_window = int(searchDays)
             stockJsonOutput = stocks.get(
@@ -70,10 +68,7 @@ class SearchResultsView(SingletonView):
             sentiment = newsAPIOutput[i]['Sentiment']['Polarity']
             if ((searchBuy == "1" and sentiment > 0)
                 or (searchSell == "1" and sentiment < 0)):
-                # print("sentiment:")
-                #print(sentiment)
                 for j in range (0, len(instrument_id)):
-                    #print(stockJsonOutput[instrument_id[j]][0])
                     if (len(stockJsonOutput[instrument_id[j]]) > 0):
                         currResult = {}
                         currResult['instrument_id'] = instrument_id[j]
@@ -83,8 +78,6 @@ class SearchResultsView(SingletonView):
                         currResult['lastReturn'] = 0 #fix
                         searchResults.append(currResult)
                         numResults += 1
-
-        print(searchResults)
 
 
         self.content = self.template.render({
