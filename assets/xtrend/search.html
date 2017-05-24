@@ -17,8 +17,8 @@
     var globalBuy = 0;
 
     noUiSlider.create(slider, {
-        start: [20, 250],
-        connect: true,
+        start: 250,
+        //connect: true,
         tooltips: true,
         step: 1,
         format: wNumb({
@@ -43,6 +43,33 @@
         },
     });
 
+    // noUiSlider.create(slider, {
+    //     start: [20, 250],
+    //     connect: true,
+    //     tooltips: true,
+    //     step: 1,
+    //     format: wNumb({
+    //         decimals: 0,
+    //         prefix: '$'
+    //     }),
+    //     range: {
+    //         'min': 0,
+    //         '10%': 10,
+    //         '32.36%': 50,
+    //         '50%': 100,
+    //         '75%': 500,
+    //         'max': 1000
+    //     },
+    //     pips: {
+    //         mode: 'range',
+    //         density: 3,
+    //         format: wNumb({
+    //             decimals: 0,
+    //             prefix: '$'
+    //         })
+    //     },
+    // });
+
     function showBuy() {
         $("sell").css("display","none");
         $("buy").css("display","inherit");
@@ -61,7 +88,6 @@
 
         urlResults = "hi=1";
 
-        /* dummy data: */
         instrument_ids = chosenRics;
         range_low = slider.noUiSlider.get()[0];
         range_hi = slider.noUiSlider.get()[1];

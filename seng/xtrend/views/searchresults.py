@@ -53,8 +53,6 @@ class SearchResultsView(SingletonView):
                     lastStock = stock
                     break
             price = lastStock.adjusted_close
-            print ("price:")
-            print(price)
             if (((ricRating <= 0 and searchSell == "1")
                 or (ricRating > 0 and searchBuy == "0"))
                 and (price > searchRangeLow)
