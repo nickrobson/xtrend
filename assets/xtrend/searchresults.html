@@ -1,35 +1,44 @@
 {% extends "assets/xtrend/layout.html" %}
 
 {% block title %} Search Results {% endblock %}
-{% load lookup%}
 
 {% block body %}
 <div class="row">
     <div class="columns small-12">
         <h4>Search Results
-            <a href="/coolbananas/xtrend/search/" style="font-size: 16px">(back to search)</a>
+            <a href="/coolbananas/xtrend/search/?{{QueryString}}" style="font-size: 16px">(back to search)</a>
         </h4>
     </div>
 </div>
-{% for i in range %}
-    <div class="row">
-        {% with results=searchResults|lookup:i %}
+{% for result in SearchResults %}
+    <div class="row card" style="padding: 20px 10px 10px 10px;">
         <div class="columns small-4">
-            <h2><a href="/coolbananas/xtrend/analysis/{{results.instrument_id}}">{{results.instrument_id}}</a></h2>
+            <h2><a href="/coolbananas/xtrend/analysis/{{result.instrument_id}}">{{result.instrument_id}}</a></h2>
         </div>
         <div class="columns small-4">
-            <h4>{{results.sentiment}}</h4>
+            <h4>{{result.sentiment}}</h4>
             <div class="success progress" style="width: 25%; background-color: #cc4b37;">
-                <div class="progress-meter" style="width: {{results.ratingPercentage}}%;"></div>
+                <div class="progress-meter" style="width: {{result.ratingPercentage}}%;"></div>
             </div>
         </div>
         <div class="columns small-4">
-            <i>Trading at:</i> {{results.tradingAt}}
+            <i>Trading at:</i> {{result.tradingAt}}
             <br />
-            <i>Last Return:</i> {{results.lastReturn}}
+            <i>Last Return:</i> {{result.lastReturn}}
         </div>
-        {% endwith %}
     </div>
-
 {% endfor %}
+{% if NotIncluded|length > 0 %}
+    <div class="row">
+        <div class="callout warning">
+        {% for Reason in NotIncluded %}
+            {% if forloop.first %}
+                <p>{{Reason}}</p>
+            {% else %}
+                <p style="padding-top: 15px; border-top: 1px solid #cacaca;">{{Reason}}</p>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+{% endif %}
 {% endblock %}
