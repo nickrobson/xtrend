@@ -13,6 +13,8 @@
 <script type="text/javascript" src="{% static 'api/pickers.js' %}"></script>
 <script>
     var slider = document.getElementById('slider');
+    var globalSell = 0;
+    var globalBuy = 0;
 
     noUiSlider.create(slider, {
         start: [20, 250],
@@ -44,11 +46,13 @@
     function showBuy() {
         $("sell").css("display","none");
         $("buy").css("display","inherit");
+        globalBuy = 1;
     }
 
     function showSell() {
         $(".buy").css("display","none");
         $(".sell").css("display","inherit");
+        globalSell = 1;
     }
     function doSearch(instrument_ids, 
         buy, sell, 
@@ -57,13 +61,18 @@
 
         urlResults = "hi=1";
 
+        daysInput = 
+
         /* dummy data: */
         instrument_ids = chosenRics;
         range_low = slider.noUiSlider.get()[0];
         range_hi = slider.noUiSlider.get()[1];
-        days = 100;
-        sell = 1;
-        buy = 0;
+        days = $('#search-date').val();
+        if (days == 0) {
+            days = 10000; // ????
+        }
+        sell = globalSell;
+        buy = globalBuy;
 
 
         for (var i = 0; i < instrument_ids.length; i++) {
