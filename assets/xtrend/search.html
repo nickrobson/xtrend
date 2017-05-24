@@ -13,34 +13,103 @@
 <script type="text/javascript" src="{% static 'xtrend/pickers.js' %}"></script>
 <script>
     var slider = document.getElementById('slider');
+    var globalSell = 0;
+    var globalBuy = 0;
 
-    noUiSlider.create(slider, {
-        start: [20, 250],
-        connect: true,
-        tooltips: true,
-        step: 1,
-        format: wNumb({
-            decimals: 0,
-            prefix: '$'
-        }),
-        range: {
-            'min': 0,
-            '10%': 10,
-            '32.36%': 50,
-            '50%': 100,
-            '75%': 500,
-            'max': 1000
-        },
-        pips: {
-            mode: 'range',
-            density: 3,
+    function createSlider(pos) {
+        noUiSlider.create(slider, {
+            start: 250,
+            connect: pos,
+            tooltips: true,
+            step: 1,
             format: wNumb({
                 decimals: 0,
                 prefix: '$'
-            })
-        },
-    });
+            }),
+            range: {
+                'min': 0,
+                '10%': 10,
+                '32.36%': 50,
+                '50%': 100,
+                '75%': 500,
+                'max': 1000
+            },
+            pips: {
+                mode: 'range',
+                density: 3,
+                format: wNumb({
+                    decimals: 0,
+                    prefix: '$'
+                })
+            },
+        });
+    }
+
+    createSlider("upper");
+
+    function showBuy() {
+        slider.noUiSlider.destroy();
+        createSlider("upper");
+        $("#sell-button").removeClass("primary");
+        $("#sell-button").addClass("secondary");
+        $("#buy-button").removeClass("secondary");
+        $("#buy-button").addClass("primary");
+
+        $(".sell").css("display","none");
+        $(".buy").css("display","inherit");
+        globalBuy = 1;
+        globalSell = 0;
+    }
+
+    function showSell() {
+        slider.noUiSlider.destroy();
+        createSlider("lower")
+        $("#buy-button").removeClass("primary");
+        $("#buy-button").addClass("secondary");
+        $("#sell-button").removeClass("secondary");
+        $("#sell-button").addClass("primary");
+
+        $(".buy").css("display","none");
+        $(".sell").css("display","inherit");
+        globalSell = 1;
+        globalBuy = 0;
+    }
+
+    function doSearch(instrument_ids, 
+        buy, sell, 
+        range_low, range_hi, days) {
+
+        urlResults = "hi=1";
+
+        instrument_ids = chosenRics;
+        range = slider.noUiSlider.get();
+        days = document.getElementById('search-date').value;
+        sell = globalSell;
+        buy = globalBuy;
+
+        for (var it = instrument_ids.values(), val= null; val=it.next().value;) {
+            urlResults = urlResults + "&instrument_id=" + val;
+        }
+        urlResults = urlResults + "&buy=" + buy
+        + "&sell=" + sell
+        + "&range=" + range.substring(1)
+        + "&days=" + days;
+
+        return "/coolbananas/xtrend/search/results?" + urlResults;
+    }
+
 </script>
+<style>
+#slider .noUi-base {
+    background: #14679e;
+}
+#slider .noUi-background {
+    background: white;
+}
+#slider .noUi-connect {
+    background: white;
+}
+</style>
 {% endblock %}
 
 {% block body %}
@@ -50,11 +119,17 @@
     </div>
 </div>
 <div style="height: 30px"></div>
-<form id="search" action="/coolbananas/xtrend/search/results/">
+<div class="columns small-12">
+    <button class="button primary" id="buy-button" type="submit" onclick="showBuy()" style="width: 45%;">Buy</button>
+    <button class="button primary" id="sell-button" type="submit" onclick="showSell()" style="width: 45%;">Sell</button>
+</div>
+<form id="search" action="javascript:window.location.href = doSearch();">
     <div class="row">
+</div>
+    <div class="row buy sell" style="display: none;">
         <div class="columns" id="ricpicker-container"></div>
     </div>
-    <div class="row">
+    <div class="row buy sell" style="display: none;">
         <div class="columns">
             <label>Share Price Range</label>
             <br />
@@ -64,24 +139,15 @@
             <br />
         </div>
     </div>
-    <div class="row">
+    <div class="row buy sell" style="display: none;">
         <div class="columns">
             <label>Days Since Last Update <i>(0 is don't care)</i>
                 <input type="number" min="0" id="search-date" placeholder="0">
             </label>
         </div>
     </div>
-    <div class="row">
-        <div class="columns small-12">
-            <fieldset class="fieldset">
-                <legend>Buy / Sell?</legend>
-                <input id="buy-checkbox" type="checkbox" checked><label for="buy-checkbox">Buy</label>
-                <input id="sell-checkbox" type="checkbox" checked><label for="sell-checkbox">Sell</label>
-            </fieldset>
-        </div>
-    </div>
     
-    <div class="row">
+    <div class="row buy sell" style="display: none;">
         <div class="columns" style="align-content: center; width: 100%;">
             <button class="button" type="submit" style="width: 100%;">Search</button>
         </div>
