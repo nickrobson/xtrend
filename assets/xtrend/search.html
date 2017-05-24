@@ -61,25 +61,21 @@
 
         urlResults = "hi=1";
 
-        daysInput = 
-
         /* dummy data: */
         instrument_ids = chosenRics;
-        console.log(instrument_ids);
         range_low = slider.noUiSlider.get()[0];
         range_hi = slider.noUiSlider.get()[1];
         days = document.getElementById('search-date').value;
         sell = globalSell;
         buy = globalBuy;
 
-
         for (var it = instrument_ids.values(), val= null; val=it.next().value;) {
             urlResults = urlResults + "&instrument_id=" + val;
         }
         urlResults = urlResults + "&buy=" + buy
         + "&sell=" + sell
-        + "&range_low=" + range_low
-        + "&range_hi=" + range_hi
+        + "&range_low=" + range_low.substring(1)
+        + "&range_hi=" + range_hi.substring(1)
         + "&days=" + days;
 
         return "/coolbananas/xtrend/search/results?" + urlResults;
