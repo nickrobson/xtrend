@@ -50,6 +50,11 @@
     function showBuy() {
         slider.noUiSlider.destroy();
         createSlider("upper");
+        $("#sell-button").removeClass("primary");
+        $("#sell-button").addClass("secondary");
+        $("#buy-button").removeClass("secondary");
+        $("#buy-button").addClass("primary");
+
         $(".sell").css("display","none");
         $(".buy").css("display","inherit");
         globalBuy = 1;
@@ -58,12 +63,18 @@
 
     function showSell() {
         slider.noUiSlider.destroy();
-        createSlider("lower");
+        createSlider("lower")
+        $("#buy-button").removeClass("primary");
+        $("#buy-button").addClass("secondary");
+        $("#sell-button").removeClass("secondary");
+        $("#sell-button").addClass("primary");
+
         $(".buy").css("display","none");
         $(".sell").css("display","inherit");
         globalSell = 1;
         globalBuy = 0;
     }
+
     function doSearch(instrument_ids, 
         buy, sell, 
         range_low, range_hi, days) {
@@ -87,8 +98,6 @@
         return "/coolbananas/xtrend/search/results?" + urlResults;
     }
 
-
-
 </script>
 <style>
 #slider .noUi-base {
@@ -111,15 +120,9 @@
 </div>
 <div style="height: 30px"></div>
 <div class="columns small-12">
-        <button class="button" type="submit" onclick="showBuy()" style="width: 45%;">Buy</button>
-        <button class="button" type="submit" onclick="showSell()" style="width: 45%;">Sell</button>
-
-       <!--  <fieldset class="fieldset">
-            <legend>Buy / Sell?</legend>
-            <input id="buy-checkbox" type="checkbox" checked><label for="buy-checkbox">Buy</label>
-            <input id="sell-checkbox" type="checkbox" checked><label for="sell-checkbox">Sell</label>
-        </fieldset> -->
-    </div>
+    <button class="button primary" id="buy-button" type="submit" onclick="showBuy()" style="width: 45%;">Buy</button>
+    <button class="button primary" id="sell-button" type="submit" onclick="showSell()" style="width: 45%;">Sell</button>
+</div>
 <form id="search" action="javascript:window.location.href = doSearch();">
     <div class="row">
 </div>
