@@ -9,6 +9,7 @@ from collections import OrderedDict
 from datetime import date
 from django.template.loader import get_template
 from django.http import HttpResponse
+from django.db.utils import OperationalError
 
 from ...utils import SingletonView
 
@@ -29,7 +30,10 @@ def get_ratings(rics = None):
 class RatingsView(SingletonView):
 
     def __init__(self):
-        self.ratings = get_ratings()
+        try:
+            self.ratings = get_ratings()
+        except OperationalError:
+            self.ratings = {}
 
     def get(self, request):
         return HttpResponse(json.dumps(self.ratings), content_type='application/json')
