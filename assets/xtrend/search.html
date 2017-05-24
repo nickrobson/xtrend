@@ -1,9 +1,20 @@
 {% extends "assets/xtrend/layout.html" %}
 
-{% block title %} Search Results {% endblock %}
+{% block title %} Search {% endblock %}
 
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.2.0/nouislider.min.css">
+<style>
+    #slider .noUi-base {
+        background: #14679e;
+    }
+    #slider .noUi-background {
+        background: white;
+    }
+    #slider .noUi-connect {
+        background: white;
+    }
+</style>
 {% endblock %}
 
 {% block scripts %}
@@ -17,8 +28,13 @@
     var globalBuy = 0;
 
     function createSlider(pos) {
+        var currVal = 250;
+        if (slider.noUiSlider) {
+            currVal = slider.noUiSlider.get();
+            slider.noUiSlider.destroy();
+        }
         noUiSlider.create(slider, {
-            start: 250,
+            start: currVal,
             connect: pos,
             tooltips: true,
             step: 1,
@@ -48,12 +64,13 @@
     createSlider("upper");
 
     function showBuy() {
-        slider.noUiSlider.destroy();
         createSlider("upper");
-        $("#sell-button").removeClass("primary");
-        $("#sell-button").addClass("secondary");
-        $("#buy-button").removeClass("secondary");
-        $("#buy-button").addClass("primary");
+        $("#big-buttons").hide();
+        $("#small-buttons").show();
+        $("#small-sell-button").removeClass("primary");
+        $("#small-sell-button").addClass("secondary");
+        $("#small-buy-button").removeClass("secondary");
+        $("#small-buy-button").addClass("primary");
 
         $(".sell").css("display","none");
         $(".buy").css("display","inherit");
@@ -62,12 +79,13 @@
     }
 
     function showSell() {
-        slider.noUiSlider.destroy();
-        createSlider("lower")
-        $("#buy-button").removeClass("primary");
-        $("#buy-button").addClass("secondary");
-        $("#sell-button").removeClass("secondary");
-        $("#sell-button").addClass("primary");
+        createSlider("lower");
+        $("#big-buttons").hide();
+        $("#small-buttons").show();
+        $("#small-buy-button").removeClass("primary");
+        $("#small-buy-button").addClass("secondary");
+        $("#small-sell-button").removeClass("secondary");
+        $("#small-sell-button").addClass("primary");
 
         $(".buy").css("display","none");
         $(".sell").css("display","inherit");
@@ -75,57 +93,68 @@
         globalBuy = 0;
     }
 
-    function doSearch(instrument_ids, 
-        buy, sell, 
-        range_low, range_hi, days) {
+    function doSearch() {
+        var instrument_ids = Array.from(chosenRics.values()).map(function(a){ return '&instrument_id=' + a; });
+        var range = slider.noUiSlider.get();
+        var days = document.getElementById('search-date').value;
+        var sell = globalSell;
+        var buy = globalBuy;
 
-        urlResults = "hi=1";
-
-        instrument_ids = chosenRics;
-        range = slider.noUiSlider.get();
-        days = document.getElementById('search-date').value;
-        sell = globalSell;
-        buy = globalBuy;
-
-        for (var it = instrument_ids.values(), val= null; val=it.next().value;) {
-            urlResults = urlResults + "&instrument_id=" + val;
-        }
-        urlResults = urlResults + "&buy=" + buy
-        + "&sell=" + sell
-        + "&range=" + range.substring(1)
-        + "&days=" + days;
+        var urlResults = instrument_ids
+            + "&buy=" + buy
+            + "&sell=" + sell
+            + "&range=" + range.substring(1)
+            + "&days=" + days;
 
         return "/coolbananas/xtrend/search/results?" + urlResults;
     }
-
 </script>
-<style>
-#slider .noUi-base {
-    background: #14679e;
-}
-#slider .noUi-background {
-    background: white;
-}
-#slider .noUi-connect {
-    background: white;
-}
-</style>
 {% endblock %}
 
 {% block body %}
 <div class="row">
     <div class="columns small-12">
-        <h4>Search</h4>
+        <h1 style="text-align: center;">Search</h1>
     </div>
 </div>
 <div style="height: 30px"></div>
-<div class="columns small-12">
-    <button class="button primary" id="buy-button" type="submit" onclick="showBuy()" style="width: 45%;">Buy</button>
-    <button class="button primary" id="sell-button" type="submit" onclick="showSell()" style="width: 45%;">Sell</button>
+<div id="big-buttons">
+    <div style="height: 30px">
+        <br>
+    </div>
+    <div class="row">
+        <div class="columns small-12">
+            <button class="button primary" id="big-buy-button" onclick="showBuy()" style="width: 100%; font-size: 30px;">
+                I am looking to Buy stocks.
+            </button>
+        </div>
+    </div>
+    <div style="height: 30px">
+        <br>
+    </div>
+    <div class="row">
+        <div class="columns small-12">
+            <button class="button primary" id="big-sell-button" onclick="showSell()" style="width: 100%; font-size: 30px;">
+                I am looking to Sell stocks.
+            </button>
+        </div>
+    </div>
+</div>
+<div id="small-buttons" style="display: none;">
+    <div class="row">
+        <div class="columns small-6">
+            <button class="button primary" id="small-buy-button" onclick="showBuy()" style="width: 100%;">
+                I am looking to Buy stocks.
+            </button>
+        </div>
+        <div class="columns small-6">
+            <button class="button primary" id="small-sell-button" onclick="showSell()" style="width: 100%;">
+                I am looking to Sell stocks.
+            </button>
+        </div>
+    </div>
 </div>
 <form id="search" action="javascript:window.location.href = doSearch();">
-    <div class="row">
-</div>
     <div class="row buy sell" style="display: none;">
         <div class="columns" id="ricpicker-container"></div>
     </div>
