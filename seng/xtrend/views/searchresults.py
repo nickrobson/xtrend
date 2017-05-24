@@ -56,12 +56,14 @@ class SearchResultsView(SingletonView):
                 and (price > searchRange))
                 or ((ricRating > 0 and searchBuy == "0")
                     and (price < searchRange))):
+                print(price)
                 currResult = {}
                 currResult['instrument_id'] = ric
                 currResult['sentiment'] = '{0:0.4f}'.format(ricRating)
                 
                 currResult['tradingAt'] = '{0:0.3f}'.format(lastStock.adjusted_close)
                 currResult['lastReturn'] = '{0:0.3f}'.format(lastStock.return_value)
+                currResult['ratingPercentage'] = '{0:0.1f}'.format((ricRating + 100) / 2)
                 searchResults.append(currResult)
                 numResults += 1
 
