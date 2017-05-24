@@ -65,18 +65,16 @@
 
         /* dummy data: */
         instrument_ids = chosenRics;
+        console.log(instrument_ids);
         range_low = slider.noUiSlider.get()[0];
         range_hi = slider.noUiSlider.get()[1];
-        days = $('#search-date').val();
-        if (days == 0) {
-            days = 10000; // ????
-        }
+        days = document.getElementById('search-date').value;
         sell = globalSell;
         buy = globalBuy;
 
 
-        for (var i = 0; i < instrument_ids.length; i++) {
-            urlResults = urlResults + "&instrument_id=" + instrument_ids[i];
+        for (var it = instrument_ids.values(), val= null; val=it.next().value;) {
+            urlResults = urlResults + "&instrument_id=" + val;
         }
         urlResults = urlResults + "&buy=" + buy
         + "&sell=" + sell
