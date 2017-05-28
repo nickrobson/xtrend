@@ -42,7 +42,7 @@ def query_see_sharp(ric, upper_window, lower_window, doi):
     parameters = filter(lambda t: len(t[1]), parameters)
     parameters = map(lambda t: '{}/{}'.format(t[0], urllib.parse.quote(t[1])), parameters)
     query = '/'.join(parameters)
-    url = f'{seesharp_url}{query}'
+    url = seesharp_url + query
     try:
         with urllib.request.urlopen(url) as conn:
             data = json.loads(conn.read().decode())
